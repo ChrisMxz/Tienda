@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantilla.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:form id="usuarios">
+
+			<p:growl id="messages" showDetail="true" />
+			
+			<!-- divider con titulo de la tabla -->
+			<p:divider align="left">
+				<div class="inline-flex align-items-center">
+					<b> <p:outputLabel value="$Usuarios" />
+					</b>
+				</div>
+			</p:divider>
+			<!-- Buscador -->
+			<div class="card p-3">
+				<span class="filter-container ui-input-icon-left"> <i
+					class="pi pi-search"></i> <p:inputText id="textoBuscar"
+						
+						placeholder="#{msg['texto.buscar']}">
+						<p:ajax event="keyup" 
+							update="dt-usuarios" />
+					</p:inputText>
+				</span>
+			</div>
+
+			<!-- tabla de usuarios -->
+			<p:dataTable id="dt-usuarios" var="dato"
+				value="#{usuariosBean.usuarios}" rowKey="#{dato.id}"
+				paginator="true" rows="10" paginatorPosition="bottom">
+
+
+				<p:column headerText="ID">
+					<h:outputText value="#{dato.id}" />
+				</p:column>
+				<p:column headerText="Nombre">
+					<h:outputText value="#{dato.username}" />
+				</p:column>
+				<p:column headerText="Apellido Paterno">
+					<h:outputText value="#{dato.username}" />
+				</p:column>
+				<p:column headerText="Apellido Materno">
+					<h:outputText value="#{dato.username}" />
+				</p:column>
+				<p:column headerText="Edad">
+					<h:outputText value="#{dato.username}" />
+				</p:column>
+				<p:column headerText="Telefono">
+					<h:outputText value="#{dato.username}" />
+				</p:column>
+				<p:column headerText="Correo">
+					<h:outputText value="#{dato.email}" />
+				</p:column>
+				<p:column headerText="Nivel">
+					<h:outputText value="#{dato.nivel}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

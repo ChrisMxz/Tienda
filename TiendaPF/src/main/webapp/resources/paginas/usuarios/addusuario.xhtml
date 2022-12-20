@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/WEB-INF/templates/plantilla.xhtml">
+
+	<ui:define name="contenido">
+		<div class="container">
+			<h:form>
+				<h:outputText>Usuario</h:outputText>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Nombre" for="nombre" />
+					<h:inputText id="nombre" value="#{usuario.nombre}" required="true"></h:inputText>
+					<h:outputLabel value="Ape. Paterno" for="ap-paterno" />
+					<h:inputText id="ap-paterno" value="#{usuario.appaterno}"
+						required="true"></h:inputText>
+					<h:outputLabel value="Ape. Materno" for="ap-materno" />
+					<h:inputText id="ap-materno" value="#{usuario.apmaterno}"
+						required="true"></h:inputText>
+					<h:outputLabel value="Edad" for="edad" />
+					<h:inputText id="edad" value="#{usuario.edad}" required="true"
+						maxlength="2"></h:inputText>
+
+					<h:outputLabel value="Sexo" for="sexo" />
+					<h:selectOneMenu id="sexo" value="#{usuario.sexo}" required="true">
+						<f:selectItem itemLabel="Masculino" itemValue="Masculino"></f:selectItem>
+						<f:selectItem itemLabel="Femenino" itemValue="Femenino"></f:selectItem>
+
+					</h:selectOneMenu>
+					
+					<h:outputLabel value="Tipo" for="tipo" />
+					<h:selectOneMenu id="tipo" value="#{usuario.tipo}" required="true">
+						<f:selectItem itemLabel="Admin" itemValue="admin"></f:selectItem>
+						<f:selectItem itemLabel="Empleado" itemValue="user"></f:selectItem>
+					</h:selectOneMenu>
+					
+					<h:outputLabel value="Usuario" for="usuario" />
+					<h:inputText id="usuario" value="#{usuario.userName}"
+						required="true"></h:inputText>
+						<h:outputLabel value="Contrasena" for="contrasena" />
+					<h:inputSecret id="contrasena" value="#{usuario.password}" required="true"></h:inputSecret>
+					
+					
+
+					<h:commandButton value="Guardar" action="#{usuarioController.guardar}" styleClass="btn btn-primary"></h:commandButton>
+
+
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

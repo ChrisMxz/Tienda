@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="card">
+		<h:form>
+			<p:menubar>
+
+				<p:menuitem value="#{msg['texto.inicio']}" outcome="/index.xhtml"
+					icon="pi pi-home">
+				</p:menuitem>
+				
+				<p:menuitem value="Dashboard" rendered="#{nivel==3 and bandera}"
+					icon="pi pi-dollar" disabled="true">
+				</p:menuitem>
+
+				<p:menuitem value="#{msg['titulo.productos']}" rendered="${nivel!=1 and bandera}"
+					outcome="/resources/paginas/productos/productos.xhtml"
+					icon="pi pi-list">
+
+				</p:menuitem>
+				<p:menuitem value="Usuarios" rendered="#{nivel==3 and bandera}"
+					outcome="/resources/paginas/usuarios/usuarios.xhtml"
+					icon="pi pi-user">
+
+				</p:menuitem>
+				<p:menuitem value="Carrito" rendered="#{nivel==1 and bandera}"
+					icon="pi pi-shopping-cart" disabled="true">
+
+				</p:menuitem>
+				<p:menuitem value="Pedidos" rendered="#{nivel!=1 and bandera}"
+					icon="pi pi-dollar" disabled="true">
+				</p:menuitem>
+
+
+
+				<f:facet name="options">
+					<p:commandButton id="avatar" value="${username}" type="button"
+						icon="pi pi-user" styleClass="rounded-button ui-button-info" />
+					<p:contextMenu for="avatar" event="click">
+						<p:menuitem value="Perfil" rendered="#{bandera}" icon="pi pi-user">
+
+						</p:menuitem>
+						<p:menuitem value="#{msg['texto.salir']}" icon="pi pi-sign-out"
+							rendered="#{bandera}" action="#{loginBean.logout}" />
+						<p:menuitem value="#{msg['texto.login']}" icon="pi pi-sign-in"
+							rendered="#{!bandera}" onclick="PF('dialogoLogin').show()" />
+					</p:contextMenu>
+				</f:facet>
+
+			</p:menubar>
+		</h:form>
+	</div>
+</ui:composition>

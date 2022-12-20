@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="card ui-fluid">
+		<h:form id="formLogin">
+			<div class="formgrid grid">
+				<!-- Mensajes -->
+				<div class="col-12">
+					<p:messages for="msg" showIcon="false" closable="true"
+						skipDetailIfEqualsSummary="true" styleClass="text-sm"/>
+				</div>
+				<!-- Input Nombre -->
+				<div class="field col-12">
+					<p:outputLabel for="@next" value="#{msg['login.texto.usuario']}"
+						indicateRequired="false" />
+					<p:message for="@next" display="text"
+						styleClass="text-xs pl-0 py-1 border-none" />
+					<p:inputText id="user" value="#{loginBean.usuario}" required="true"
+						maxlength="20" requiredMessage="#{msg['login.msg.usuario']}" />
+				</div>
+				<!-- Input contraseña -->
+				<div class="field col-12">
+					<p:outputLabel for="@next" value="#{msg['login.texto.contrasena']}"
+						indicateRequired="false" />
+					<p:message for="@next" display="text"
+						styleClass="text-xs pl-0 py-1 border-none" />
+					<p:password id="pass" value="#{loginBean.contrasena}"
+						required="true" maxlength="20"
+						requiredMessage="#{msg['login.msg.contrasena']}" />
+				</div>
+				<!-- Botones -->
+				<div class="col-6">
+					<p:commandButton id="ajax" styleClass="ui-button-flat"
+						value="Registrarse" />
+				</div>
+				<div class="col-6">
+					<p:commandButton id="submitButton"
+						value="#{ msg['login.texto.ingresar']}" update="formLogin"
+						action="#{loginBean.login}" styleClass="ui-button-raised" />
+				</div>
+			</div>
+
+		</h:form>
+
+	</div>
+</ui:component>

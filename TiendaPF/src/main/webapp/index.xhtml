@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantilla.xhtml">
+
+	<!-- Barra lateral derecha con opciones -->
+	<ui:define name="barraizquierda">
+
+		<ui:include src="/resources/paginas/opcindex.xhtml"></ui:include>
+
+
+	</ui:define>
+
+	<ui:define name="contenido">
+		Aqui va el catalogo a la vista al cliente sin iniciar sesion
+
+		<p:dialog header="#{msg['texto.login']}" widgetVar="dialogoLogin"
+			minHeight="200" minWidth="350" showEffect="fade" modal="true"
+			closeOnEscape="true" width="350">
+			<ui:include src="/resources/paginas/login.xhtml" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="grid">
+		<!-- divider con titulo opciones -->
+		<div class="col-12">
+			<p:divider align="left">
+				<div class="inline-flex align-items-center">
+					<i class="pi pi-cog mr-2" /> <b> <p:outputLabel
+							value="#{msg['texto.opciones']}" />
+					</b>
+				</div>
+			</p:divider>
+
+
+			<h:form id="opciones">
+				<p:slideMenu id="menu-opciones" rendered="#{nivel!=1}">
+
+					<p:menuitem id="opc-agregar"
+						value="#{msg['producto.boton.agregar']}" icon="pi pi-plus"
+						actionListener="#{productosBean.nuevoProducto}"
+						update=":dialogo:detalles" oncomplete="PF('dialogForm').show()"
+						rendered="#{nivel==3 and bandera}">
+						<p:resetInput target=":dialogo:detalles" />
+					</p:menuitem>
+					<p:menuitem id="opc-eliminar"
+						value="#{productosBean.deleteButtonMessage}" icon="pi pi-trash"
+						actionListener="#{productosBean.eliminaProductos}"
+						rendered="#{productosBean.hasSelectedProducts()}">
+						<p:confirm header="Confirmacion"
+							message="¿Eliminar los productos seleccionados?"
+							icon="pi pi-exclamation-triangle" />
+					</p:menuitem>
+
+					<p:submenu label="#{msg['producto.exportar']}" icon="pi pi-upload">
+						<p:menuitem value="#{msg['texto.pdf']}"
+							icon="pi pi-fw pi-file-pdf">
+							<p:dataExporter type="pdf" target=":productos:dt-productos"
+								fileName="productos" />
+						</p:menuitem>
+						<p:menuitem id="opc-exporta-xml" value="#{msg['texto.xml']}"
+							icon="pi pi-fw pi-file">
+							<p:dataExporter type="xml" target=":productos:dt-productos"
+								fileName="productos" />
+						</p:menuitem>
+					</p:submenu>
+
+
+					<p:submenu label="Ver" icon="pi pi-eye">
+						<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
+							icon="pi pi-database" action="#{productosBean.estableceLimite}">
+							<f:setPropertyActionListener value="10"
+								target="#{productosBean.limite}" />
+						</p:menuitem>
+						<p:menuitem value="50 #{msg['texto.registros']}"
+							icon="pi pi-database" action="#{productosBean.estableceLimite}">
+							<f:setPropertyActionListener value="50"
+								target="#{productosBean.limite}" />
+						</p:menuitem>
+						<p:menuitem value="100 #{msg['texto.registros']}"
+							icon="pi pi-database" action="#{productosBean.estableceLimite}">
+							<f:setPropertyActionListener value="100"
+								target="#{productosBean.limite}" />
+						</p:menuitem>
+						<p:menuitem value="500 #{msg['texto.registros']}"
+							icon="pi pi-database" action="#{productosBean.estableceLimite}">
+							<f:setPropertyActionListener value="500"
+								target="#{productosBean.limite}" />
+						</p:menuitem>
+						<p:menuitem value="#{msg['texto.todosregistros']}"
+							icon="pi pi-box" action="#{productosBean.estableceLimite}">
+							<f:setPropertyActionListener value="0"
+								target="#{productosBean.limite}" />
+						</p:menuitem>
+
+
+					</p:submenu>
+
+					<p:divider rendered="#{nivel==3 and bandera}">
+						<div class="inline-flex align-items-center">
+							<i class="pi pi-filter mr-2" /> <b> <p:outputLabel
+									value="Filtros" />
+							</b>
+						</div>
+					</p:divider>
+
+					<p:submenu label="Categorias" icon="pi pi-table"
+						rendered="#{nivel==3 and bandera}">
+						<p:menuitem value="Agregar" icon="pi pi-plus"
+							actionListener="#{productosBean.nuevaCategoria}"
+							update=":dialogo-categoria"
+							oncomplete="PF('dialogoFormCategoria').show()">
+							<p:resetInput target=":dialogo-categoria" />
+						</p:menuitem>
+
+
+						<p:menuitem value="Ver" icon="pi pi-eye"
+							oncomplete="PF('dialogoCategorias').show()">
+						</p:menuitem>
+					</p:submenu>
+
+				</p:slideMenu>
+
+				<!-- divider con titulo Filtros -->
+				<p:divider align="left">
+					<div class="inline-flex align-items-center">
+						<b> <p:outputLabel value="Filtros" />
+						</b>
+					</div>
+				</p:divider>
+
+				<div class="card ui-fluid formgrid grid">
+					<!-- Filtro Categoria -->
+					<div class="field col-12 ">
+						<p:outputLabel for="@next" value="#{msg['producto.categoria']}" />
+						<p:selectOneMenu value="#{productosBean.id}"
+							id="filtro-categorias">
+							<f:selectItem itemLabel="#{msg['texto.todo']}" Value="#{null}" />
+							<f:selectItems value="#{productosBean.categorias}" var="c"
+								itemValue="#{c.id}" itemLabel="#{c.nombre}" />
+
+							<p:ajax event="itemSelect" listener="#{productosBean.buscar}"
+								update=":productos:dt-productos" />
+						</p:selectOneMenu>
+					</div>
+					<div class="field col-12">
+						<p:outputLabel for="@next" value="Busqueda" />
+						<p:selectOneMenu id="tipo-buscar" value="#{productosBean.tipo}">
+							<f:selectItem itemLabel="#{msg['producto.nombre']}" itemValue="1" />
+							<f:selectItem itemLabel="#{msg['producto.id']}" itemValue="2" />
+							<f:selectItem itemLabel="#{msg['producto.sku']}" itemValue="3" />
+							<p:ajax event="itemSelect" listener="#{productosBean.buscar}"
+								update=":productos:dt-productos" />
+						</p:selectOneMenu>
+					</div>
+
+				</div>
+			</h:form>
+		</div>
+	</div>
+</ui:composition>

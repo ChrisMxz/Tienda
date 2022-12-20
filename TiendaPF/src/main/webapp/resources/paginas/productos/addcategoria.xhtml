@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="card ui-fluid">
+
+		<p:outputPanel class="formgrid grid" id="panel-detalles-categoria">
+
+			<!-- Input Nombre -->
+			<div class="field col-12 md:col-6">
+				<p:outputLabel for="@next" value="#{msg['producto.nombre']}"
+					indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputText id="nombre" value="#{productosBean.categoria.nombre}"
+					label="Nombre" required="true"
+					requiredMessage="#{msg['input.nombre']}" maxlength="30" />
+			</div>
+
+			<!-- Input Boton agregar/actualizar -->
+			<div class="col-12">
+				<div class="grid">
+					<div class="col-12 md:col-7" />
+					<div class="col-12 md:col-5">
+						<p:commandButton id="btn-agregar"
+							value="#{productosBean.categoria.id>0? msg['producto.boton.editar']: msg['producto.boton.guardar']}"
+							actionListener="#{productosBean.agregarCategoria}"
+							styleClass="ui-button-raised ui-button-success"
+							update=":dialogo-categoria" process=":dialogo-categoria @this"
+							validateClient="true">
+						</p:commandButton>
+						<h:inputHidden value="#{productosBean.categoria.id}" />
+					</div>
+				</div>
+
+
+			</div>
+
+		</p:outputPanel>
+
+
+
+
+	</div>
+</ui:component>

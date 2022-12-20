@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="grid">
+		<div class="col-12">
+
+			<!-- divider con titulo Filtros -->
+			<p:divider align="left">
+				<div class="inline-flex align-items-center">
+					<b> <p:outputLabel value="Filtros" />
+					</b>
+				</div>
+			</p:divider>
+			<h:form id="opciones">
+				<div class="card ui-fluid formgrid grid">
+					<!-- Filtro Categoria -->
+					<div class="field col-12 ">
+						<p:outputLabel for="@next" value="#{msg['producto.categoria']}" />
+						<p:selectOneMenu value="#{productosBean.id}"
+							id="filtro-categorias">
+							<f:selectItem itemLabel="#{msg['texto.todo']}" Value="#{null}" />
+							<f:selectItems value="#{productosBean.categorias}" var="c"
+								itemValue="#{c.id}" itemLabel="#{c.nombre}" />
+
+							<p:ajax event="itemSelect" listener="#{productosBean.buscar}"
+								update=":productos:dv-productos" />
+						</p:selectOneMenu>
+					</div>
+					<div class="field col-12">
+						<p:outputLabel for="@next" value="Busqueda" />
+						<p:selectOneMenu id="tipo-buscar" value="#{productosBean.tipo}">
+							<f:selectItem itemLabel="#{msg['producto.nombre']}" itemValue="1" />
+							<f:selectItem itemLabel="#{msg['producto.id']}" itemValue="2" />
+							<f:selectItem itemLabel="#{msg['producto.sku']}" itemValue="3" />
+							<p:ajax event="itemSelect" listener="#{productosBean.buscar}"
+								update=":productos:dv-productos" />
+						</p:selectOneMenu>
+					</div>
+
+				</div>
+			</h:form>
+		</div>
+	</div>
+</ui:composition>

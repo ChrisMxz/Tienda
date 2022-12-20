@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="grid">
+
+		<div class="col-12">
+			<h:form id="informacion">
+				<!-- divider con titulo Filtros -->
+				<p:divider align="left">
+					<div class="inline-flex align-items-center">
+						<i class="pi pi-info-circle" /> <b> <p:outputLabel
+								value="Informacion" />
+						</b>
+					</div>
+				</p:divider>
+
+				<div class="card ui-fluid formgrid grid">
+					<!-- Filtro Categoria -->
+					<div class="col-12 ">
+						<p>
+							<p:outputLabel value="·Productos: #{productosBean.numProductos} "
+								styleClass="font-semibold text-blue-600" />
+						</p>
+						<p>
+							<p:outputLabel value="·Consultando: #{productosBean.limite} "
+								styleClass="font-semibold" />
+
+						</p>
+						<p>
+							<p:outputLabel value="·Cargados: #{productosBean.productos.size()} "
+								styleClass="font-semibold" />
+
+						</p>
+						<p>
+							<p:outputLabel value="·Categorias: #{productosBean.numCategorias} "
+								styleClass="font-semibold" />
+
+						</p>
+
+					</div>
+					<div class="field col-12"></div>
+
+				</div>
+			</h:form>
+		</div>
+	</div>
+</ui:composition>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantilla.xhtml">
+
+	<!-- Barra lateral derecha con opciones -->
+	<ui:define name="barraizquierda">
+
+		<ui:include src="/resources/paginas/productos/opcproductos.xhtml"></ui:include>
+
+
+	</ui:define>
+	<ui:define name="barraderecha">
+
+		<ui:include src="/resources/paginas/productos/infoproductos.xhtml"></ui:include>
+
+
+	</ui:define>
+
+
+	<!-- contenido principal de la pagina -->
+	<ui:define name="contenido">
+
+		<h:form id="productos">
+			<p:growl id="messages" showDetail="false" />
+
+			<!-- divider con titulo de la tabla -->
+			<p:divider align="left">
+				<div class="inline-flex align-items-center">
+					<b> <p:outputLabel value="#{msg['titulo.productos']}" />
+					</b>
+				</div>
+			</p:divider>
+
+			<!-- Tabla de productos  -->
+			<p:dataTable id="dt-productos" var="producto"
+				value="#{productosBean.productos}"
+				selection="#{productosBean.selectedProductos}" rowSelectMode="add"
+				rowKey="#{producto.id}" paginator="true" rows="10"
+				paginatorPosition="bottom" rowsPerPageTemplate="5,10,15,20"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+
+				<f:facet name="header">
+					<!-- Buscador -->
+					<div class="flex justify-content-between align-items-center">
+						<span class="filter-container ui-input-icon-left"> <i
+							class="pi pi-search"></i> <p:inputText id="textoBuscar"
+								value="#{productosBean.textobuscar}"
+								placeholder="#{msg['texto.buscar'] }">
+								<p:ajax event="keyup" listener="#{productosBean.buscar}"
+									update="dt-productos" />
+							</p:inputText>
+						</span>
+						<!-- Vista de columnas -->
+						<div>
+							<p:selectCheckboxMenu id="co" label="Columnas"
+								icon="pi pi-align-justify" />
+							<p:columnToggler datasource=":productos:dt-productos"
+								trigger="co">
+								<p:ajax />
+							</p:columnToggler>
+						</div>
+					</div>
+				</f:facet>
+
+				<p:ajax event="rowSelect" update=":opciones" />
+				<p:ajax event="rowUnselect" update=":opciones" />
+				<p:ajax event="rowSelectCheckbox" update=":opciones" />
+				<p:ajax event="rowUnselectCheckbox" update=":opciones" />
+				<p:ajax event="toggleSelect" update=":opciones" />
+
+				<p:column selectionMode="multiple" exportable="false" width="20"
+					toggleable="false" rendered="#{nivel==3 and bandera}"></p:column>
+
+
+				<p:column headerText="#{msg['producto.id']}" sortBy="#{producto.id}">
+					<h:outputText value="#{producto.id}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.nombre']}"
+					sortBy="#{producto.nombre}">
+					<h:outputText value="#{producto.nombre}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.descripcion']}"
+					sortBy="#{producto.descripcion}">
+					<h:outputText value="#{producto.descripcion}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.categoria']}"
+					sortBy="#{producto.categoria.nombre}">
+					<h:outputText value="#{producto.categoria.nombre}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.precio']}"
+					sortBy="#{producto.precio}">
+					<h:outputText value="#{producto.precio}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{msg['producto.sku']}"
+					sortBy="#{producto.sku}">
+					<h:outputText value="#{producto.sku}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.cantidad']}"
+					sortBy="#{producto.cantidad}">
+					<h:outputText value="#{producto.cantidad}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.fechaRegistro']}"
+					sortBy="#{producto.fechaRegistro}">
+					<h:outputText value="#{producto.fechaRegistro}" />
+				</p:column>
+				<!-- Botones de accion -->
+				<p:column headerText="Acciones" exportable="false"
+					toggleable="false" rendered="#{nivel==3 and bandera}">
+					<div class="grid">
+						<div class="col-12 md:col-6">
+							<p:commandButton id="btn-editar" icon="pi pi-pencil"
+								class="rounded-button ui-button-success"
+								oncomplete="PF('dialogForm').show()" update=":dialogo:detalles"
+								process="@this">
+								<f:setPropertyActionListener value="#{producto}"
+									target="#{productosBean.producto}" />
+								<p:resetInput target=":dialogo:detalles" />
+							</p:commandButton>
+						</div>
+
+						<div class="col-12 md:col-6">
+							<p:commandButton id="btn-ver" icon="pi pi-shopping-cart" disabled="true"
+								class="rounded-button ui-button-primary"
+								oncomplete="PF('dialogForm').show()" update=":dialogo:detalles"
+								process="@this">
+								<f:setPropertyActionListener value="#{producto}"
+									target="#{productosBean.producto}" />
+								<p:resetInput target=":dialogo:detalles" />
+							</p:commandButton>
+						</div>
+					</div>
+				</p:column>
+
+			</p:dataTable>
+			<!-- Final de la tabla -->
+		</h:form>
+
+		<h:form id="dialogo">
+			<!-- Dialogo modal para mostrar los detalles del producto -->
+			<p:dialog header="#{msg['producto.detalles']}" widgetVar="dialogForm"
+				minHeight="230" minWidth="250" width="500" height="460"
+				responsive="true" showEffect="fade" modal="true" hideEffect="fade"
+				closeOnEscape="true">
+
+				<ui:include src="/resources/paginas/productos/addproducto.xhtml" />
+
+			</p:dialog>
+			<!-- dialogo para confirmar la accion de eliminar -->
+			<p:confirmDialog id="dialogo-eliminar" widgetVar="dialogoEliminar"
+				showEffect="fade" width="300"
+				message="#{msg['dialogo.eliminar.txt']}"
+				header="#{msg['dialogo.eliminar.titulo']}" severity="warn">
+				<p:commandButton value="#{msg['texto.si']}" icon="pi pi-check"
+					actionListener="#{productosBean.eliminar}" process="@this"
+					update=":productos:dt-productos" />
+				<p:commandButton value="#{msg['texto.no']}" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"/>
+			</p:confirmDialog>
+			<!-- dialogo para confirmar-->
+			<p:confirmDialog global="true" showEffect="fade" width="300">
+				<p:commandButton value="#{msg['texto.si']}" type="button"
+					styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="#{msg['texto.no']}" type="button"
+					styleClass="ui-confirmdialog-no ui-button-secondary"
+					icon="pi pi-times" />
+			</p:confirmDialog>
+
+		</h:form>
+
+		<!-- Dialogo modal para mostrar los detalles de las categorias -->
+		<h:form id="dialogo-categoria">
+
+			<p:dialog header="·Detalles de la categoria"
+				widgetVar="dialogoFormCategoria" minHeight="230" minWidth="350"
+				width="400" height="200" responsive="true" showEffect="fade"
+				modal="true" hideEffect="fade" closeOnEscape="true">
+
+				<ui:include src="/resources/paginas/productos/addcategoria.xhtml" />
+
+			</p:dialog>
+
+		</h:form>
+
+		<!-- Dialogo modal para mostrar la tabla categorias -->
+		<h:form id="categorias">
+
+			<p:dialog header="·Categorias" widgetVar="dialogoCategorias"
+				minHeight="230" minWidth="350" width="600" height="400"
+				responsive="true" showEffect="fade" modal="true" hideEffect="fade"
+				closeOnEscape="true">
+
+				<ui:include src="/resources/paginas/productos/categorias.xhtml" />
+
+			</p:dialog>
+
+			<!-- dialogo para confirmar la accion de eliminar -->
+			<p:confirmDialog id="dialogo-Eliminar-Categoria"
+				widgetVar="dialogoEliminarCategoria" showEffect="fade" width="300"
+				message="¿Deseas eliminar la categoria ? #{productosBean.categoria.nombre}"
+				header="Eliminar Categoria" severity="warn">
+				<p:commandButton value="#{msg['texto.si']}" icon="pi pi-check"
+					actionListener="#{productosBean.eliminarCategoria}" process="@this" />
+				<p:commandButton value="#{msg['texto.no']}" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('dialogoEliminarCategoria').hide()" />
+			</p:confirmDialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

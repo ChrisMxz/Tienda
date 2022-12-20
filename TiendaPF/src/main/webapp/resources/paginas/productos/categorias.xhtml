@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="card ui-fluid">
+
+		<!-- Tabla de productos  -->
+		<p:dataTable id="dt-categorias" var="categoria"
+			value="#{productosBean.categorias}" rowKey="#{categoria.id}"
+			paginator="true" rows="10" paginatorPosition="bottom"
+			rowsPerPageTemplate="5,10,15,20"
+			paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+
+			<f:facet name="header">
+				<!-- Buscador -->
+				<div class="flex justify-content-between align-items-center">
+					<span class="filter-container ui-input-icon-left"> <i
+						class="pi pi-search"></i> <p:inputText id="textoBuscar"
+							placeholder="#{msg['texto.buscar'] }">
+							<p:ajax event="keyup" update="dt-categorias" />
+						</p:inputText>
+					</span>
+					<!-- Vista de columnas -->
+					<div>
+						<p:selectCheckboxMenu id="co" label="Columnas"
+							icon="pi pi-align-justify" />
+						<p:columnToggler datasource=":categorias:dt-categorias"
+							trigger="co">
+							<p:ajax />
+						</p:columnToggler>
+					</div>
+				</div>
+			</f:facet>
+
+			<p:column selectionMode="multiple" exportable="false" width="20"
+				toggleable="false"></p:column>
+
+
+			<p:column headerText="#{msg['producto.id']}" sortBy="#{categoria.id}">
+				<h:outputText value="#{categoria.id}" />
+			</p:column>
+			<p:column headerText="#{msg['producto.nombre']}"
+				sortBy="#{categoria.nombre}">
+				<h:outputText value="#{categoria.nombre}" />
+			</p:column>
+
+			<!-- Botones de accion -->
+			<p:column headerText="Acciones" exportable="false" toggleable="false">
+				<div class="grid">
+					<div class="col-12 md:col-6">
+
+						<p:commandButton id="btn-editar" icon="pi pi-pencil"
+							class="rounded-button ui-button-success"
+							oncomplete="PF('dialogoFormCategoria').show()"
+							update=":dialogo-categoria" process="@this">
+							<f:setPropertyActionListener value="#{categoria}"
+								target="#{productosBean.categoria}" />
+							<p:resetInput target=":dialogo-categoria" />
+						</p:commandButton>
+					</div>
+					<div class="col-12 md:col-6">
+						<p:commandButton id="btn-eliminar" icon="pi pi-trash"
+							class="ui-button-danger rounded-button" process="@this"
+							oncomplete="PF('dialogoEliminarCategoria').show()">
+							<f:setPropertyActionListener value="#{categoria}"
+								target="#{productosBean.categoria}" />
+						</p:commandButton>
+					</div>
+				</div>
+			</p:column>
+
+		</p:dataTable>
+		<!-- Final de la tabla -->
+	</div>
+</ui:component>
