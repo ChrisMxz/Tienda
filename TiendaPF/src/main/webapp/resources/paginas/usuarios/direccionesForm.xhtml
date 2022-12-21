@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:outputPanel class="formgrid grid" id="direcciones-panel">
+		<!-- Input Pais -->
+		<div class="field col-12">
+			<p:outputLabel for="@next" value="Pais" />
+			<p:selectOneMenu value="#{usuarioBean.usuario.direccion.pais}"
+				id="pais" filter="true" filterMatchMode="startsWith" required="true"
+				requiredMessage="Elige un pais">
+				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+
+			</p:selectOneMenu>
+		</div>
+
+		<!-- Input Entidad Federativa -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Entidad Federativa" />
+			<p:selectOneMenu
+				value="#{usuarioBean.usuario.direccion.entidadFederativa}"
+				id="entidadFederativa" filter="true" filterMatchMode="startsWith"
+				required="true" requiredMessage="Elige una entidad federativa">
+				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+
+			</p:selectOneMenu>
+		</div>
+
+		<!-- Input Colonia -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Colonia" />
+			<p:selectOneMenu value="#{usuarioBean.usuario.direccion.colonia}"
+				id="colonia" filter="true" filterMatchMode="startsWith"
+				required="true" requiredMessage="Indique la colonia">
+				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+
+			</p:selectOneMenu>
+		</div>
+
+		<!-- Input Codigo Postal -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Codigo Postal" />
+			<p:selectOneMenu
+				value="#{usuarioBean.usuario.direccion.codigoPostal}"
+				id="codigoPostal" filter="true" filterMatchMode="startsWith"
+				required="true" requiredMessage="Codigo postal necesario">
+				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+
+			</p:selectOneMenu>
+		</div>
+
+		<!-- Input calle -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Calle" indicateRequired="false" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputText id="calle"
+				value="#{usuarioBean.usuario.direccion.calle}" required="true"
+				requiredMessage="Ingrese el dato" maxlength="100" />
+		</div>
+
+		<!-- Input numInterior -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Num. Interior"
+				indicateRequired="false" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputText id="numInterior"
+				value="#{usuarioBean.usuario.direccion.numInterior}" required="true"
+				requiredMessage="Ingrese el dato" maxlength="100" />
+		</div>
+
+		<!-- Input numExterior -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Num. Exterior"
+				indicateRequired="false" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputText id="numExterior"
+				value="#{usuarioBean.usuario.direccion.numExterior}" required="true"
+				requiredMessage="Ingrese el dato" maxlength="100" />
+		</div>
+
+	</p:outputPanel>
+
+</ui:composition>

@@ -7,12 +7,13 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates/plantilla.xhtml">
 
+	<!-- Barra lateral derecha con opciones -->
+	<ui:define name="barraizquierda">
+		<ui:include src="/resources/paginas/usuarios/opciones.xhtml"></ui:include>
+	</ui:define>
+
 	<ui:define name="contenido">
-
-		<h:form id="usuarios">
-
-			<p:growl id="messages" showDetail="true" />
-			
+		<div class="card">
 			<!-- divider con titulo de la tabla -->
 			<p:divider align="left">
 				<div class="inline-flex align-items-center">
@@ -20,52 +21,74 @@
 					</b>
 				</div>
 			</p:divider>
-			<!-- Buscador -->
-			<div class="card p-3">
-				<span class="filter-container ui-input-icon-left"> <i
-					class="pi pi-search"></i> <p:inputText id="textoBuscar"
-						
-						placeholder="#{msg['texto.buscar']}">
-						<p:ajax event="keyup" 
-							update="dt-usuarios" />
-					</p:inputText>
-				</span>
-			</div>
-
-			<!-- tabla de usuarios -->
-			<p:dataTable id="dt-usuarios" var="dato"
-				value="#{usuariosBean.usuarios}" rowKey="#{dato.id}"
-				paginator="true" rows="10" paginatorPosition="bottom">
 
 
-				<p:column headerText="ID">
-					<h:outputText value="#{dato.id}" />
-				</p:column>
-				<p:column headerText="Nombre">
-					<h:outputText value="#{dato.username}" />
-				</p:column>
-				<p:column headerText="Apellido Paterno">
-					<h:outputText value="#{dato.username}" />
-				</p:column>
-				<p:column headerText="Apellido Materno">
-					<h:outputText value="#{dato.username}" />
-				</p:column>
-				<p:column headerText="Edad">
-					<h:outputText value="#{dato.username}" />
-				</p:column>
-				<p:column headerText="Telefono">
-					<h:outputText value="#{dato.username}" />
-				</p:column>
-				<p:column headerText="Correo">
-					<h:outputText value="#{dato.email}" />
-				</p:column>
-				<p:column headerText="Nivel">
-					<h:outputText value="#{dato.nivel}" />
-				</p:column>
-			</p:dataTable>
+			<h:form id="usuarios">
+				<p:growl id="messages" showDetail="true" />
 
-		</h:form>
+				<div class="flex justify-content-between align-items-center pb-3">
+					<!-- Buscador -->
+					<span class="filter-container ui-input-icon-left"> <i
+						class="pi pi-search"></i> <p:inputText id="textoBuscar"
+							placeholder="Buscar">
+							<p:ajax event="keyup" update="dt-usuarios" />
+						</p:inputText>
+					</span>
+					<!-- Vista de columnas -->
+					<div>
+						<p:selectCheckboxMenu id="co" label="Columnas"
+							icon="pi pi-align-justify" />
+						<p:columnToggler datasource=":usuarios:dt-usuarios" trigger="co">
+							<p:ajax />
+						</p:columnToggler>
+					</div>
+				</div>
 
+				<!-- tabla de usuarios -->
+				<p:dataTable id="dt-usuarios" widgetVar="dtUsuarios" var="dato"
+					value="#{usuarioBean.listaUsuarios}" rowKey="#{dato.idUsuario}"
+					paginator="true" reflow="true" rows="10" paginatorPosition="bottom"
+					rowsPerPageTemplate="5,10,15,20"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+					<p:autoUpdate />
 
+					<p:column headerText="ID">
+						<h:outputText value="#{dato.idUsuario}" />
+					</p:column>
+					<p:column headerText="Nombre">
+						<h:outputText value="#{dato.nombre}" />
+					</p:column>
+					<p:column headerText="Apellido Paterno">
+						<h:outputText value="#{dato.appaterno}" />
+					</p:column>
+					<p:column headerText="Apellido Materno" responsivePriority="2">
+						<h:outputText value="#{dato.apmaterno}" />
+					</p:column>
+					<p:column headerText="Edad">
+						<h:outputText value="#{dato.edad}" />
+					</p:column>
+					<p:column headerText="Telefono">
+						<h:outputText value="#{dato.contacto.telefonoMovil}" />
+					</p:column>
+					<p:column headerText="Correo">
+						<h:outputText value="#{dato.contacto.email}" />
+					</p:column>
+					<p:column headerText="Nivel">
+						<h:outputText value="#{dato.nivel}" />
+					</p:column>
+				</p:dataTable>
+
+				<!-- opciones al hacer click derecho -->
+				<p:contextMenu for="dt-usuarios">
+					<p:menuitem id="opc-ver-usuario" value="Ver" icon="pi pi-eye">
+					</p:menuitem>
+					<p:menuitem id="opc-editar-usuario" value="Editar"
+						icon="pi pi-pencil">
+					</p:menuitem>
+					<p:menuitem id="opc-eliminar-usuario" value="Eliminar">
+					</p:menuitem>
+				</p:contextMenu>
+			</h:form>
+		</div>
 	</ui:define>
 </ui:composition>

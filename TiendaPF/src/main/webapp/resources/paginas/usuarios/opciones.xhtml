@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="grid">
+		<!-- divider con titulo opciones -->
+		<div class="col-12">
+			<p:divider align="left">
+				<div class="inline-flex align-items-center">
+					<i class="pi pi-cog mr-2" /> <b> <p:outputLabel
+							value="Opciones" />
+					</b>
+				</div>
+			</p:divider>
+
+
+			<h:form id="opciones">
+				<p:slideMenu id="menu-opciones">
+
+					<p:menuitem id="opc-agregar" value="Agregar" icon="pi pi-plus"
+						actionListener="#{usuarioBean.nuevo}"
+						update=":formulario-usuarios:tab"
+						oncomplete="PF('dialogoForm').show()">
+						<p:resetInput target=":formulario-usuarios:tab" />
+					</p:menuitem>
+
+					<p:menuitem id="opc-refrescar" value="Recargar"
+						icon="pi pi-refresh" actionListener="#{usuarioBean.refrescar}">
+					</p:menuitem>
+
+				</p:slideMenu>
+
+			</h:form>
+
+			<!-- Dialogo modal para mostrar los detalles del Alumno -->
+			<p:dialog header="Detalles Usuario" widgetVar="dialogoForm"
+				minHeight="230" minWidth="250" width="800" height="500"
+				responsive="true" showEffect="fade" modal="true" hideEffect="fade"
+				closeOnEscape="true">
+
+				<ui:include
+					src="/resources/paginas/usuarios/formularioUsuario.xhtml" />
+
+			</p:dialog>
+		</div>
+	</div>
+</ui:composition>

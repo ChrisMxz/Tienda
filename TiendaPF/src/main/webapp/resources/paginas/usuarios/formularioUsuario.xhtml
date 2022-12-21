@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<div class="card ui-fluid">
+		<h:form id="formulario-usuarios">
+			<p:growl id="msg" showDetail="false" />
+
+			<p:tabView id="tab" >
+				<p:tab title="Datos Personales" id="tab-personal" >
+					<ui:include
+						src="/resources/paginas/usuarios/datosPersonalesForm.xhtml" />
+				</p:tab>
+				<p:tab title="Direccion">
+					<ui:include src="/resources/paginas/usuarios/direccionesForm.xhtml" />
+				</p:tab>
+				<p:tab title="Contacto">
+					<ui:include src="/resources/paginas/usuarios/contactosForm.xhtml" />
+				</p:tab>
+			</p:tabView>
+
+			<!-- Input Boton agregar-->
+			<div class="col-12">
+				<div class="grid">
+					<div class="col-12 md:col-6"></div>
+					<div class="col-12 md:col-6">
+						<p:commandButton id="btn-agregar" icon="pi pi-save"
+							value="Guardar" update="tab"
+							actionListener="#{usuarioBean.guardar}"
+							styleClass="ui-button-success rounded-button">
+						</p:commandButton>
+						<h:inputHidden value="#{usuarioBean.usuario.idUsuario}" />
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+
+	</div>
+
+</ui:component>

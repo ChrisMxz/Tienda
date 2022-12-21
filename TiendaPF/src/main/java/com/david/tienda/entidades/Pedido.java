@@ -7,6 +7,7 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,8 +42,8 @@ public class Pedido {
 	@NotNull
 	private LocalDateTime fechaPedido;
 
-	@OneToMany(mappedBy = "items")
-	private List<Item> listaItems;
+	//@OneToMany(mappedBy = "items", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	//private List<Item> listaItems;
 
 	private int cantidadProductos;
 	private double descuento;

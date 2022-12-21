@@ -9,32 +9,27 @@
 
 	<!-- Barra lateral derecha con opciones -->
 	<ui:define name="barraizquierda">
-
-		<ui:include src="/resources/paginas/productos/opcproductos.xhtml"></ui:include>
-
-
+		<!-- En desarrollo -->
 	</ui:define>
+
 	<ui:define name="barraderecha">
-
-		<ui:include src="/resources/paginas/productos/infoproductos.xhtml"></ui:include>
-
-
+		<!-- En desarrollo -->
 	</ui:define>
 
 
 	<!-- contenido principal de la pagina -->
 	<ui:define name="contenido">
+	
+		<!-- divider con titulo de la tabla -->
+		<p:divider align="left">
+			<div class="inline-flex align-items-center">
+				<b> <p:outputLabel value="#{msg['titulo.productos']}" />
+				</b>
+			</div>
+		</p:divider>
 
 		<h:form id="productos">
 			<p:growl id="messages" showDetail="false" />
-
-			<!-- divider con titulo de la tabla -->
-			<p:divider align="left">
-				<div class="inline-flex align-items-center">
-					<b> <p:outputLabel value="#{msg['titulo.productos']}" />
-					</b>
-				</div>
-			</p:divider>
 
 			<!-- Tabla de productos  -->
 			<p:dataTable id="dt-productos" var="producto"
@@ -126,8 +121,8 @@
 						</div>
 
 						<div class="col-12 md:col-6">
-							<p:commandButton id="btn-ver" icon="pi pi-shopping-cart" disabled="true"
-								class="rounded-button ui-button-primary"
+							<p:commandButton id="btn-ver" icon="pi pi-shopping-cart"
+								disabled="true" class="rounded-button ui-button-primary"
 								oncomplete="PF('dialogForm').show()" update=":dialogo:detalles"
 								process="@this">
 								<f:setPropertyActionListener value="#{producto}"
@@ -161,7 +156,7 @@
 					actionListener="#{productosBean.eliminar}" process="@this"
 					update=":productos:dt-productos" />
 				<p:commandButton value="#{msg['texto.no']}" type="button"
-					styleClass="ui-button-secondary" icon="pi pi-times"/>
+					styleClass="ui-button-secondary" icon="pi pi-times" />
 			</p:confirmDialog>
 			<!-- dialogo para confirmar-->
 			<p:confirmDialog global="true" showEffect="fade" width="300">

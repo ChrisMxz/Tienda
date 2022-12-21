@@ -79,6 +79,8 @@ public class Usuario {
 
 	// constructores----------------
 	public Usuario() {
+		this.contacto= new Contacto();
+		this.direccion= new Direccion();
 	}
 
 	public Usuario(Long idUsuario, int nivel, String nombre, String appaterno, String apmaterno, int edad, String sexo,

@@ -20,7 +20,7 @@
 						indicateRequired="false" />
 					<p:message for="@next" display="text"
 						styleClass="text-xs pl-0 py-1 border-none" />
-					<p:inputText id="user" value="#{loginBean.usuario}" required="true"
+					<p:inputText id="user" value="#{loginBean.user}" required="true"
 						maxlength="20" requiredMessage="#{msg['login.msg.usuario']}" />
 				</div>
 				<!-- Input contraseña -->
@@ -29,15 +29,11 @@
 						indicateRequired="false" />
 					<p:message for="@next" display="text"
 						styleClass="text-xs pl-0 py-1 border-none" />
-					<p:password id="pass" value="#{loginBean.contrasena}"
+					<p:password id="pass" value="#{loginBean.pass}"
 						required="true" maxlength="20"
 						requiredMessage="#{msg['login.msg.contrasena']}" />
 				</div>
-				<!-- Botones -->
-				<div class="col-6">
-					<p:commandButton id="ajax" styleClass="ui-button-flat"
-						value="Registrarse" />
-				</div>
+				<!-- Boton-->
 				<div class="col-6">
 					<p:commandButton id="submitButton"
 						value="#{ msg['login.texto.ingresar']}" update="formLogin"

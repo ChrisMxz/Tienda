@@ -9,37 +9,19 @@
 		<h:form>
 			<p:menubar>
 
-				<p:menuitem value="#{msg['texto.inicio']}" outcome="/index.xhtml"
-					icon="pi pi-home">
+				<p:menuitem value="Inicio" outcome="/index.xhtml" icon="pi pi-home">
 				</p:menuitem>
-				
-				<p:menuitem value="Dashboard" rendered="#{nivel==3 and bandera}"
-					icon="pi pi-dollar" disabled="true">
+				<p:menuitem value="Usuarios" outcome="/resources/paginas/usuarios/usuarios.xhtml" icon="pi pi-user">
 				</p:menuitem>
-
-				<p:menuitem value="#{msg['titulo.productos']}" rendered="${nivel!=1 and bandera}"
-					outcome="/resources/paginas/productos/productos.xhtml"
-					icon="pi pi-list">
-
+				<p:menuitem value="Pedidos" icon="pi pi-briefcase">
 				</p:menuitem>
-				<p:menuitem value="Usuarios" rendered="#{nivel==3 and bandera}"
-					outcome="/resources/paginas/usuarios/usuarios.xhtml"
-					icon="pi pi-user">
-
-				</p:menuitem>
-				<p:menuitem value="Carrito" rendered="#{nivel==1 and bandera}"
-					icon="pi pi-shopping-cart" disabled="true">
-
-				</p:menuitem>
-				<p:menuitem value="Pedidos" rendered="#{nivel!=1 and bandera}"
-					icon="pi pi-dollar" disabled="true">
-				</p:menuitem>
-
-
 
 				<f:facet name="options">
-					<p:commandButton id="avatar" value="${username}" type="button"
-						icon="pi pi-user" styleClass="rounded-button ui-button-info" />
+					<p:avatar id="avatar" styleClass="mr-2" shape="circle" label="david">
+						<p:graphicImage
+							value="https://cdn4.iconfinder.com/data/icons/diversity-v2-0-volume-03/64/superhero-spiderman-comics-512.png" />
+					</p:avatar>
+
 					<p:contextMenu for="avatar" event="click">
 						<p:menuitem value="Perfil" rendered="#{bandera}" icon="pi pi-user">
 
@@ -50,6 +32,7 @@
 							rendered="#{!bandera}" onclick="PF('dialogoLogin').show()" />
 					</p:contextMenu>
 				</f:facet>
+
 
 			</p:menubar>
 		</h:form>

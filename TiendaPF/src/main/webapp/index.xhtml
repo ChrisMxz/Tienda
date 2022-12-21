@@ -6,16 +6,9 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates/plantilla.xhtml">
 
-	<!-- Barra lateral derecha con opciones -->
-	<ui:define name="barraizquierda">
-
-		<ui:include src="/resources/paginas/opcindex.xhtml"></ui:include>
-
-
-	</ui:define>
 
 	<ui:define name="contenido">
-		Aqui va el catalogo a la vista al cliente sin iniciar sesion
+
 
 		<p:dialog header="#{msg['texto.login']}" widgetVar="dialogoLogin"
 			minHeight="200" minWidth="350" showEffect="fade" modal="true"

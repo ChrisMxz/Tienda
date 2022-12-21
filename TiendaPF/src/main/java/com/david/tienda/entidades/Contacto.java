@@ -11,7 +11,7 @@ public class Contacto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_Contacto")
+	@Column(name = "id_contacto")
 	private Long idContacto;
 
 	@Size(min = 10, max = 15)
@@ -29,7 +29,7 @@ public class Contacto {
 
 	@Size(max = 200)
 	@Email
-	@Column(name = "correo1")
+	@Column(name = "correo2")
 	private String email2;
 
 	// constructores----------------

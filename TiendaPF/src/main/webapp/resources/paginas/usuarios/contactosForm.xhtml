@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:outputPanel class="formgrid grid" id="contacto-panel">
+		<!-- Input Telefono Movil -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Telefono Movil"
+				indicateRequired="false" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputMask id="telefonoMovil"
+				value="#{usuarioBean.usuario.contacto.telefonoMovil}"
+				requiredMessage="Ingrese el dato" />
+		</div>
+
+		<!-- Input Telefono Local -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Telefono Local"
+				indicateRequired="false" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputMask id="telefonoLocal"
+				value="#{usuarioBean.usuario.contacto.telefonoLocal}"
+				requiredMessage="Ingrese el dato" />
+		</div>
+
+		<!-- Input Correo  -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Correo" indicateRequired="false" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputText id="correo"
+				value="#{usuarioBean.usuario.contacto.email}" required="true"
+				requiredMessage="Ingrese el dato" maxlength="200" />
+		</div>
+
+		<!-- Input Correo 2  -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Correo Alternativo"
+				indicateRequired="false" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputText id="correo2"
+				value="#{usuarioBean.usuario.contacto.email2}" required="true"
+				requiredMessage="Ingrese el dato" maxlength="200" />
+		</div>
+
+	</p:outputPanel>
+
+</ui:composition>
