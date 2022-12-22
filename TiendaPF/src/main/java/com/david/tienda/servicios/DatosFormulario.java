@@ -1,6 +1,7 @@
 package com.david.tienda.servicios;
 
 import java.io.Serializable;
+import java.awt.SystemColor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -60,11 +61,11 @@ public class DatosFormulario implements Serializable {
 		colonias = cargarDatos(22, 5, 0, false, 2, 0, "Colonias 1");
 		codigosPostales = cargarDatos(22, 5, 0, false, 1, 0, "Codigos postales 1");
 
-		formasdePago = cargarDatos(0, 6, 0, true, 0, 1, "Formas de pago");
+		formasdePago = cargarDatos(0, 6, 28, true, 0, 1, "Formas de pago");
 		tiposdeComprobante = cargarDatos(2, 5, 0, true, 0, 1, "Tipo comprobante");
 		metodosdePago = cargarDatos(4, 6, 0, true, 0, 1, "Metodo Pago");
 		regimenFiscal = cargarDatos(10, 6, 0, true, 0, 1, "Regimen fiscal");
-		usoCFDI = cargarDatos(12, 6, 0, true, 0, 1, "Uso de CFDI");
+		usoCFDI = cargarDatos(12, 6, 30, true, 0, 1, "Uso de CFDI");
 		clavesdeProducto = cargarDatos(13, 5, 0, true, 0, 1, "Claves de Productos");
 		clavesdeUnidad = cargarDatos(14, 6, 0, true, 0, 1, "Claves de unidad");
 		impuesto = cargarDatos(16, 5, 0, true, 0, 1, "Impuestos");
@@ -79,44 +80,28 @@ public class DatosFormulario implements Serializable {
 		colonias.removeAll(colonias);
 	}
 
-	private List<EntidadFederativa> cargarEstados() {
-		List<EntidadFederativa> lista = new ArrayList<>();
-		String nombreArchivo = "catCFDI_V_4_09112022.xls";
-		String rutaArchivo = "C:\\" + nombreArchivo;
-		int numFilas;
+	public void cargaColonias() {
+		List<String> lista = new ArrayList<>();
 
-		try (FileInputStream file = new FileInputStream(new File(rutaArchivo))) {
-			// leer archivo excel
-			Workbook wb = WorkbookFactory.create(file);
-			// obtener la hoja que se va leer 25(Estado)
-			HSSFSheet sheet = (HSSFSheet) wb.getSheetAt(25);
-			// obtener las filas de la hoja excel
-			numFilas = 37;
-			// comienza desde la fila del titulo
-			for (int i = 5; i < numFilas; i++) {
-				Row fila = sheet.getRow(i);
-				EntidadFederativa x;
+		colonias = cargarDatos(22, 5, 0, false, 2, 0, "Colonias 1");
+		lista.removeAll(lista);
+		System.out.println(lista);
+		colonias.addAll(lista = cargarDatos(23, 5, 0, false, 2, 0, "Colonias 2"));
+		lista.removeAll(lista);
+		System.out.println(lista);
+		colonias.addAll(lista = cargarDatos(24, 5, 0, false, 2, 0, "Colonias 3"));
+		
+		System.out.println(colonias.size());
 
-				lista.add(x = new EntidadFederativa(fila.getCell(0).getStringCellValue(),
-						fila.getCell(2).getStringCellValue()));
-
-			}
-
-			System.out.println("Cargados: Estados");
-
-		} catch (Exception e) {
-			System.out.println("Error al cargarEstados" + e);
-			e.getMessage();
-		}
-
-		return lista;
 	}
 
-	private List<String> cargarDatos(int pagina, int inicia, int fin, boolean si, int col, int col2, String msg) {
+	private List<String> cargarDatos(int pagina, int inicia, int fin, boolean compuesto, int col, int col2,
+			String msg) {
 		List<String> lista = new ArrayList<>();
 		String nombreArchivo = "catCFDI_V_4_09112022.xls";
 		String rutaArchivo = "C:\\" + nombreArchivo;
 		int numFilas;
+		String dato = null, txt = null;
 
 		try (FileInputStream file = new FileInputStream(new File(rutaArchivo))) {
 			// leer archivo excel
@@ -135,22 +120,45 @@ public class DatosFormulario implements Serializable {
 			for (int i = inicia; i < numFilas; i++) {
 				Row fila = sheet.getRow(i);
 
-				if (si) {
-					lista.add(fila.getCell(col).getStringCellValue() + " - " + fila.getCell(col2).getStringCellValue());
-				} else {
-					lista.add(fila.getCell(col).getStringCellValue());
+				txt = verifica(fila, col);
+				dato = txt;
+
+				if (compuesto) {
+					txt = verifica(fila, col2);
+					dato = dato + " - " + txt;
 				}
+
+				lista.add(dato);
 
 			}
 
 			System.out.println("Cargados: " + msg);
 
 		} catch (Exception e) {
-			System.out.println("Error al cargar " + msg + ":" + e);
+			System.err.println("Error al cargar " + msg + " : " + e);
 			e.getMessage();
 		}
 
 		return lista;
+	}
+
+	public String verifica(Row fila, int col) {
+		String dato = null;
+		// dato1
+		try {
+			dato = fila.getCell(col).getStringCellValue();
+		} catch (Exception e) {
+
+			try {
+				dato = String.valueOf(fila.getCell(col).getNumericCellValue());
+
+			} catch (Exception ex) {
+
+			}
+		}
+
+		return dato;
+
 	}
 
 	public List<String> completaEstados(String texto) {
