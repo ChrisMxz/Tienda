@@ -20,7 +20,6 @@ public class Direccion {
 	@Column(name = "id_direccion")
 	private Long id_direccion;
 	
-	@NotNull
 	@Size(max = 50)
 	private String pais;
 	

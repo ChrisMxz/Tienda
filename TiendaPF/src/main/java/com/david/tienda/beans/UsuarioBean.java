@@ -58,7 +58,7 @@ public class UsuarioBean implements Serializable {
 		if (usuario.getIdUsuario() != null)
 			msg = "Actualizado";
 
-		//servicioUsuario.guardar(usuario);
+		servicioUsuario.guardar(usuario);
 
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
 		PrimeFaces.current().ajax().update(":formulario-usuarios:msg");

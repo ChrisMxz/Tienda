@@ -6,80 +6,99 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<p:outputPanel class="formgrid grid" id="datosPersonales-panel">
-		<!-- Input Nombre -->
-		<div class="field col-4">
-			<p:outputLabel for="@next" value="Nombre" indicateRequired="false" />
-			<p:message for="@next" display="text"
-				styleClass="text-xs pl-0 py-1 border-none" />
-			<p:inputText id="nombre" value="#{usuarioBean.usuario.nombre}"
-				label="Nombre" required="true" requiredMessage="Ingrese el dato"
-				maxlength="50" />
+
+		<div class="col-6">
+
+			<!-- Input Nombre -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="Nombre" indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputText id="nombre" value="#{usuarioBean.usuario.nombre}"
+					label="Nombre" required="true" requiredMessage="Ingrese el dato"
+					maxlength="50" />
+			</div>
+
+			<!-- Input Apellido Paterno -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="Apellido Paterno"
+					indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputText id="apellido" value="#{usuarioBean.usuario.appaterno}"
+					required="true" requiredMessage="Ingrese el dato" maxlength="50" />
+			</div>
+
+			<!-- Input Apellido Materno -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="Apellido Materno"
+					indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputText id="apellidoMaterno"
+					value="#{usuarioBean.usuario.apmaterno}" required="true"
+					requiredMessage="Ingrese el dato" maxlength="50" />
+			</div>
+
+			<!-- Input Edad  -->
+			<div class="field col-fixed">
+				<p:outputLabel for="@next" value="Edad" indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputNumber id="edad" value="#{usuarioBean.usuario.edad}"
+					required="true" requiredMessage="Ingrese el dato" maxlength="3"
+					minValue="1" decimalPlaces="0" decimalSeparator=" " />
+			</div>
+
+			<!-- Input sexo -->
+			<div class="field col">
+				<p:outputLabel for="@next" value="Sexo" />
+				<p:selectOneMenu value="#{usuarioBean.usuario.sexo}" id="sexo"
+					filterMatchMode="startsWith" required="true"
+					requiredMessage="Elige una opcion">
+					<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+					<f:selectItem itemLabel="Maculino " itemValue="m" />
+					<f:selectItem itemLabel="Femenino " itemValue="f" />
+				</p:selectOneMenu>
+			</div>
+
+		</div>
+		<div class="field col-1">
+			<p:divider layout="vertical" />
 		</div>
 
-		<!-- Input Apellido Paterno -->
-		<div class="field col-4">
-			<p:outputLabel for="@next" value="Apellido Paterno"
-				indicateRequired="false" />
-			<p:message for="@next" display="text"
-				styleClass="text-xs pl-0 py-1 border-none" />
-			<p:inputText id="apellido" value="#{usuarioBean.usuario.appaterno}"
-				required="true" requiredMessage="Ingrese el dato" maxlength="50" />
-		</div>
+		<div class="field col-5">
 
-		<!-- Input Apellido Materno -->
-		<div class="field col-4">
-			<p:outputLabel for="@next" value="Apellido Materno"
-				indicateRequired="false" />
-			<p:message for="@next" display="text"
-				styleClass="text-xs pl-0 py-1 border-none" />
-			<p:inputText id="apellidoMaterno"
-				value="#{usuarioBean.usuario.apmaterno}" required="true"
-				requiredMessage="Ingrese el dato" maxlength="50" />
-		</div>
+			<!-- Input Usuario -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="Usuario" indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputText id="usuario" value="#{usuarioBean.usuario.username}"
+					required="true" requiredMessage="Ingrese el dato" maxlength="20" />
+			</div>
 
-		<!-- Input Edad  -->
-		<div class="field col-12 md:col-6">
-			<p:outputLabel for="@next" value="Edad" indicateRequired="false" />
-			<p:message for="@next" display="text"
-				styleClass="text-xs pl-0 py-1 border-none" />
-			<p:inputNumber id="edad" value="#{usuarioBean.usuario.edad}"
-				required="true" requiredMessage="Ingrese el dato" maxlength="3"
-				minValue="1" decimalPlaces="0" decimalSeparator=" " />
-		</div>
+			<!-- Input Contraseña -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="Contraseña"
+					indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputText id="password" value="#{usuarioBean.usuario.password}"
+					required="true" requiredMessage="Ingrese el dato" maxlength="20" />
+			</div>
 
-		<!-- Input sexo -->
-		<div class="field col-12 md:col-6">
-			<p:outputLabel for="@next" value="Sexo" />
-			<p:selectOneMenu value="#{usuarioBean.usuario.sexo}" id="sexo"
-				filterMatchMode="startsWith" required="true"
-				requiredMessage="Elige una opcion">
-				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
-				<f:selectItem itemLabel="Maculino " Value="m" />
-				<f:selectItem itemLabel="Femenino " Value="f" />
-			</p:selectOneMenu>
-		</div>
+			<!-- Input Contraseña confirmacion -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="Confirmar Contraseña"
+					indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputText id="passwordConfirma"
+					value="#{usuarioBean.usuario.password}" required="true"
+					requiredMessage="Ingrese el dato" maxlength="20" />
+			</div>
 
-		<p:divider align="left" type="dashed">
-			<b>Credenciales</b>
-		</p:divider>
-
-		<!-- Input Usuario -->
-		<div class="field col-4">
-			<p:outputLabel for="@next" value="Usuario" indicateRequired="false" />
-			<p:message for="@next" display="text"
-				styleClass="text-xs pl-0 py-1 border-none" />
-			<p:inputText id="usuario" value="#{usuarioBean.usuario.username}"
-				required="true" requiredMessage="Ingrese el dato" maxlength="20" />
-		</div>
-
-		<!-- Input Contraseña -->
-		<div class="field col-4">
-			<p:outputLabel for="@next" value="Contraseña"
-				indicateRequired="false" />
-			<p:message for="@next" display="text"
-				styleClass="text-xs pl-0 py-1 border-none" />
-			<p:inputText id="password" value="#{usuarioBean.usuario.password}"
-				required="true" requiredMessage="Ingrese el dato" maxlength="20" />
 		</div>
 
 	</p:outputPanel>

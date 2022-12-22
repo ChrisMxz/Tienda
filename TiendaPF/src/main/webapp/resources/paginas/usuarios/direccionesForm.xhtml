@@ -6,16 +6,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<p:outputPanel class="formgrid grid" id="direcciones-panel">
-		<!-- Input Pais -->
-		<div class="field col-12">
-			<p:outputLabel for="@next" value="Pais" />
-			<p:selectOneMenu value="#{usuarioBean.usuario.direccion.pais}"
-				id="pais" filter="true" filterMatchMode="startsWith" required="true"
-				requiredMessage="Elige un pais">
-				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
-
-			</p:selectOneMenu>
-		</div>
 
 		<!-- Input Entidad Federativa -->
 		<div class="field col-6">
@@ -25,31 +15,30 @@
 				id="entidadFederativa" filter="true" filterMatchMode="startsWith"
 				required="true" requiredMessage="Elige una entidad federativa">
 				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+				<f:selectItems value="#{datosFormulario.entidadesFederativas}"
+					var="dato" itemValue="#{dato}" itemLabel="#{dato}" />
 
 			</p:selectOneMenu>
 		</div>
 
 		<!-- Input Colonia -->
 		<div class="field col-6">
-			<p:outputLabel for="@next" value="Colonia" />
-			<p:selectOneMenu value="#{usuarioBean.usuario.direccion.colonia}"
-				id="colonia" filter="true" filterMatchMode="startsWith"
-				required="true" requiredMessage="Indique la colonia">
-				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
-
-			</p:selectOneMenu>
+			<p:outputLabel for="@next" value="Colonia/Barrio" />
+			<p:autoComplete id="colonia" maxResults="5"
+				value="#{usuarioBean.usuario.direccion.colonia}"
+				completeMethod="#{datosFormulario.completaColonias}"
+				scrollHeight="250">
+			</p:autoComplete>
 		</div>
 
 		<!-- Input Codigo Postal -->
 		<div class="field col-6">
 			<p:outputLabel for="@next" value="Codigo Postal" />
-			<p:selectOneMenu
+			<p:autoComplete id="CodigoPostal" maxResults="5"
 				value="#{usuarioBean.usuario.direccion.codigoPostal}"
-				id="codigoPostal" filter="true" filterMatchMode="startsWith"
-				required="true" requiredMessage="Codigo postal necesario">
-				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
-
-			</p:selectOneMenu>
+				completeMethod="#{datosFormulario.completaCodigosPostales}"
+				scrollHeight="250">
+			</p:autoComplete>
 		</div>
 
 		<!-- Input calle -->
