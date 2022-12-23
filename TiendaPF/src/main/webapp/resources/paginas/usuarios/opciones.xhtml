@@ -22,9 +22,9 @@
 
 					<p:menuitem id="opc-agregar" value="Agregar" icon="pi pi-plus"
 						actionListener="#{usuarioBean.nuevo}"
-						update=":formulario-usuarios:tab"
+						update=":formulario-usuarios"
 						oncomplete="PF('dialogoForm').show()">
-						<p:resetInput target=":formulario-usuarios:tab" />
+						<p:resetInput target=":formulario-usuarios" />
 					</p:menuitem>
 
 					<p:menuitem id="opc-refrescar" value="Recargar"
@@ -35,16 +35,31 @@
 
 			</h:form>
 
-			<!-- Dialogo modal para mostrar los detalles del Alumno -->
-			<p:dialog header="Detalles Usuario" widgetVar="dialogoForm"
-				minHeight="230" minWidth="250" width="800" height="500"
-				responsive="true" showEffect="fade" modal="true" hideEffect="fade"
-				closeOnEscape="true">
+			<h:form id="formulario-usuarios">
+				<!-- Dialogo modal para mostrar los detalles del Alumno -->
+				<p:dialog header="Usuario" widgetVar="dialogoForm" minHeight="230"
+					minWidth="250" width="700" height="600" responsive="true"
+					showEffect="fade" modal="true" hideEffect="fade"
+					closeOnEscape="true">
 
-				<ui:include
-					src="/resources/paginas/usuarios/formularioUsuario.xhtml" />
+					<ui:include
+						src="/resources/paginas/usuarios/formularioUsuario.xhtml" />
 
-			</p:dialog>
+					<f:facet name="footer">
+						<p:commandButton id="btn-agregar" icon="pi pi-save"
+							value="Guardar"
+							validateClient="true"
+							update=":formulario-usuarios:tab"
+							actionListener="#{usuarioBean.guardar}"
+							styleClass="ui-button-primary rounded-button">
+						</p:commandButton>
+
+					</f:facet>
+
+
+				</p:dialog>
+
+			</h:form>
 		</div>
 	</div>
 </ui:composition>

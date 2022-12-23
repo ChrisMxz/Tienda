@@ -9,51 +9,59 @@
 
 		<!-- Input Entidad Federativa -->
 		<div class="field col-6">
-			<p:outputLabel for="@next" value="Entidad Federativa" />
+			<p:outputLabel for="@next" value="Entidad Federativa" indicateRequired="true"/>
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:selectOneMenu
 				value="#{usuarioBean.usuario.direccion.entidadFederativa}"
 				id="entidadFederativa" filter="true" filterMatchMode="startsWith"
-				required="true" requiredMessage="Elige una entidad federativa">
+				required="true" requiredMessage="Elige una opcion">
 				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
 				<f:selectItems value="#{datosFormulario.entidadesFederativas}"
 					var="dato" itemValue="#{dato}" itemLabel="#{dato}" />
 
 			</p:selectOneMenu>
 		</div>
-		
+
 		<!-- Input Municipio -->
 		<div class="field col-6">
-			<p:outputLabel for="@next" value="Municipio/Delegacion" />
+			<p:outputLabel for="@next" value="Municipio/Delegacion" indicateRequired="true"/>
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:autoComplete id="municipio" maxResults="5"
 				value="#{usuarioBean.usuario.direccion.municipio}"
 				completeMethod="#{datosFormulario.completaMunicipios}"
-				scrollHeight="250">
+				scrollHeight="250" required="true" requiredMessage="Ingrese el dato">
 			</p:autoComplete>
 		</div>
 
 		<!-- Input Colonia -->
 		<div class="field col-6">
-			<p:outputLabel for="@next" value="Colonia/Barrio" />
+			<p:outputLabel for="@next" value="Colonia/Barrio" indicateRequired="true"/>
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:autoComplete id="colonia" maxResults="5"
 				value="#{usuarioBean.usuario.direccion.colonia}"
 				completeMethod="#{datosFormulario.completaColonias}"
-				scrollHeight="250">
+				scrollHeight="250" required="true" requiredMessage="Ingrese el dato">
 			</p:autoComplete>
 		</div>
 
 		<!-- Input Codigo Postal -->
 		<div class="field col-6">
-			<p:outputLabel for="@next" value="Codigo Postal" />
+			<p:outputLabel for="@next" value="Codigo Postal" indicateRequired="true"/>
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:autoComplete id="CodigoPostal" maxResults="5"
 				value="#{usuarioBean.usuario.direccion.codigoPostal}"
 				completeMethod="#{datosFormulario.completaCodigosPostales}"
-				scrollHeight="250">
+				scrollHeight="250" required="true" requiredMessage="Ingrese el dato">
 			</p:autoComplete>
 		</div>
 
 		<!-- Input calle -->
 		<div class="field col-6">
-			<p:outputLabel for="@next" value="Calle" indicateRequired="false" />
+			<p:outputLabel for="@next" value="Calle" indicateRequired="true" />
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputText id="calle"
@@ -64,7 +72,7 @@
 		<!-- Input numInterior -->
 		<div class="field col-6">
 			<p:outputLabel for="@next" value="Num. Interior"
-				indicateRequired="false" />
+				indicateRequired="true" />
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputText id="numInterior"
@@ -75,12 +83,23 @@
 		<!-- Input numExterior -->
 		<div class="field col-6">
 			<p:outputLabel for="@next" value="Num. Exterior"
-				indicateRequired="false" />
+				indicateRequired="true" />
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputText id="numExterior"
 				value="#{usuarioBean.usuario.direccion.numExterior}" required="true"
 				requiredMessage="Ingrese el dato" maxlength="100" />
+		</div>
+
+		<div class="field col-12">
+			<p:outputLabel for="@next" value="Descripcion Adicional"
+				indicateRequired="false" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputTextarea rows="5" cols="30" autoResize="false"
+				value="#{usuarioBean.usuario.direccion.descripcion}" maxlength="500"
+				counterTemplate="{0} characters remaining."
+				title="Ingresa descripcion" />
 		</div>
 
 	</p:outputPanel>

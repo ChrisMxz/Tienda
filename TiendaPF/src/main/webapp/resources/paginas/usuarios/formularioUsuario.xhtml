@@ -8,39 +8,26 @@
 
 
 	<div class="card ui-fluid">
-		<h:form id="formulario-usuarios">
-			<p:growl id="msg" showDetail="false" />
 
-			<p:tabView id="tab" >
-				<p:tab title="Datos Personales" id="tab-personal" >
-					<ui:include
-						src="/resources/paginas/usuarios/datosPersonalesForm.xhtml" />
-				</p:tab>
-				<p:tab title="Direccion">
-					<ui:include src="/resources/paginas/usuarios/direccionesForm.xhtml" />
-				</p:tab>
-				<p:tab title="Contacto">
-					<ui:include src="/resources/paginas/usuarios/contactosForm.xhtml" />
-				</p:tab>
-			</p:tabView>
+		<p:growl id="msg" showDetail="false"  />
 
-			<!-- Input Boton agregar-->
-			<div class="col-12">
-				<div class="grid">
-					<div class="col-12 md:col-6"></div>
-					<div class="col-12 md:col-6">
-						<p:commandButton id="btn-agregar" icon="pi pi-save"
-							value="Guardar" update="tab"
-							actionListener="#{usuarioBean.guardar}"
-							styleClass="ui-button-success rounded-button">
-						</p:commandButton>
-						<h:inputHidden value="#{usuarioBean.usuario.idUsuario}" />
-					</div>
-				</div>
-			</div>
+		<p:tabView id="tab">
+			<p:tab title="Datos Personales" id="personal">
+				<ui:include
+					src="/resources/paginas/usuarios/datosPersonalesForm.xhtml" />
+			</p:tab>
+			<p:tab title="Direccion">
+				<ui:include src="/resources/paginas/usuarios/direccionesForm.xhtml" />
+			</p:tab>
+			<p:tab title="Contacto">
+				<ui:include src="/resources/paginas/usuarios/contactosForm.xhtml" />
+			</p:tab>
+			<p:tab title="Credenciales">
+				<ui:include src="/resources/paginas/usuarios/credencialesForm.xhtml" />
+			</p:tab>
 
-		</h:form>
+		</p:tabView>
+
 
 	</div>
-
 </ui:component>

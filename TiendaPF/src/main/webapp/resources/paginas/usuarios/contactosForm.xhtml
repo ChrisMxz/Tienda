@@ -9,12 +9,12 @@
 		<!-- Input Telefono Movil -->
 		<div class="field col-6">
 			<p:outputLabel for="@next" value="Telefono Movil"
-				indicateRequired="false" />
+				indicateRequired="true" />
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputMask id="telefonoMovil"
 				value="#{usuarioBean.usuario.contacto.telefonoMovil}"
-				requiredMessage="Ingrese el dato" />
+				required="true" requiredMessage="Ingrese el dato" />
 		</div>
 
 		<!-- Input Telefono Local -->
@@ -24,13 +24,12 @@
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputMask id="telefonoLocal"
-				value="#{usuarioBean.usuario.contacto.telefonoLocal}"
-				requiredMessage="Ingrese el dato" />
+				value="#{usuarioBean.usuario.contacto.telefonoLocal}" />
 		</div>
 
 		<!-- Input Correo  -->
 		<div class="field col-6">
-			<p:outputLabel for="@next" value="Correo" indicateRequired="false" />
+			<p:outputLabel for="@next" value="Correo" indicateRequired="true" />
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputText id="correo"
@@ -45,8 +44,7 @@
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputText id="correo2"
-				value="#{usuarioBean.usuario.contacto.email2}" required="true"
-				requiredMessage="Ingrese el dato" maxlength="200" />
+				value="#{usuarioBean.usuario.contacto.email2}" />
 		</div>
 
 	</p:outputPanel>

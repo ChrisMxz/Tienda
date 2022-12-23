@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:outputPanel class="formgrid grid" id="credenciales-panel">
+
+		<!-- Input Usuario -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Usuario" indicateRequired="true" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputText id="usuario" value="#{usuarioBean.usuario.username}"
+				required="true" requiredMessage="Ingrese el dato" maxlength="20" />
+		</div>
+
+		<!-- Input Contraseña -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Contraseña" indicateRequired="true" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputText id="password" value="#{usuarioBean.usuario.password}"
+				required="true" requiredMessage="Ingrese el dato" maxlength="20" />
+		</div>
+
+		<!-- Input Contraseña confirmacion -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Confirmar Contraseña"
+				indicateRequired="true" />
+			<p:message for="@next" display="text"
+				styleClass="text-xs pl-0 py-1 border-none" />
+			<p:inputText id="passwordConfirma"
+				value="#{usuarioBean.usuario.password}" required="true"
+				requiredMessage="Ingrese el dato" maxlength="20" />
+		</div>
+
+	</p:outputPanel>
+
+</ui:composition>

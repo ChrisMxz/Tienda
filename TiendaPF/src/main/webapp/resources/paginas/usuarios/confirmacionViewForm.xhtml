@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+	<p:outputLabel id="confirmacion-panel">
+		<p:autoUpdate></p:autoUpdate>
+		<h:panelGrid id="confirmation" columns="3"
+			columnClasses="grid,grid,grid">
+			<h:panelGrid columns="2" columnClasses="label, value">
+				<h:outputText value="Nombre: " />
+				<h:outputText value="#{usuarioBean.usuario.nombre}"
+					styleClass="outputLabel" />
+
+				<h:outputText value="Apellido Paterno: " />
+				<h:outputText value="#{usuarioBean.usuario.appaterno}"
+					styleClass="outputLabel" />
+
+				<h:outputText value="Apellido Materno: " />
+				<h:outputText value="#{usuarioBean.usuario.apmaterno}"
+					styleClass="outputLabel" />
+			</h:panelGrid>
+		</h:panelGrid>
+	</p:outputLabel>
+</ui:composition>

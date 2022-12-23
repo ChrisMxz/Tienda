@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.validation.Valid;
 
 import org.primefaces.PrimeFaces;
 
@@ -21,7 +22,8 @@ public class UsuarioBean implements Serializable {
 
 	// variables
 	private static final long serialVersionUID = 1L;
-
+	
+	@Valid
 	private Usuario usuario;
 	private List<Usuario> listaUsuarios;
 	private ServicioUsuario servicioUsuario;
@@ -36,20 +38,20 @@ public class UsuarioBean implements Serializable {
 	public void nuevo() {
 		usuario = new Usuario();
 	}
-	
+
 	public void listar() {
-		//lista segun lo establecido
+		// lista segun lo establecido
 		listarTodo();
 	}
-	
+
 	public void listarTodo() {
-		listaUsuarios=servicioUsuario.listarTodo();
+		listaUsuarios = servicioUsuario.listarTodo();
 	}
-	
+
 	public void refrescar() {
 		listar();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Refrescado"));
-		//textoBuscar=null;
+		// textoBuscar=null;
 		PrimeFaces.current().ajax().update(":usuarios");
 	}
 
@@ -71,6 +73,11 @@ public class UsuarioBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
 		PrimeFaces.current().ajax().update(":usuarios:messages");
 		listar();
+	}
+
+	public void valida() {
+
+		
 	}
 
 	// getters and setters

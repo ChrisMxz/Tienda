@@ -37,6 +37,11 @@ public class DatosFormulario implements Serializable {
 
 	@PostConstruct
 	public void inicia() {
+		cargatTodo();
+	}
+	
+	
+	public void cargatTodo() {
 		System.out.println("--Inicia cargar de datos necesarios--");
 
 		entidadesFederativas = new ArrayList<>();

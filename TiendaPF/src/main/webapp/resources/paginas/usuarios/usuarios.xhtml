@@ -47,6 +47,7 @@
 				<!-- tabla de usuarios -->
 				<p:dataTable id="dt-usuarios" widgetVar="dtUsuarios" var="dato"
 					value="#{usuarioBean.listaUsuarios}" rowKey="#{dato.idUsuario}"
+					selection="#{usuarioBean.usuario}" selectionMode="single"
 					paginator="true" reflow="true" rows="10" paginatorPosition="bottom"
 					rowsPerPageTemplate="5,10,15,20"
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
@@ -83,7 +84,10 @@
 					<p:menuitem id="opc-ver-usuario" value="Ver" icon="pi pi-eye">
 					</p:menuitem>
 					<p:menuitem id="opc-editar-usuario" value="Editar"
-						icon="pi pi-pencil">
+						icon="pi pi-pencil" update=":formulario-usuarios"
+						oncomplete="PF('dialogoForm').show()">
+						<p:resetInput target=":formulario-usuarios" />
+
 					</p:menuitem>
 					<p:menuitem id="opc-eliminar-usuario" value="Eliminar">
 					</p:menuitem>
