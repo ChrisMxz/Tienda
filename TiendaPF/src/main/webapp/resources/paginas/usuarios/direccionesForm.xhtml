@@ -20,6 +20,16 @@
 
 			</p:selectOneMenu>
 		</div>
+		
+		<!-- Input Municipio -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Municipio/Delegacion" />
+			<p:autoComplete id="municipio" maxResults="5"
+				value="#{usuarioBean.usuario.direccion.municipio}"
+				completeMethod="#{datosFormulario.completaMunicipios}"
+				scrollHeight="250">
+			</p:autoComplete>
+		</div>
 
 		<!-- Input Colonia -->
 		<div class="field col-6">

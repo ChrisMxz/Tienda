@@ -19,22 +19,26 @@ public class Direccion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_direccion")
 	private Long id_direccion;
-	
+
 	@Size(max = 50)
 	private String pais;
-	
+
 	@NotNull
 	@Size(max = 50)
 	private String entidadFederativa;
-	
+
+	@NotNull
+	@Size(max = 50)
+	private String municipio;
+
 	@NotNull
 	@Size(max = 50)
 	private String colonia;
-	
+
 	@NotNull
 	@Size(max = 5)
 	private String codigoPostal;
-	
+
 	@NotNull
 	@Size(max = 100)
 	private String calle;
@@ -53,12 +57,13 @@ public class Direccion {
 
 	}
 
-	public Direccion(Long id_direccion, String pais, String entidadFederativa, String colonia, String codigoPostal,
-			String calle, String numInterior, String numExterior, String descripcion) {
-		super();
+	public Direccion(Long id_direccion, String pais, String entidadFederativa, String municipio, String colonia,
+			String codigoPostal, String calle, String numInterior, String numExterior, String descripcion) {
+
 		this.id_direccion = id_direccion;
 		this.pais = pais;
 		this.entidadFederativa = entidadFederativa;
+		this.municipio = municipio;
 		this.colonia = colonia;
 		this.codigoPostal = codigoPostal;
 		this.calle = calle;
@@ -141,6 +146,14 @@ public class Direccion {
 		this.id_direccion = id_direccion;
 	}
 
+	public String getMunicipio() {
+		return municipio;
+	}
+
+	public void setMunicipio(String municipio) {
+		this.municipio = municipio;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id_direccion);
@@ -161,8 +174,9 @@ public class Direccion {
 	@Override
 	public String toString() {
 		return "Direccion [id_direccion=" + id_direccion + ", pais=" + pais + ", entidadFederativa=" + entidadFederativa
-				+ ", colonia=" + colonia + ", codigoPostal=" + codigoPostal + ", calle=" + calle + ", numInterior="
-				+ numInterior + ", numExterior=" + numExterior + ", descripcion=" + descripcion + "]";
+				+ ", municipio=" + municipio + ", colonia=" + colonia + ", codigoPostal=" + codigoPostal + ", calle="
+				+ calle + ", numInterior=" + numInterior + ", numExterior=" + numExterior + ", descripcion="
+				+ descripcion + "]";
 	}
 
 }

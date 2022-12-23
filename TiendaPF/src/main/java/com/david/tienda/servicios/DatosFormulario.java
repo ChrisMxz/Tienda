@@ -22,8 +22,8 @@ import javax.faces.bean.ManagedBean;
 public class DatosFormulario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected List<String> paises;
 	protected List<String> entidadesFederativas;
+	protected List<String> municipios;
 	protected List<String> colonias;
 	protected List<String> codigosPostales;
 	protected List<String> formasdePago;
@@ -37,9 +37,10 @@ public class DatosFormulario implements Serializable {
 
 	@PostConstruct
 	public void inicia() {
-		System.out.println("Inicia cargar de datos necesarios");
-		// paises = new ArrayList<>();
+		System.out.println("--Inicia cargar de datos necesarios--");
+
 		entidadesFederativas = new ArrayList<>();
+		municipios = new ArrayList<>();
 		colonias = new ArrayList<>();
 		codigosPostales = new ArrayList<>();
 
@@ -53,10 +54,10 @@ public class DatosFormulario implements Serializable {
 		impuesto = new ArrayList<>();
 
 		// cangando los datos
-		// paises = cargarDatos(11, 5, 0, false, 1, 0, "Paises");
 		entidadesFederativas = cargarDatos(25, 5, 37, false, 2, 0, "Estados");
-		colonias = cargarDatos(22, 5, 0, false, 2, 0, "Colonias 1");
-		codigosPostales = cargarDatos(22, 5, 0, false, 1, 0, "Codigos postales 1");
+		municipios = cargarDatos(27, 5, 0, false, 2, 0, "Municipios");
+		cargaColonias();
+		cargaCodigosPostales();
 
 		formasdePago = cargarDatos(0, 6, 28, true, 0, 1, "Formas de pago");
 		tiposdeComprobante = cargarDatos(2, 5, 0, true, 0, 1, "Tipo comprobante");
@@ -71,25 +72,42 @@ public class DatosFormulario implements Serializable {
 
 	@PreDestroy
 	public void desecha() {
-		System.out.println("ELIMINANDO los datos del formulario");
-		paises.removeAll(paises);
+		System.out.println("--ELIMINANDO los datos necesarios--");
 		entidadesFederativas.removeAll(entidadesFederativas);
+		municipios.removeAll(municipios);
 		colonias.removeAll(colonias);
+		codigosPostales.removeAll(codigosPostales);
+		formasdePago.removeAll(formasdePago);
+		tiposdeComprobante.removeAll(tiposdeComprobante);
+		metodosdePago.removeAll(metodosdePago);
+		regimenFiscal.removeAll(regimenFiscal);
+		usoCFDI.removeAll(usoCFDI);
+		clavesdeProducto.removeAll(clavesdeProducto);
+		clavesdeUnidad.removeAll(clavesdeUnidad);
+		impuesto.removeAll(impuesto);
 	}
 
 	public void cargaColonias() {
 		List<String> lista = new ArrayList<>();
 
 		colonias = cargarDatos(22, 5, 0, false, 2, 0, "Colonias 1");
-		lista.removeAll(lista);
-		System.out.println(lista);
 		colonias.addAll(lista = cargarDatos(23, 5, 0, false, 2, 0, "Colonias 2"));
 		lista.removeAll(lista);
-		System.out.println(lista);
 		colonias.addAll(lista = cargarDatos(24, 5, 0, false, 2, 0, "Colonias 3"));
-		
-		System.out.println(colonias.size());
+		lista.removeAll(lista);
+		System.out.println("Cantidad: " + colonias.size());
 
+	}
+
+	public void cargaCodigosPostales() {
+		List<String> lista = new ArrayList<>();
+
+		codigosPostales = cargarDatos(22, 5, 0, false, 1, 0, "Codigos postales 1");
+		codigosPostales.addAll(lista = cargarDatos(23, 5, 0, false, 1, 0, "Codigos postales 2"));
+		lista.removeAll(lista);
+		codigosPostales.addAll(lista = cargarDatos(24, 5, 0, false, 1, 0, "Codigos postales 3"));
+		lista.removeAll(lista);
+		System.out.println("Cantidad: " + codigosPostales.size());
 	}
 
 	private List<String> cargarDatos(int pagina, int inicia, int fin, boolean compuesto, int col, int col2,
@@ -161,6 +179,12 @@ public class DatosFormulario implements Serializable {
 	public List<String> completaEstados(String texto) {
 		String textoLowerCase = texto.toLowerCase();
 		return this.entidadesFederativas.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+				.collect(Collectors.toList());
+	}
+	
+	public List<String> completaMunicipios(String texto) {
+		String textoLowerCase = texto.toLowerCase();
+		return this.municipios.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 
@@ -278,6 +302,46 @@ public class DatosFormulario implements Serializable {
 
 	public void setImpuesto(List<String> impuesto) {
 		this.impuesto = impuesto;
+	}
+
+	public List<String> getMunicipios() {
+		return municipios;
+	}
+
+	public void setMunicipios(List<String> municipios) {
+		this.municipios = municipios;
+	}
+
+	public List<String> getColonias() {
+		return colonias;
+	}
+
+	public void setColonias(List<String> colonias) {
+		this.colonias = colonias;
+	}
+
+	public List<String> getCodigosPostales() {
+		return codigosPostales;
+	}
+
+	public void setCodigosPostales(List<String> codigosPostales) {
+		this.codigosPostales = codigosPostales;
+	}
+
+	public List<String> getClavesdeProducto() {
+		return clavesdeProducto;
+	}
+
+	public void setClavesdeProducto(List<String> clavesdeProducto) {
+		this.clavesdeProducto = clavesdeProducto;
+	}
+
+	public List<String> getClavesdeUnidad() {
+		return clavesdeUnidad;
+	}
+
+	public void setClavesdeUnidad(List<String> clavesdeUnidad) {
+		this.clavesdeUnidad = clavesdeUnidad;
 	}
 
 }

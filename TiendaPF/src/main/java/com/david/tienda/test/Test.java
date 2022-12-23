@@ -8,7 +8,10 @@ public class Test {
 		DatosFormulario x= new DatosFormulario();
 		//x.inicia();
 		
-		x.cargaColonias();
+		//x.cargaColonias();
+		//x.cargaCodigosPostales();
+		x.inicia();
+		//System.out.println(x.getMunicipios().size());
 		
 		//Formas de pago
 		//System.out.println("Formas de pago: ");
