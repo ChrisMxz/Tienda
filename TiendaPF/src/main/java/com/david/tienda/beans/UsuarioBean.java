@@ -29,11 +29,12 @@ public class UsuarioBean implements Serializable {
 	private List<Usuario> listaUsuarios;
 	private ServicioUsuario servicioUsuario;
 	private boolean bandera;
+
 	// metodos
 	@PostConstruct
 	public void inicia() {
 		servicioUsuario = new ServicioUsuarioImpl();
-		bandera=false;
+		bandera = false;
 		listar();
 	}
 
@@ -87,9 +88,10 @@ public class UsuarioBean implements Serializable {
 		Optional<Usuario> u = java.util.Optional.empty();
 		u = Optional.ofNullable(servicioUsuario.porUsername(usuario.getUsername()));
 
-		if (u.isPresent()) {
+		if (u.isPresent() && (usuario.getIdUsuario() != u.get().getIdUsuario())) {
 			bandera = true;
-		}else {
+
+		} else {
 			bandera = false;
 		}
 
@@ -119,6 +121,6 @@ public class UsuarioBean implements Serializable {
 
 	public void setBandera(boolean bandera) {
 		this.bandera = bandera;
-	}	
+	}
 
 }
