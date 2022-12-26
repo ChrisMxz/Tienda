@@ -37,11 +37,10 @@ public class DatosFormulario implements Serializable {
 
 	@PostConstruct
 	public void inicia() {
-		cargatTodo();
+		cargaTodo();
 	}
-	
-	
-	public void cargatTodo() {
+
+	public void cargaTodo() {
 		System.out.println("--Inicia cargar de datos necesarios--");
 
 		entidadesFederativas = new ArrayList<>();
@@ -73,6 +72,8 @@ public class DatosFormulario implements Serializable {
 		clavesdeUnidad = cargarDatos(14, 6, 0, true, 0, 1, "Claves de unidad");
 		impuesto = cargarDatos(16, 5, 0, true, 0, 1, "Impuestos");
 
+		System.out.println("--Datos Cargados--");
+
 	}
 
 	@PreDestroy
@@ -93,26 +94,15 @@ public class DatosFormulario implements Serializable {
 	}
 
 	public void cargaColonias() {
-		List<String> lista = new ArrayList<>();
-
 		colonias = cargarDatos(22, 5, 0, false, 2, 0, "Colonias 1");
-		colonias.addAll(lista = cargarDatos(23, 5, 0, false, 2, 0, "Colonias 2"));
-		lista.removeAll(lista);
-		colonias.addAll(lista = cargarDatos(24, 5, 0, false, 2, 0, "Colonias 3"));
-		lista.removeAll(lista);
-		System.out.println("Cantidad: " + colonias.size());
-
+		colonias.addAll(cargarDatos(23, 5, 0, false, 2, 0, "Colonias 2"));
+		colonias.addAll(cargarDatos(24, 5, 0, false, 2, 0, "Colonias 3"));
 	}
 
 	public void cargaCodigosPostales() {
-		List<String> lista = new ArrayList<>();
-
 		codigosPostales = cargarDatos(22, 5, 0, false, 1, 0, "Codigos postales 1");
-		codigosPostales.addAll(lista = cargarDatos(23, 5, 0, false, 1, 0, "Codigos postales 2"));
-		lista.removeAll(lista);
-		codigosPostales.addAll(lista = cargarDatos(24, 5, 0, false, 1, 0, "Codigos postales 3"));
-		lista.removeAll(lista);
-		System.out.println("Cantidad: " + codigosPostales.size());
+		codigosPostales.addAll(cargarDatos(23, 5, 0, false, 1, 0, "Codigos postales 2"));
+		codigosPostales.addAll(cargarDatos(24, 5, 0, false, 1, 0, "Codigos postales 3"));
 	}
 
 	private List<String> cargarDatos(int pagina, int inicia, int fin, boolean compuesto, int col, int col2,
@@ -154,6 +144,8 @@ public class DatosFormulario implements Serializable {
 
 			System.out.println("Cargados: " + msg);
 
+			file.close();
+
 		} catch (Exception e) {
 			System.err.println("Error al cargar " + msg + " : " + e);
 			e.getMessage();
@@ -186,7 +178,7 @@ public class DatosFormulario implements Serializable {
 		return this.entidadesFederativas.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
 				.collect(Collectors.toList());
 	}
-	
+
 	public List<String> completaMunicipios(String texto) {
 		String textoLowerCase = texto.toLowerCase();
 		return this.municipios.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
