@@ -19,7 +19,7 @@
 				<p:ajax event="keyup" listener="#{usuarioBean.validaUsuario()}"
 					update="msg-usuario" />
 			</p:inputText>
-			
+
 			<p:outputPanel id="msg-usuario" styleClass="p-2">
 				<p:staticMessage severity="warn" summary=""
 					detail="Usuario no disponible" styleClass="text-xs"
@@ -36,12 +36,12 @@
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:password id="pwd1" value="#{usuarioBean.usuario.password}"
-				label="Password 1" match="pwd2" feedback="true" inline="false"
+				label="Password 1" match="pwd2"
+				validatorMessage="La contraseña no concuerda" feedback="true"
 				toggleMask="true" redisplay="true"
 				promptLabel="Ingrese una contraseña" goodLabel="Bien"
 				strongLabel="Fuerte" weakLabel="Debil" maxlength="20"
-				required="true" validatorMessage="La contraseña no concuerda"
-				requiredMessage="Escriba la contraseña" />
+				required="true" requiredMessage="Escriba la contraseña" />
 		</div>
 
 		<!-- Input Contraseña confirmacion -->
@@ -51,8 +51,7 @@
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:password id="pwd2" value="#{usuarioBean.usuario.password}"
-				label="Password 2" required="true" maxlength="20" redisplay="true"
-				requiredMessage="Escriba la contraseña" />
+				redisplay="true" label="Password 2" required="true" maxlength="20" />
 		</div>
 
 
