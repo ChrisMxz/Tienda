@@ -2,6 +2,7 @@ package com.david.tienda.beans;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -22,16 +23,17 @@ public class UsuarioBean implements Serializable {
 
 	// variables
 	private static final long serialVersionUID = 1L;
-	
+
 	@Valid
 	private Usuario usuario;
 	private List<Usuario> listaUsuarios;
 	private ServicioUsuario servicioUsuario;
-
+	private boolean bandera;
 	// metodos
 	@PostConstruct
 	public void inicia() {
 		servicioUsuario = new ServicioUsuarioImpl();
+		bandera=false;
 		listar();
 	}
 
@@ -56,16 +58,21 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public void guardar() {
-		String msg = "Guardado";
-		if (usuario.getIdUsuario() != null)
-			msg = "Actualizado";
+		if (!bandera) {
+			String msg = "Guardado";
+			if (usuario.getIdUsuario() != null)
+				msg = "Actualizado";
 
-		servicioUsuario.guardar(usuario);
+			servicioUsuario.guardar(usuario);
 
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":formulario-usuarios:msg");
-		PrimeFaces.current().executeScript("PF('dialogoForm').hide()");
-		listar();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+			PrimeFaces.current().ajax().update(":formulario-usuarios:msg");
+			PrimeFaces.current().executeScript("PF('dialogoForm').hide()");
+			listar();
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ya esta registrado el usuario"));
+			PrimeFaces.current().ajax().update(":usuarios");
+		}
 	}
 
 	public void eliminar() {
@@ -75,9 +82,17 @@ public class UsuarioBean implements Serializable {
 		listar();
 	}
 
-	public void valida() {
+	public void validaUsuario() {
 
-		
+		Optional<Usuario> u = java.util.Optional.empty();
+		u = Optional.ofNullable(servicioUsuario.porUsername(usuario.getUsername()));
+
+		if (u.isPresent()) {
+			bandera = true;
+		}else {
+			bandera = false;
+		}
+
 	}
 
 	// getters and setters
@@ -97,5 +112,13 @@ public class UsuarioBean implements Serializable {
 	public void setListaUsuarios(List<Usuario> listaUsuarios) {
 		this.listaUsuarios = listaUsuarios;
 	}
+
+	public boolean isBandera() {
+		return bandera;
+	}
+
+	public void setBandera(boolean bandera) {
+		this.bandera = bandera;
+	}	
 
 }

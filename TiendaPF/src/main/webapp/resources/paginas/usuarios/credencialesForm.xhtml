@@ -10,10 +10,24 @@
 		<!-- Input Usuario -->
 		<div class="field col-6">
 			<p:outputLabel for="@next" value="Usuario" indicateRequired="true" />
-			<p:message for="@next" display="text"
+			<p:message for="usuario" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
+
 			<p:inputText id="usuario" value="#{usuarioBean.usuario.username}"
-				required="true" requiredMessage="Ingrese el dato" maxlength="20" />
+				required="true" requiredMessage="Ingrese el dato" maxlength="20">
+
+				<p:ajax event="keyup" listener="#{usuarioBean.validaUsuario()}"
+					update="msg-usuario" />
+			</p:inputText>
+			
+			<p:outputPanel id="msg-usuario" styleClass="p-2">
+				<p:staticMessage severity="warn" summary=""
+					detail="Usuario no disponible" styleClass="text-xs"
+					rendered="#{usuarioBean.bandera}" />
+			</p:outputPanel>
+
+
+
 		</div>
 
 		<!-- Input Contraseña -->
@@ -26,7 +40,8 @@
 				toggleMask="true" redisplay="true"
 				promptLabel="Ingrese una contraseña" goodLabel="Bien"
 				strongLabel="Fuerte" weakLabel="Debil" maxlength="20"
-				required="true" validatorMessage="La contraseña no concuerda" />
+				required="true" validatorMessage="La contraseña no concuerda"
+				requiredMessage="Escriba la contraseña" />
 		</div>
 
 		<!-- Input Contraseña confirmacion -->
@@ -36,8 +51,13 @@
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:password id="pwd2" value="#{usuarioBean.usuario.password}"
-				label="Password 2" required="true" maxlength="20" redisplay="true" />
+				label="Password 2" required="true" maxlength="20" redisplay="true"
+				requiredMessage="Escriba la contraseña" />
 		</div>
+
+
+
+
 
 	</p:outputPanel>
 
