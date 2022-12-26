@@ -21,8 +21,12 @@
 			<p:outputLabel for="@next" value="Contraseña" indicateRequired="true" />
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
-			<p:inputText id="password" value="#{usuarioBean.usuario.password}"
-				required="true" requiredMessage="Ingrese el dato" maxlength="20" />
+			<p:password id="pwd1" value="#{usuarioBean.usuario.password}"
+				label="Password 1" match="pwd2" feedback="true" inline="false"
+				toggleMask="true" redisplay="true"
+				promptLabel="Ingrese una contraseña" goodLabel="Bien"
+				strongLabel="Fuerte" weakLabel="Debil" maxlength="20"
+				required="true" validatorMessage="La contraseña no concuerda" />
 		</div>
 
 		<!-- Input Contraseña confirmacion -->
@@ -31,9 +35,8 @@
 				indicateRequired="true" />
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
-			<p:inputText id="passwordConfirma"
-				value="#{usuarioBean.usuario.password}" required="true"
-				requiredMessage="Ingrese el dato" maxlength="20" />
+			<p:password id="pwd2" value="#{usuarioBean.usuario.password}"
+				label="Password 2" required="true" maxlength="20" redisplay="true" />
 		</div>
 
 	</p:outputPanel>
