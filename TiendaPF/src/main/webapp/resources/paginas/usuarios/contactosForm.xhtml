@@ -14,7 +14,8 @@
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputMask id="telefonoMovil"
 				value="#{usuarioBean.usuario.contacto.telefonoMovil}"
-				required="true" requiredMessage="Ingrese el dato" />
+				mask="(99) 9999-9999" validateMask="true" required="true"
+				requiredMessage="Ingrese el dato" />
 		</div>
 
 		<!-- Input Telefono Local -->
@@ -24,7 +25,8 @@
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputMask id="telefonoLocal"
-				value="#{usuarioBean.usuario.contacto.telefonoLocal}" />
+				value="#{usuarioBean.usuario.contacto.telefonoLocal}"
+				mask="(99) 9999-9999" validateMask="true" />
 		</div>
 
 		<!-- Input Correo  -->

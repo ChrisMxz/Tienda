@@ -26,8 +26,18 @@
 					rendered="#{usuarioBean.bandera}" />
 			</p:outputPanel>
 
+		</div>
 
-
+		<!-- Input Nivel -->
+		<div class="field col-6">
+			<p:outputLabel for="@next" value="Nivel" indicateRequired="true" />
+			<p:selectOneMenu value="#{usuarioBean.usuario.nivel}" id="nivel"
+				rendered="true" required="true" requiredMessage="Elige un nivel">
+				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+				<f:selectItem itemLabel="Cliente " itemValue="1" />
+				<f:selectItem itemLabel="Empleado " itemValue="2" />
+				<f:selectItem itemLabel="Administrador " itemValue="3" />
+			</p:selectOneMenu>
 		</div>
 
 		<!-- Input Contraseña -->
@@ -51,7 +61,8 @@
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:password id="pwd2" value="#{usuarioBean.usuario.password}"
-				redisplay="true" label="Password 2" required="true" maxlength="20" />
+				redisplay="true" label="Password 2" required="true" maxlength="20"
+				requiredMessage="Confirme" />
 		</div>
 
 
