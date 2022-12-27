@@ -89,9 +89,22 @@
 						<p:resetInput target=":formulario-usuarios" />
 
 					</p:menuitem>
-					<p:menuitem id="opc-eliminar-usuario" value="Eliminar">
+					<p:menuitem value="Eliminar" update="dt-usuarios"
+						icon="pi pi-trash" actionListener="#{usuarioBean.eliminar}">
+						<p:confirm header="Confirmacion"
+							message="¿Seguro que desea eliminar al Alumno?"
+							icon="pi pi-info-circle" />
 					</p:menuitem>
 				</p:contextMenu>
+
+				<!-- Dialogo de confirmacion para eliminar -->
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+					responsive="true" width="350">
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-flat" />
+					<p:commandButton value="Si" type="button"
+						styleClass="ui-confirmdialog-yes" />
+				</p:confirmDialog>
 			</h:form>
 		</div>
 	</ui:define>
