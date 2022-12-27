@@ -11,25 +11,25 @@
 
 				<p:menuitem value="Inicio" outcome="/index.xhtml" icon="pi pi-home">
 				</p:menuitem>
-				<p:menuitem value="Usuarios" outcome="/resources/paginas/usuarios/usuarios.xhtml" icon="pi pi-user">
+				<p:menuitem value="Usuarios"
+					outcome="/resources/paginas/usuarios/usuarios.xhtml"
+					icon="pi pi-user">
 				</p:menuitem>
 				<p:menuitem value="Pedidos" icon="pi pi-briefcase">
 				</p:menuitem>
 
 				<f:facet name="options">
-					<p:avatar id="avatar" styleClass="mr-2" shape="circle" label="david">
-						<p:graphicImage
-							value="https://cdn4.iconfinder.com/data/icons/diversity-v2-0-volume-03/64/superhero-spiderman-comics-512.png" />
-					</p:avatar>
+
+					<p:chip id="avatar" label="${username}" icon="pi pi-user"
+						image="https://cdn4.iconfinder.com/data/icons/diversity-v2-0-volume-03/64/superhero-spiderman-comics-512.png"
+						styleClass="mr-2" />
 
 					<p:contextMenu for="avatar" event="click">
-						<p:menuitem value="Perfil" rendered="#{bandera}" icon="pi pi-user">
-
-						</p:menuitem>
+						<p:menuitem value="Perfil" rendered="${bandera}" icon="pi pi-user" />
 						<p:menuitem value="#{msg['texto.salir']}" icon="pi pi-sign-out"
-							rendered="#{bandera}" action="#{loginBean.logout}" />
+							rendered="${bandera}" action="#{loginBean.logout}" />
 						<p:menuitem value="#{msg['texto.login']}" icon="pi pi-sign-in"
-							rendered="#{!bandera}" onclick="PF('dialogoLogin').show()" />
+							rendered="${!bandera}" onclick="PF('dialogoLogin').show()" />
 					</p:contextMenu>
 				</f:facet>
 

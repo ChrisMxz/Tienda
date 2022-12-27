@@ -8,10 +8,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import com.david.tienda.entidades.Usuario;
 import com.david.tienda.servicios.ServicioUsuario;
 import com.david.tienda.servicios.ServicioUsuarioImpl;
+import com.david.tienda.util.SessionUtils;
 
 @ManagedBean
 @ViewScoped
@@ -38,6 +40,9 @@ public class LoginBean implements Serializable {
 				SesionUsuario sesion = new SesionUsuario();
 				sesion.setUsuario(u.get());
 
+				HttpSession session = (HttpSession) SessionUtils.getRequest().getSession();
+				session.setAttribute("username", user);
+				session.setAttribute("bandera", true);
 				System.out.println(">Sesion: " + sesion.getUsuario());
 
 				return "/index.xhtml?faces-redirect=true";
@@ -55,7 +60,17 @@ public class LoginBean implements Serializable {
 		return null;
 	}
 
-	public void logout() {
+	public String logout() {
+		System.out.println(">logout");
+		Optional<String> username = SessionUtils.getUsername(SessionUtils.getRequest());
+		if (username.isPresent()) {
+			HttpSession session = SessionUtils.getRequest().getSession();
+			session.removeAttribute("username");
+			session.removeAttribute("bandera");
+
+			session.invalidate();
+		}
+		return "/index.xhtml?faces-redirect=true";
 	}
 
 	// getters and setters
