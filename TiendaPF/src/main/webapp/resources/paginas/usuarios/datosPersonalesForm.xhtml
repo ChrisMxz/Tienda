@@ -14,9 +14,19 @@
 			<p:message for="@next" display="text"
 				styleClass="text-xs pl-0 py-1 border-none" />
 			<p:inputText id="rfc" value="#{usuarioBean.usuario.rfc}"
-				maxlength="13" />
+				maxlength="13" label="RFC" requiredMessage="s">
+				<p:ajax event="keyup" listener="#{usuarioBean.validaRFC}"
+					update="msg-rfc" />
+			</p:inputText>
 		</div>
-		<div class="field col-6"></div>
+		<div class="field col-6">
+			<BR />
+			<p:outputPanel id="msg-rfc" styleClass="py-2">
+				<p:staticMessage severity="warn" summary="" detail="Verifica tu rfc"
+					styleClass="text-xs" rendered="#{usuarioBean.bandera}"
+					style="width: 100%" />
+			</p:outputPanel>
+		</div>
 
 		<!-- Input Nombre -->
 		<div class="field col-6">

@@ -71,7 +71,7 @@ public class UsuarioBean implements Serializable {
 			PrimeFaces.current().executeScript("PF('dialogoForm').hide()");
 			listar();
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ya esta registrado el usuario"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Verifica tus datos"));
 			PrimeFaces.current().ajax().update(":usuarios");
 		}
 	}
@@ -87,6 +87,20 @@ public class UsuarioBean implements Serializable {
 
 		Optional<Usuario> u = java.util.Optional.empty();
 		u = Optional.ofNullable(servicioUsuario.porUsername(usuario.getUsername()));
+
+		if (u.isPresent() && (usuario.getIdUsuario() != u.get().getIdUsuario())) {
+			bandera = true;
+
+		} else {
+			bandera = false;
+		}
+
+	}
+
+	public void validaRFC() {
+
+		Optional<Usuario> u = java.util.Optional.empty();
+		u = Optional.ofNullable(servicioUsuario.porRFC(usuario.getRfc()));
 
 		if (u.isPresent() && (usuario.getIdUsuario() != u.get().getIdUsuario())) {
 			bandera = true;

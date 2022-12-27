@@ -1,12 +1,15 @@
 package com.david.tienda.servicios;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 import com.david.tienda.entidades.Usuario;
 import com.david.tienda.util.ConexionBD;
 
-public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario {
+public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public List<Usuario> listarTodo() {
@@ -127,6 +130,20 @@ public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario {
 	public Optional<Usuario> porId(Usuario t) {
 		em = getEntityManager();
 		return Optional.ofNullable(em.find(Usuario.class, t.getIdUsuario()));
+	}
+
+	@Override
+	public Usuario porRFC(String rfc) {
+		Usuario s = null;
+		String consulta = "SELECT u FROM Usuario u where u.rfc=: rfc";
+		em = getEntityManager();
+
+		try {
+			s = em.createQuery(consulta, Usuario.class).setParameter("rfc", rfc).getSingleResult();
+		} catch (Exception e) {
+
+		}
+		return s;
 	}
 
 }
