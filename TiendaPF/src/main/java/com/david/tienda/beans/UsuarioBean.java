@@ -92,6 +92,13 @@ public class UsuarioBean implements Serializable {
 		listaUsuarios = servicioUsuario.listarPor(filtro, textoBuscar, limite);
 	}
 
+	public void estableceLimite() {
+		String msg = "Limite establecido " + limite + " registros ";
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+		PrimeFaces.current().ajax().update(":usuarios:messages", ":opciones:menu-opciones");
+		buscar();
+	}
+
 	public void validaUsuario() {
 
 		Optional<Usuario> u = java.util.Optional.empty();

@@ -31,6 +31,29 @@
 						icon="pi pi-refresh" actionListener="#{usuarioBean.refrescar}">
 					</p:menuitem>
 
+					<p:submenu label="Ver #{usuarioBean.limite}" icon="pi pi-eye">
+						<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
+							icon="pi pi-database" action="#{usuarioBean.estableceLimite}" >
+							<f:setPropertyActionListener value="10"
+								target="#{usuarioBean.limite}" />
+						</p:menuitem>
+						<p:menuitem value="50 #{msg['texto.registros']}"
+							icon="pi pi-database" action="#{usuarioBean.estableceLimite}">
+							<f:setPropertyActionListener value="50"
+								target="#{usuarioBean.limite}" />
+						</p:menuitem>
+						<p:menuitem value="100 #{msg['texto.registros']}"
+							icon="pi pi-database" action="#{usuarioBean.estableceLimite}">
+							<f:setPropertyActionListener value="100"
+								target="#{usuarioBean.limite}" />
+						</p:menuitem>
+						<p:menuitem value="500 #{msg['texto.registros']}"
+							icon="pi pi-database" action="#{usuarioBean.estableceLimite}">
+							<f:setPropertyActionListener value="500"
+								target="#{usuarioBean.limite}" />
+						</p:menuitem>
+					</p:submenu>
+
 				</p:slideMenu>
 
 				<!-- divider con titulo Filtros -->
