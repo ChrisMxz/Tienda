@@ -17,7 +17,7 @@
 			<!-- divider con titulo de la tabla -->
 			<p:divider align="left">
 				<div class="inline-flex align-items-center">
-					<b> <p:outputLabel value="$Usuarios" />
+					<b> <p:outputLabel value="Usuarios" />
 					</b>
 				</div>
 			</p:divider>
@@ -30,18 +30,12 @@
 					<!-- Buscador -->
 					<span class="filter-container ui-input-icon-left"> <i
 						class="pi pi-search"></i> <p:inputText id="textoBuscar"
-							placeholder="Buscar">
-							<p:ajax event="keyup" update="dt-usuarios" />
+							value="#{usuarioBean.textoBuscar}" placeholder="Buscar">
+							<p:ajax event="keyup" listener="#{usuarioBean.buscar}"
+								update="dt-usuarios" />
 						</p:inputText>
 					</span>
-					<!-- Vista de columnas -->
-					<div>
-						<p:selectCheckboxMenu id="co" label="Columnas"
-							icon="pi pi-align-justify" />
-						<p:columnToggler datasource=":usuarios:dt-usuarios" trigger="co">
-							<p:ajax />
-						</p:columnToggler>
-					</div>
+
 				</div>
 
 				<!-- tabla de usuarios -->
@@ -53,25 +47,25 @@
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
 					<p:autoUpdate />
 
-					<p:column headerText="ID">
+					<p:column headerText="ID" sortBy="#{dato.idUsuario}">
 						<h:outputText value="#{dato.idUsuario}" />
 					</p:column>
-					<p:column headerText="Nombre">
+					<p:column headerText="Nombre" sortBy="#{dato.nombre}">
 						<h:outputText value="#{dato.nombre}" />
 					</p:column>
-					<p:column headerText="Apellido Paterno">
+					<p:column headerText="Apellido Paterno" sortBy="#{dato.appaterno}">
 						<h:outputText value="#{dato.appaterno}" />
 					</p:column>
-					<p:column headerText="Apellido Materno" responsivePriority="2">
+					<p:column headerText="Apellido Materno" sortBy="#{dato.apmaterno}">
 						<h:outputText value="#{dato.apmaterno}" />
 					</p:column>
 					<p:column headerText="Telefono">
 						<h:outputText value="#{dato.contacto.telefonoMovil}" />
 					</p:column>
-					<p:column headerText="Correo">
+					<p:column headerText="Correo" sortBy="#{dato.contacto.email}">
 						<h:outputText value="#{dato.contacto.email}" />
 					</p:column>
-					<p:column headerText="Nivel">
+					<p:column headerText="Nivel" sortBy="#{dato.nivel}">
 						<h:outputText value="#{dato.nivel}" />
 					</p:column>
 				</p:dataTable>

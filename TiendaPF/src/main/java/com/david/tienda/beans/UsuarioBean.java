@@ -29,12 +29,17 @@ public class UsuarioBean implements Serializable {
 	private List<Usuario> listaUsuarios;
 	private ServicioUsuario servicioUsuario;
 	private boolean bandera;
+	private int filtro;
+	private int limite;
+	private String textoBuscar;
 
 	// metodos
 	@PostConstruct
 	public void inicia() {
 		servicioUsuario = new ServicioUsuarioImpl();
 		bandera = false;
+		limite = 100;
+		filtro = 1;
 		listar();
 	}
 
@@ -81,6 +86,10 @@ public class UsuarioBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
 		PrimeFaces.current().ajax().update(":usuarios:messages");
 		listar();
+	}
+
+	public void buscar() {
+		listaUsuarios = servicioUsuario.listarPor(filtro, textoBuscar, limite);
 	}
 
 	public void validaUsuario() {
@@ -135,6 +144,30 @@ public class UsuarioBean implements Serializable {
 
 	public void setBandera(boolean bandera) {
 		this.bandera = bandera;
+	}
+
+	public int getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(int filtro) {
+		this.filtro = filtro;
+	}
+
+	public int getLimite() {
+		return limite;
+	}
+
+	public void setLimite(int limite) {
+		this.limite = limite;
+	}
+
+	public String getTextoBuscar() {
+		return textoBuscar;
+	}
+
+	public void setTextoBuscar(String textoBuscar) {
+		this.textoBuscar = textoBuscar;
 	}
 
 }

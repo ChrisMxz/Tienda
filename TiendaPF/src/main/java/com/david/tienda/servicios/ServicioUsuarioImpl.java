@@ -21,46 +21,43 @@ public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario, 
 
 	@Override
 	public List<Usuario> listarPor(int filtro, String texto, int limite) {
-		String consulta = "SELECT u FROM Usuario u ";
+		String consulta = "SELECT u FROM Usuario u";
 		em = getEntityManager();
 		List<Usuario> usuarios = null;
 
 		// existe un texto que buscar
-		if (texto != null) {
+		if (!texto.isEmpty()) {
 			// Busqueda por id
 			if (filtro == 1)
-				consulta = consulta + "where u.idUsuario like:id";
+				consulta = consulta + " where u.idUsuario like:id";
 			// Busqueda por nombre
 			if (filtro == 2)
-				consulta = consulta + "where u.nombre like:texto";
+				consulta = consulta + " where u.nombre like:texto";
 			// Busqueda por apellido paterno
 			if (filtro == 3)
-				consulta = consulta + "where u.appaterno like:texto";
+				consulta = consulta + " where u.appaterno like:texto";
 			// Busqueda por apellido materno
 			if (filtro == 4)
-				consulta = consulta + "where u.apmaterno like:texto";
+				consulta = consulta + " where u.apmaterno like:texto";
 			// Busqueda por correo1
 			if (filtro == 5)
-				consulta = consulta + "where u.contacto.email like:texto";
-
-			// aplicando limite de consulta
-
-			consulta = consulta + limite;
+				consulta = consulta + " where u.contacto.email like:texto";
 
 			if (filtro != 1) {
 				usuarios = em.createQuery(consulta, Usuario.class).setParameter("texto", "%" + texto + "%")
-						.getResultList();
+						.setMaxResults(limite).getResultList();
 			} else {
 				try {
-					int id;
-					id = Integer.parseInt(texto);
-					usuarios = em.createQuery(consulta, Usuario.class).setParameter("id", id).getResultList();
+					Long id;
+					id = Long.parseLong(texto);
+					usuarios = em.createQuery(consulta, Usuario.class).setParameter("id", id).setMaxResults(limite)
+							.getResultList();
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
 			}
 		} else {
-			usuarios = em.createQuery(consulta, Usuario.class).getResultList();
+			usuarios = em.createQuery(consulta, Usuario.class).setMaxResults(limite).getResultList();
 		}
 
 		return usuarios;

@@ -33,6 +33,32 @@
 
 				</p:slideMenu>
 
+				<!-- divider con titulo Filtros -->
+				<p:divider align="left">
+					<div class="inline-flex align-items-center">
+						<b> <p:outputLabel value="Filtros" />
+						</b>
+					</div>
+				</p:divider>
+
+				<div class="card ui-fluid formgrid grid">
+					<!-- Filtro Categoria -->
+					<div class="field col-12 ">
+						<p:outputLabel for="@next" value="Buscar por:" />
+						<p:selectOneMenu id="filtro-busqueda"
+							value="#{usuarioBean.filtro}">
+							<f:selectItem itemLabel="Id" itemValue="1" />
+							<f:selectItem itemLabel="Nombre" itemValue="2" />
+							<f:selectItem itemLabel="Apellido Paterno" itemValue="3" />
+							<f:selectItem itemLabel="Apellido Paterno" itemValue="4" />
+							<f:selectItem itemLabel="Correo" itemValue="5" />
+							<p:ajax event="itemSelect" listener="#{usuarioBean.buscar}"
+								update=":usuarios:dt-usuarios" />
+						</p:selectOneMenu>
+					</div>
+
+				</div>
+
 			</h:form>
 
 			<h:form id="formulario-usuarios">
@@ -47,8 +73,7 @@
 
 					<f:facet name="footer">
 						<p:commandButton id="btn-agregar" icon="pi pi-save"
-							value="Guardar"
-							validateClient="true"
+							value="Guardar" validateClient="true"
 							update=":formulario-usuarios:tab"
 							actionListener="#{usuarioBean.guardar}"
 							styleClass="ui-button-primary rounded-button">
