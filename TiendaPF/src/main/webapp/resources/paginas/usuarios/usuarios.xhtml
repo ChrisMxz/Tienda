@@ -39,34 +39,34 @@
 				</div>
 
 				<!-- tabla de usuarios -->
-				<p:dataTable id="dt-usuarios" widgetVar="dtUsuarios" var="dato"
-					value="#{usuarioBean.listaUsuarios}" rowKey="#{dato.idUsuario}"
+				<p:dataTable id="dt-usuarios" widgetVar="dtUsuarios" var="usuario"
+					value="#{usuarioBean.listaUsuarios}" rowKey="#{usuario.idUsuario}"
 					selection="#{usuarioBean.usuario}" selectionMode="single"
 					paginator="true" reflow="true" rows="10" paginatorPosition="bottom"
 					rowsPerPageTemplate="5,10,15,20"
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
 					<p:autoUpdate />
 
-					<p:column headerText="ID" sortBy="#{dato.idUsuario}">
-						<h:outputText value="#{dato.idUsuario}" />
+					<p:column headerText="ID" sortBy="#{usuario.idUsuario}">
+						<h:outputText value="#{usuario.idUsuario}" />
 					</p:column>
-					<p:column headerText="Nombre" sortBy="#{dato.nombre}">
-						<h:outputText value="#{dato.nombre}" />
+					<p:column headerText="Nombre" sortBy="#{usuario.nombre}">
+						<h:outputText value="#{usuario.nombre}" />
 					</p:column>
-					<p:column headerText="Apellido Paterno" sortBy="#{dato.appaterno}">
-						<h:outputText value="#{dato.appaterno}" />
+					<p:column headerText="Apellido Paterno" sortBy="#{usuario.appaterno}">
+						<h:outputText value="#{usuario.appaterno}" />
 					</p:column>
-					<p:column headerText="Apellido Materno" sortBy="#{dato.apmaterno}">
-						<h:outputText value="#{dato.apmaterno}" />
+					<p:column headerText="Apellido Materno" sortBy="#{usuario.apmaterno}">
+						<h:outputText value="#{usuario.apmaterno}" />
 					</p:column>
 					<p:column headerText="Telefono">
-						<h:outputText value="#{dato.contacto.telefonoMovil}" />
+						<h:outputText value="#{usuario.contacto.telefonoMovil}" />
 					</p:column>
-					<p:column headerText="Correo" sortBy="#{dato.contacto.email}">
-						<h:outputText value="#{dato.contacto.email}" />
+					<p:column headerText="Correo" sortBy="#{usuario.contacto.email}">
+						<h:outputText value="#{usuario.contacto.email}" />
 					</p:column>
-					<p:column headerText="Nivel" sortBy="#{dato.nivel}">
-						<h:outputText value="#{dato.nivel}" />
+					<p:column headerText="Nivel" sortBy="#{usuario.nivel}">
+						<h:outputText value="#{usuario.nivel}" />
 					</p:column>
 				</p:dataTable>
 
@@ -79,6 +79,10 @@
 						oncomplete="PF('dialogoForm').show()">
 						<p:resetInput target=":formulario-usuarios" />
 
+					</p:menuitem>
+					<p:menuitem id="opc-exportar-usuario" value="Exportar XML"
+						icon="pi pi-upload" actionListener="#{usuarioBean.exportar}">
+					
 					</p:menuitem>
 					<p:menuitem value="Eliminar" update="dt-usuarios"
 						icon="pi pi-trash" actionListener="#{usuarioBean.eliminar}">

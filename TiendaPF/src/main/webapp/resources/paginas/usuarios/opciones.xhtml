@@ -33,7 +33,7 @@
 
 					<p:submenu label="Ver #{usuarioBean.limite}" icon="pi pi-eye">
 						<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
-							icon="pi pi-database" action="#{usuarioBean.estableceLimite}" >
+							icon="pi pi-database" action="#{usuarioBean.estableceLimite}">
 							<f:setPropertyActionListener value="10"
 								target="#{usuarioBean.limite}" />
 						</p:menuitem>
@@ -51,6 +51,19 @@
 							icon="pi pi-database" action="#{usuarioBean.estableceLimite}">
 							<f:setPropertyActionListener value="500"
 								target="#{usuarioBean.limite}" />
+						</p:menuitem>
+					</p:submenu>
+
+					<p:submenu label="#{msg['producto.exportar']}" icon="pi pi-upload">
+						<p:menuitem value="#{msg['texto.pdf']}"
+							icon="pi pi-fw pi-file-pdf">
+							<p:dataExporter type="pdf" target=":usuarios:dt-usuarios"
+								fileName="usuarios" />
+						</p:menuitem>
+						<p:menuitem id="opc-exporta-xml" value="#{msg['texto.xml']}"
+							icon="pi pi-fw pi-file">
+							<p:dataExporter type="xml" target=":usuarios:dt-usuarios"
+								fileName="usuarios" />
 						</p:menuitem>
 					</p:submenu>
 

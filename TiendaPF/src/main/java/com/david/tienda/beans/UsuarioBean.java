@@ -16,6 +16,7 @@ import org.primefaces.PrimeFaces;
 import com.david.tienda.entidades.Usuario;
 import com.david.tienda.servicios.ServicioUsuario;
 import com.david.tienda.servicios.ServicioUsuarioImpl;
+import com.david.tienda.util.UsuarioXml;
 
 @ManagedBean
 @ViewScoped
@@ -125,6 +126,16 @@ public class UsuarioBean implements Serializable {
 			bandera = false;
 		}
 
+	}
+
+	public void exportar() {
+		String msg = "Exportado";
+		UsuarioXml xml = new UsuarioXml();
+		xml.setU(usuario);
+		xml.crearXML();
+
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+		PrimeFaces.current().ajax().update(":usuarios");
 	}
 
 	// getters and setters
