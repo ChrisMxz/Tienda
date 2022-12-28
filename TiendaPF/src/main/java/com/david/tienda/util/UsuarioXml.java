@@ -2,9 +2,6 @@ package com.david.tienda.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
@@ -166,17 +163,12 @@ public class UsuarioXml {
 
 		response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 		response.setContentType(contentType);
+		
 
 		try {
-
-			OutputStream os = response.getOutputStream();
-			OutputStreamWriter osw = new OutputStreamWriter(os, contentType);
-			xml.output(doc, os);
-			PrintWriter writer = new PrintWriter(osw);
-			
-			writer.flush();
-			writer.close();
-
+			ServletOutputStream out = response.getOutputStream();
+			xml.output(doc, out);
+			response.getOutputStream().flush();
 			System.out.println("Descargado");
 
 		} catch (IOException e) {
