@@ -46,6 +46,7 @@ public class Producto {
 	private String sku;
 	
 	@NotNull
+	@Column(name = "fecha_registro")
 	private LocalDateTime fechaRegistro;
 	
 	@NotNull

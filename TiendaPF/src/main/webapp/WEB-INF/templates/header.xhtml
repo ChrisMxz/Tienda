@@ -15,7 +15,11 @@
 					outcome="/resources/paginas/usuarios/usuarios.xhtml"
 					icon="pi pi-user">
 				</p:menuitem>
-				<p:menuitem value="Pedidos" icon="pi pi-briefcase">
+				<p:menuitem value="#{msg['titulo.productos']}"
+					outcome="/resources/paginas/productos/productos.xhtml"
+					icon="pi pi-list">
+				</p:menuitem>
+				<p:menuitem value="Pedidos" icon="pi pi-briefcase" rendered="false">
 				</p:menuitem>
 
 				<f:facet name="options">
@@ -32,8 +36,6 @@
 							rendered="${!bandera}" onclick="PF('dialogoLogin').show()" />
 					</p:contextMenu>
 				</f:facet>
-
-
 			</p:menubar>
 		</h:form>
 	</div>
