@@ -35,7 +35,6 @@ public class ProductoBean implements Serializable {
 	// metodos
 	@PostConstruct
 	public void inicia() {
-		System.out.println("Inicia Producto Bean");
 		servicioProducto = new ServicioProductoImpl();
 		bandera = false;
 		limite = 100;
@@ -46,6 +45,7 @@ public class ProductoBean implements Serializable {
 
 	public void nuevo() {
 		producto = new Producto();
+
 	}
 
 	public void listar() {
@@ -61,7 +61,7 @@ public class ProductoBean implements Serializable {
 		listar();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Refrescado"));
 		// textoBuscar=null;
-		PrimeFaces.current().ajax().update(":productos");
+		PrimeFaces.current().ajax().update(":productosContenido:tab:productos");
 	}
 
 	public void guardar() {
@@ -98,7 +98,7 @@ public class ProductoBean implements Serializable {
 	public void estableceLimite() {
 		String msg = "Limite establecido " + limite + " registros ";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":productos:messages", ":opciones:menu-opciones");
+		PrimeFaces.current().ajax().update(":productosContenido:tab:productos:messages", ":opciones:menu-opciones");
 		buscar();
 	}
 
@@ -157,6 +157,10 @@ public class ProductoBean implements Serializable {
 
 	public void setTextoBuscar(String textoBuscar) {
 		this.textoBuscar = textoBuscar;
+	}
+
+	public void setCategoria(Long categoria) {
+		this.categoria = categoria;
 	}
 
 }

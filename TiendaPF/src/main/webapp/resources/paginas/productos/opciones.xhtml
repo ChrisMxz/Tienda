@@ -19,42 +19,49 @@
 
 			<h:form id="opciones">
 				<p:slideMenu id="menu-opciones" rendered="#{nivel!=1}">
+					<p:autoUpdate></p:autoUpdate>
 
 					<p:menuitem id="opc-agregar" value="Agregar" icon="pi pi-plus"
-						actionListener="#{productoBean.nuevo}"
-						update=":formulario-productos"
-						oncomplete="PF('dialogoForm').show()">
-						<p:resetInput target=":formulario-productos" />
+						actionListener="#{opcionesMenu.nuevo}">
 					</p:menuitem>
 
 					<p:menuitem id="opc-refrescar" value="Recargar"
-						icon="pi pi-refresh" actionListener="#{productoBean.refrescar}">
+						icon="pi pi-refresh" actionListener="#{opcionesMenu.refrescar}">
+					</p:menuitem>
+					<p:menuitem id="opc-categoria" value="Categorias"
+						icon="pi pi-refresh" actionListener="#{opcionesMenu.mostrarCategorias}">
 					</p:menuitem>
 
-					<p:submenu label="Ver #{productoBean.limite}" icon="pi pi-eye">
+					<p:submenu label="Ver #{opcionesMenu.limite}" icon="pi pi-eye">
 						<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
-							icon="pi pi-database" action="#{productoBean.estableceLimite}">
+							icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
 							<f:setPropertyActionListener value="10"
-								target="#{productoBean.limite}" />
+								target="#{opcionesMenu.limite}" />
 						</p:menuitem>
 						<p:menuitem value="50 #{msg['texto.registros']}"
-							icon="pi pi-database" action="#{productoBean.estableceLimite}">
+							icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
 							<f:setPropertyActionListener value="50"
-								target="#{productoBean.limite}" />
+								target="#{opcionesMenu.limite}" />
 						</p:menuitem>
 						<p:menuitem value="100 #{msg['texto.registros']}"
-							icon="pi pi-database" action="#{productoBean.estableceLimite}">
+							icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
 							<f:setPropertyActionListener value="100"
-								target="#{productoBean.limite}" />
+								target="#{opcionesMenu.limite}" />
 						</p:menuitem>
 						<p:menuitem value="500 #{msg['texto.registros']}"
-							icon="pi pi-database" action="#{productoBean.estableceLimite}">
+							icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
 							<f:setPropertyActionListener value="500"
-								target="#{productoBean.limite}" />
+								target="#{opcionesMenu.limite}" />
+						</p:menuitem>
+						<p:menuitem value="Todos" icon="pi pi-database"
+							action="#{opcionesMenu.listarTodo}">
+
 						</p:menuitem>
 					</p:submenu>
 
-					<p:submenu label="#{msg['producto.exportar']}" icon="pi pi-upload">
+					<p:submenu label="#{msg['producto.exportar']}" icon="pi pi-upload"
+						rendered="#{!opcionesMenu.categoriaTab}">
+
 						<p:menuitem value="#{msg['texto.pdf']}"
 							icon="pi pi-fw pi-file-pdf">
 							<p:dataExporter type="pdf" target=":productos:dt-productos"
@@ -76,7 +83,7 @@
 						</b>
 					</div>
 				</p:divider>
-
+					
 				<div class="card ui-fluid formgrid grid">
 					<!-- Tipo de busqueda -->
 					<div class="field col-12">
@@ -86,7 +93,7 @@
 							<f:selectItem itemLabel="#{msg['producto.nombre']}" itemValue="2" />
 							<f:selectItem itemLabel="#{msg['producto.sku']}" itemValue="3" />
 							<p:ajax event="itemSelect" listener="#{productoBean.buscar}"
-								update=":productos:dt-productos" />
+								update=":contenedor:tab:dt-productos" />
 						</p:selectOneMenu>
 					</div>
 
@@ -94,13 +101,14 @@
 			</h:form>
 
 			<h:form id="formulario-productos">
-				<!-- Dialogo modal para mostrar los detalles del Alumno -->
-				<p:dialog header="Producto" widgetVar="dialogoForm" minHeight="230"
-					minWidth="250" width="700" height="600" responsive="true"
-					showEffect="fade" modal="true" hideEffect="fade"
+				<!-- Dialogo modal para mostrar los detalles del producto -->
+				<p:dialog header="Producto" widgetVar="dialogoProductosForm"
+					minHeight="230" minWidth="250" width="700" height="600"
+					responsive="true" showEffect="fade" modal="true" hideEffect="fade"
 					closeOnEscape="true">
 
-
+					<ui:include
+						src="/resources/paginas/productos/formularioProducto.xhtml" />
 
 					<f:facet name="footer">
 						<p:commandButton id="btn-agregar" icon="pi pi-save"
@@ -110,6 +118,29 @@
 
 					</f:facet>
 
+				</p:dialog>
+
+			</h:form>
+
+			<h:form id="formulario-categorias">
+				<!-- Dialogo modal para mostrar los detalles de la categoria -->
+				<p:dialog header="Categoria" widgetVar="dialogoCategoriasForm"
+					minHeight="230" minWidth="250" width="500" height="280"
+					responsive="true" showEffect="fade" modal="true" hideEffect="fade"
+					closeOnEscape="true">
+
+					<ui:include
+						src="/resources/paginas/productos/categorias/formularioCategoria.xhtml" />
+
+					<f:facet name="footer">
+						<p:commandButton id="btn-agregar" icon="pi pi-save"
+							value="Guardar" validateClient="true"
+							update=":formulario-categorias:categoriaPanel"
+							actionListener="#{categoriaBean.guardar}"
+							styleClass="ui-button-primary rounded-button">
+						</p:commandButton>
+
+					</f:facet>
 
 				</p:dialog>
 

@@ -27,7 +27,7 @@ public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Catego
 		List<Categoria> categorias = null;
 
 		// existe un texto que buscar
-		if (!texto.isEmpty()) {
+		if (texto!=null&&!texto.isEmpty()) {
 			// Busqueda por id
 			if (filtro == 1)
 				consulta = consulta + " where c.idCategoria like:id";
@@ -68,7 +68,7 @@ public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Catego
 
 	@Override
 	public Long contar() {
-		String consulta = "SELECT count(p) FROM Categoria p ";
+		String consulta = "SELECT count(c) FROM Categoria c ";
 		em = getEntityManager();
 		return em.createQuery(consulta, Long.class).getSingleResult();
 	}

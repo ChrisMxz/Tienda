@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="card ui-fluid">
+
+		<p:outputPanel class="formgrid grid" id="categoriaPanel">
+
+			<!-- Input Nombre -->
+			<div class="field col-12 md:col-6">
+				<p:outputLabel for="@next" value="#{msg['producto.nombre']}"
+					indicateRequired="true" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputText id="nombre" value="#{categoriaBean.categoria.nombre}"
+					label="Nombre" required="true"
+					requiredMessage="#{msg['input.nombre']}" maxlength="50" />
+			</div>
+			<!-- Input Descripcion -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="Descripcion"
+					indicateRequired="Auto" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputTextarea rows="5" cols="30" autoResize="false"
+					value="#{categoriaBean.categoria.descripcion}" maxlength="500"
+					title="Ingresa descripcion" />
+			</div>
+
+		</p:outputPanel>
+
+	</div>
+</ui:component>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="card">
+		<p:outputPanel>
+			<div class="flex justify-content-between align-items-center pb-3">
+				<!-- Buscador -->
+				<span class="filter-container ui-input-icon-left"> <i
+					class="pi pi-search"></i> <p:inputText id="textoBuscar"
+						value="#{productoBean.textoBuscar}" placeholder="Buscar">
+						<p:ajax event="keyup" listener="#{productoBean.buscar}"
+							update="dt-productos" />
+					</p:inputText>
+				</span>
+
+			</div>
+
+			<!-- Tabla de productos  -->
+			<p:dataTable id="dt-productos" var="producto"
+				value="#{productoBean.listaProductos}"
+				rowKey="#{producto.idProducto}" selection="#{productoBean.producto}"
+				selectionMode="single" paginator="true" reflow="true" rows="10"
+				paginatorPosition="bottom" rowsPerPageTemplate="5,10,15,20"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+				<p:autoUpdate />
+
+				<p:column headerText="#{msg['producto.id']}"
+					sortBy="#{producto.idProducto}">
+					<h:outputText value="#{producto.idProducto}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.nombre']}"
+					sortBy="#{producto.nombre}">
+					<h:outputText value="#{producto.nombre}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.descripcion']}"
+					sortBy="#{producto.descripcion}">
+					<h:outputText value="#{producto.descripcion}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.categoria']}"
+					sortBy="#{producto.categoria.descripcion}">
+					<h:outputText value="#{producto.categoria.descripcion}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.precio']}"
+					sortBy="#{producto.precio}">
+					<h:outputText value="#{producto.precio}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{msg['producto.sku']}"
+					sortBy="#{producto.sku}">
+					<h:outputText value="#{producto.sku}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.cantidad']}"
+					sortBy="#{producto.cantidad}">
+					<h:outputText value="#{producto.cantidad}" />
+				</p:column>
+				<p:column headerText="#{msg['producto.fechaRegistro']}"
+					sortBy="#{producto.fechaRegistro}">
+					<h:outputText value="#{producto.fechaRegistro}" />
+				</p:column>
+			</p:dataTable>
+
+			<!-- opciones al hacer click derecho -->
+			<p:contextMenu for="dt-productos">
+				<p:menuitem id="opc-ver-producto" value="Ver" icon="pi pi-eye"
+					rendered="false">
+				</p:menuitem>
+				<p:menuitem id="opc-editar-producto" value="Editar"
+					icon="pi pi-pencil" update=":formulario-productos"
+					oncomplete="PF('dialogoProductosForm').show()">
+					<p:resetInput target=":formulario-productos" />
+
+				</p:menuitem>
+				<p:menuitem id="opc-exportar-producto" value="Exportar XML"
+					icon="pi pi-upload" rendered="false">
+				</p:menuitem>
+				<p:menuitem value="Eliminar" update="dt-productos"
+					icon="pi pi-trash" actionListener="#{productoBean.eliminar}">
+					<p:confirm header="Confirmacion"
+						message="¿Seguro que desea eliminar el producto?"
+						icon="pi pi-info-circle" />
+				</p:menuitem>
+			</p:contextMenu>
+
+			<!-- Dialogo de confirmacion para eliminar -->
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+				responsive="true" width="350">
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
+		</p:outputPanel>
+	</div>
+
+</ui:composition>

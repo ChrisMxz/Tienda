@@ -19,7 +19,10 @@ public class Categoria {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_categoria")
 	private Long idCategoria;
-	
+
+	@Size(max = 50)
+	private String nombre;
+
 	@Size(max = 500)
 	private String descripcion;
 
@@ -29,9 +32,10 @@ public class Categoria {
 		super();
 	}
 
-	public Categoria(Long idCategoria, String descripcion) {
+	public Categoria(Long idCategoria, String nombre, String descripcion) {
 		super();
 		this.idCategoria = idCategoria;
+		this.nombre = nombre;
 		this.descripcion = descripcion;
 	}
 
@@ -53,6 +57,14 @@ public class Categoria {
 		this.descripcion = descripcion;
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(idCategoria);
@@ -72,7 +84,7 @@ public class Categoria {
 
 	@Override
 	public String toString() {
-		return "Categoria [idCategoria=" + idCategoria + ", descripcion=" + descripcion + "]";
+		return "Categoria [idCategoria=" + idCategoria + ", nombre=" + nombre + ", descripcion=" + descripcion + "]";
 	}
 
 }

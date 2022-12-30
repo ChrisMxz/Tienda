@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="card">
+		<p:outputPanel id="categoria">
+			<div class="flex justify-content-between align-items-center pb-3">
+				<!-- Buscador -->
+				<span class="filter-container ui-input-icon-left"> <i
+					class="pi pi-search"></i> <p:inputText id="textoBuscarCategoria"
+						placeholder="#{msg['texto.buscar'] }">
+						<p:ajax event="keyup" listener="#{categoriaBean.buscar}"
+							update="dt-categorias" />
+					</p:inputText>
+				</span>
+
+			</div>
+
+			<!-- Tabla de Categorias  -->
+			<p:dataTable id="dt-categorias" widgetVar="dtCategorias"
+				var="categoria" value="#{categoriaBean.listaCategorias}"
+				rowKey="#{categoria.idCategoria}"
+				selection="#{categoriaBean.categoria}" selectionMode="single"
+				paginator="true" reflow="true" rows="10" paginatorPosition="bottom"
+				rowsPerPageTemplate="5,10,15,20"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+				<p:autoUpdate />
+
+
+				<p:column headerText="#{msg['producto.id']}"
+					sortBy="#{categoria.idCategoria}">
+					<h:outputText value="#{categoria.idCategoria}" />
+				</p:column>
+				<p:column headerText="Nombre" sortBy="#{categoria.nombre}">
+					<h:outputText value="#{categoria.nombre}" />
+				</p:column>
+				<p:column headerText="Descripcion" sortBy="#{categoria.descripcion}">
+					<h:outputText value="#{categoria.descripcion}" />
+				</p:column>
+			</p:dataTable>
+
+			<!-- opciones al hacer click derecho -->
+			<p:contextMenu for="dt-categorias">
+				<p:menuitem id="opc-ver-categoria" value="Ver" icon="pi pi-eye"
+					rendered="false">
+				</p:menuitem>
+				<p:menuitem id="opc-editar-categoria" value="Editar"
+					icon="pi pi-pencil" update=":formulario-categorias"
+					oncomplete="PF('dialogoCategoriasForm').show()">
+					<p:resetInput target=":formulario-categorias" />
+
+				</p:menuitem>
+				<p:menuitem id="opc-exportar-categoria" value="Exportar XML"
+					icon="pi pi-upload" rendered="false">
+				</p:menuitem>
+				<p:menuitem value="Eliminar" update="dt-categorias"
+					icon="pi pi-trash" actionListener="#{categoriaBean.eliminar}">
+					<p:confirm header="Confirmacion"
+						message="¿Seguro que desea eliminar la categoria?"
+						icon="pi pi-info-circle" />
+				</p:menuitem>
+			</p:contextMenu>
+
+			<!-- Dialogo de confirmacion para eliminar -->
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+				responsive="true" width="350">
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" update="messages" />
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
+		</p:outputPanel>
+	</div>
+</ui:composition>
