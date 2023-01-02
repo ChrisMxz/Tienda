@@ -44,18 +44,18 @@ public class Producto {
 	@NotNull
 	@Size(min = 4, max = 12)
 	private String sku;
-	
+
 	@NotNull
 	@Column(name = "fecha_registro")
 	private LocalDateTime fechaRegistro;
-	
+
 	@NotNull
 	@Size(max = 4)
 	private String claveUnidad;
-	
+
 	@NotNull
 	private int cantidad;
-	
+
 	@NotNull
 	private double precio;
 
@@ -63,6 +63,8 @@ public class Producto {
 
 	public Producto() {
 		super();
+		this.categoria = new Categoria();
+
 	}
 
 	public Producto(Long idProducto, String concepto, String nombre, Categoria categoria, String descripcion,

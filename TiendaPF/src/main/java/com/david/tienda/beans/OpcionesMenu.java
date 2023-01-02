@@ -2,15 +2,12 @@ package com.david.tienda.beans;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.tabview.TabView;
 
 @ManagedBean
 @ViewScoped
@@ -25,38 +22,37 @@ public class OpcionesMenu implements Serializable {
 
 	private boolean categoriaTab;
 	private int limite;
+	private String msgOpc;
+
+	@PostConstruct
+	public void inicia() {
+		limite = 100;
+		categoriaTab = false;
+		msgOpc = "Categorias";
+	}
 
 	// metodos
 	public void tabCambia() {
 		categoriaTab = !categoriaTab;
-	}
+		if (categoriaTab)
+			msgOpc = "Productos";
+		else
+			msgOpc = "Categorias";
 
-	public void tabCierra() {
-		categoriaTab = false;
-		PrimeFaces.current().ajax().update(":opciones");
-	}
-
-	public void mostrarCategorias() {
-		categoriaTab = false;
+		PrimeFaces.current().ajax().update(":productos");
+		PrimeFaces.current().ajax().update(":categorias");
 		PrimeFaces.current().ajax().update(":opciones");
 
-		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
-		UIComponent componente = viewRoot.findComponent("tab");
-		TabView tabView = (TabView) componente;
-		tabView.setActiveIndex(1);
-		PrimeFaces.current().ajax().update(":contenedor:tab");
 	}
 
 	public void nuevo() {
 		if (categoriaTab) {
-			System.out.println("nueva categoria");
 			categoriaBean.nuevo();
 			PrimeFaces.current().ajax().update(":formulario-categorias");
 			PrimeFaces.current().executeScript("PF('dialogoCategoriasForm').show()");
 			PrimeFaces.current().resetInputs(":formulario-categorias");
 
 		} else {
-			System.out.println("nuevo producto");
 			productoBean.nuevo();
 			PrimeFaces.current().ajax().update(":formulario-productos");
 			PrimeFaces.current().executeScript("PF('dialogoProductosForm').show()");
@@ -75,14 +71,9 @@ public class OpcionesMenu implements Serializable {
 	}
 
 	public void estableceLimite() {
-		if (categoriaTab) {
-			categoriaBean.setLimite(limite);
-			categoriaBean.estableceLimite();
-		} else {
-			productoBean.setLimite(limite);
-			productoBean.estableceLimite();
-		}
-
+		categoriaBean.setLimite(limite);
+		productoBean.setLimite(limite);
+		productoBean.estableceLimite();
 	}
 
 	public void listarTodo() {
@@ -124,6 +115,14 @@ public class OpcionesMenu implements Serializable {
 
 	public void setProductoBean(ProductoBean productoBean) {
 		this.productoBean = productoBean;
+	}
+
+	public String getMsgOpc() {
+		return msgOpc;
+	}
+
+	public void setMsgOpc(String msgOpc) {
+		this.msgOpc = msgOpc;
 	}
 
 }

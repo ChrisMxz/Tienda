@@ -1,11 +1,11 @@
 package com.david.tienda.servicios;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.david.tienda.entidades.Categoria;
-import com.david.tienda.entidades.Usuario;
 import com.david.tienda.util.ConexionBD;
 
 public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Categoria>, Serializable {
@@ -24,35 +24,39 @@ public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Catego
 	public List<Categoria> listarPor(int filtro, String texto, int limite) {
 		String consulta = "SELECT c FROM Categoria c";
 		em = getEntityManager();
-		List<Categoria> categorias = null;
+		List<Categoria> categorias = new ArrayList<>();
 
-		// existe un texto que buscar
-		if (texto!=null&&!texto.isEmpty()) {
+		// no hay texto que buscar
+
+		if (texto != null && !texto.isEmpty()) {
+
 			// Busqueda por id
-			if (filtro == 1)
+			if (filtro == 1) {
 				consulta = consulta + " where c.idCategoria like:id";
-			// Busqueda por nombre/descripcion
-			if (filtro == 2)
-				consulta = consulta + " where c.descripcion like:texto";
-
-			if (filtro != 1) {
-				categorias = em.createQuery(consulta, Categoria.class).setParameter("texto", "%" + texto + "%")
-						.setMaxResults(limite).getResultList();
-			} else {
 				try {
 					Long id;
 					id = Long.parseLong(texto);
 					categorias = em.createQuery(consulta, Categoria.class).setParameter("id", id).setMaxResults(limite)
 							.getResultList();
 				} catch (Exception e) {
-					// TODO: handle exception
+
 				}
 			}
+
+			// Busqueda por nombre/descripcion
+			if (filtro == 2) {
+				consulta = consulta + " where c.nombre like:texto";
+
+				categorias = em.createQuery(consulta, Categoria.class).setParameter("texto", "%" + texto + "%")
+						.setMaxResults(limite).getResultList();
+			}
+
 		} else {
 			categorias = em.createQuery(consulta, Categoria.class).setMaxResults(limite).getResultList();
 		}
 
 		return categorias;
+
 	}
 
 	@Override
@@ -61,9 +65,9 @@ public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Catego
 		return Optional.ofNullable(em.find(Categoria.class, t.getIdCategoria()));
 	}
 
-	public Optional<Usuario> porId(int t) {
+	public Categoria porId(Long t) {
 		em = getEntityManager();
-		return Optional.ofNullable(em.find(Usuario.class, t));
+		return em.find(Categoria.class, t);
 	}
 
 	@Override

@@ -20,21 +20,11 @@
 	<!-- contenido principal de la pagina -->
 	<ui:define name="contenido">
 
-		<h:form id="contenedor">
-			<p:growl id="messages" showDetail="false" />
-			<p:tabView id="tab">
-				<p:ajax event="tabChange" listener="#{opcionesMenu.tabCambia}" />
-				<p:ajax event="tabClose" listener="#{opcionesMenu.tabCierra}" />
+		<p:growl id="messages" showDetail="true" />
+		<ui:include src="/resources/paginas/productos/productosLista.xhtml" />
 
-				<p:tab title="Productos" id="productoTab">
-					<ui:include src="/resources/paginas/productos/productosLista.xhtml" />
-				</p:tab>
-				<p:tab title="Categorias" id="categoriab" closable="true">
-					<ui:include
-						src="/resources/paginas/productos/categorias/categorias.xhtml" />
-				</p:tab>
-			</p:tabView>
-		</h:form>
+		<ui:include
+			src="/resources/paginas/productos/categorias/categorias.xhtml" />
 
 	</ui:define>
 </ui:composition>

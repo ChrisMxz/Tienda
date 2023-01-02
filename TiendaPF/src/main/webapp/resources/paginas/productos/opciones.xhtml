@@ -28,9 +28,12 @@
 					<p:menuitem id="opc-refrescar" value="Recargar"
 						icon="pi pi-refresh" actionListener="#{opcionesMenu.refrescar}">
 					</p:menuitem>
-					<p:menuitem id="opc-categoria" value="Categorias"
-						icon="pi pi-refresh" actionListener="#{opcionesMenu.mostrarCategorias}">
+					<p:menuitem id="opc-categoria" value="#{opcionesMenu.msgOpc}"
+						icon="pi pi-th-large"
+						actionListener="#{opcionesMenu.tabCambia}">
 					</p:menuitem>
+
+
 
 					<p:submenu label="Ver #{opcionesMenu.limite}" icon="pi pi-eye">
 						<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
@@ -53,10 +56,7 @@
 							<f:setPropertyActionListener value="500"
 								target="#{opcionesMenu.limite}" />
 						</p:menuitem>
-						<p:menuitem value="Todos" icon="pi pi-database"
-							action="#{opcionesMenu.listarTodo}">
 
-						</p:menuitem>
 					</p:submenu>
 
 					<p:submenu label="#{msg['producto.exportar']}" icon="pi pi-upload"
@@ -74,6 +74,21 @@
 						</p:menuitem>
 					</p:submenu>
 
+					<p:submenu label="Exportar" icon="pi pi-upload"
+						rendered="#{opcionesMenu.categoriaTab}">
+
+						<p:menuitem id="opc-exportaCategorias-pdf"
+							value="#{msg['texto.pdf']}" icon="pi pi-fw pi-file-pdf">
+							<p:dataExporter type="pdf" target=":categorias:dt-categorias"
+								fileName="categorias" />
+						</p:menuitem>
+						<p:menuitem id="opc-exportaCategorias-xml"
+							value="#{msg['texto.xml']}" icon="pi pi-fw pi-file">
+							<p:dataExporter type="xml" target=":categorias:dt-categorias"
+								fileName="categorias" />
+						</p:menuitem>
+					</p:submenu>
+
 				</p:slideMenu>
 
 				<!-- divider con titulo Filtros -->
@@ -83,17 +98,25 @@
 						</b>
 					</div>
 				</p:divider>
-					
+
 				<div class="card ui-fluid formgrid grid">
 					<!-- Tipo de busqueda -->
 					<div class="field col-12">
 						<p:outputLabel for="@next" value="Busqueda" />
-						<p:selectOneMenu id="tipo-buscar" value="#{productoBean.filtro}">
+						<p:selectOneMenu id="tipo-buscar-productos"
+							value="#{productoBean.filtro}"
+							rendered="#{!opcionesMenu.categoriaTab}">
 							<f:selectItem itemLabel="#{msg['producto.id']}" itemValue="1" />
 							<f:selectItem itemLabel="#{msg['producto.nombre']}" itemValue="2" />
 							<f:selectItem itemLabel="#{msg['producto.sku']}" itemValue="3" />
-							<p:ajax event="itemSelect" listener="#{productoBean.buscar}"
-								update=":contenedor:tab:dt-productos" />
+							<p:ajax event="itemSelect" listener="#{productoBean.buscar}" />
+						</p:selectOneMenu>
+						<p:selectOneMenu id="tipo-buscar-categorias"
+							value="#{categoriaBean.filtro}"
+							rendered="#{opcionesMenu.categoriaTab}">
+							<f:selectItem itemLabel="#{msg['producto.id']}" itemValue="1" />
+							<f:selectItem itemLabel="#{msg['producto.nombre']}" itemValue="2" />
+							<p:ajax event="itemSelect" listener="#{categoriaBean.buscar}" />
 						</p:selectOneMenu>
 					</div>
 
@@ -113,6 +136,8 @@
 					<f:facet name="footer">
 						<p:commandButton id="btn-agregar" icon="pi pi-save"
 							value="Guardar" validateClient="true"
+							update=":formulario-productos:detalles"
+							actionListener="#{productoBean.guardar}"
 							styleClass="ui-button-primary rounded-button">
 						</p:commandButton>
 

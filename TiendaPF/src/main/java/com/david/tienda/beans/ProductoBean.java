@@ -1,6 +1,7 @@
 package com.david.tienda.beans;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -50,7 +51,7 @@ public class ProductoBean implements Serializable {
 
 	public void listar() {
 		// lista segun lo establecido
-		listarTodo();
+		buscar();
 	}
 
 	public void listarTodo() {
@@ -61,7 +62,7 @@ public class ProductoBean implements Serializable {
 		listar();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Refrescado"));
 		// textoBuscar=null;
-		PrimeFaces.current().ajax().update(":productosContenido:tab:productos");
+		PrimeFaces.current().ajax().update(":messages", ":opciones", ":productos");
 	}
 
 	public void guardar() {
@@ -70,36 +71,48 @@ public class ProductoBean implements Serializable {
 			if (producto.getIdProducto() != null)
 				msg = "Actualizado";
 
-			servicioProducto.guardar(producto);
+			System.out.println(obtenerClave(producto.getConcepto()));
+			//servicioProducto.guardar(producto);
 
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-			PrimeFaces.current().ajax().update(":formulario-productos:msg");
-			PrimeFaces.current().executeScript("PF('dialogoForm').hide()");
+			PrimeFaces.current().ajax().update(":messages");
+			PrimeFaces.current().executeScript("PF('dialogoProductosForm').hide()");
 			listar();
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Verifica tus datos"));
-			PrimeFaces.current().ajax().update(":productos");
+			PrimeFaces.current().ajax().update(":messages");
 		}
 	}
 
 	public void eliminar() {
 		servicioProducto.eliminar(producto);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
-		PrimeFaces.current().ajax().update(":productos:messages");
+		PrimeFaces.current().ajax().update(":messages");
 		listar();
 	}
 
 	public void buscar() {
-
 		listaProductos = servicioProducto.filtrarPor(filtro, categoria, textoBuscar, limite);
-
 	}
 
 	public void estableceLimite() {
 		String msg = "Limite establecido " + limite + " registros ";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":productosContenido:tab:productos:messages", ":opciones:menu-opciones");
+		PrimeFaces.current().ajax().update(":messages", ":opciones");
 		buscar();
+	}
+
+	public String obtenerClave(String palabra) {
+		String clave = null;
+
+		char[] cadena = palabra.toCharArray();
+		for (int i = 0; i < cadena.length; i++) {
+			if (Character.isDigit(cadena[i])) {
+				clave += cadena[i];
+			}
+		}
+		return clave;
+
 	}
 
 	// getters and setters

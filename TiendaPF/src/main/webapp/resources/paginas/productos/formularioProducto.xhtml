@@ -21,19 +21,34 @@
 					requiredMessage="#{msg['input.nombre']}" maxlength="30" />
 			</div>
 
-			<!-- Input Categoria 
+			<!-- Input Categoria -->
 			<div class="field col-12 md:col-6">
 				<p:outputLabel for="@next" value="#{msg['producto.categoria']}" />
 				<p:selectOneMenu id="categoria"
-					value="#{productosBean.producto.categoria}" class="form-select">
+					value="#{productoBean.producto.categoria}" filter="true"
+					filterMatchMode="startsWith" class="form-select">
 					<f:selectItems value="#{categoriaBean.listaCategorias}" var="cat"
 						itemLabel="#{cat.nombre}" />
 					<f:converter binding="#{categoriaConverter}" />
 				</p:selectOneMenu>
 
 			</div>
-			
-			-->
+
+			<!-- Clave Producto -->
+			<div class="field col-6">
+				<p:outputLabel for="@next" value="Clave de producto (Concepto)"
+					indicateRequired="true" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:autoComplete id="ClaveProducto" maxResults="5"
+					value="#{productoBean.producto.concepto}"
+					completeMethod="#{datosFormulario.completaClavesProducto}"
+					scrollHeight="250" required="true"
+					requiredMessage="Ingrese el dato">
+				</p:autoComplete>
+			</div>
+
+
 
 			<!-- Input Drescripcion -->
 			<div class="field col-12">
@@ -76,6 +91,20 @@
 					value="#{productoBean.producto.cantidad}" maxlength="5"
 					minValue="0" decimalPlaces="0" label="Cantidad" required="true"
 					requiredMessage="Ingresa un valor valido" />
+			</div>
+
+			<!-- Clave Unidad -->
+			<div class="field col-6">
+				<p:outputLabel for="@next" value="Clave de unidad"
+					indicateRequired="true" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:autoComplete id="ClaveUnidad" maxResults="5"
+					value="#{productoBean.producto.claveUnidad}"
+					completeMethod="#{datosFormulario.completaClavesUnidad}"
+					scrollHeight="250" required="true"
+					requiredMessage="Ingrese el dato">
+				</p:autoComplete>
 			</div>
 
 		</p:outputPanel>
