@@ -1,6 +1,7 @@
 package com.david.tienda.entidades;
 
 import java.time.LocalDateTime;
+
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,9 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "productos")
@@ -45,9 +49,13 @@ public class Producto {
 	@Size(min = 4, max = 12)
 	private String sku;
 
-	@NotNull
 	@Column(name = "fecha_registro")
+	@CreationTimestamp
 	private LocalDateTime fechaRegistro;
+
+	@Column(name = "fecha_modificacion")
+	@UpdateTimestamp
+	private LocalDateTime fechaModificacion;
 
 	@NotNull
 	@Size(max = 4)
@@ -68,7 +76,8 @@ public class Producto {
 	}
 
 	public Producto(Long idProducto, String concepto, String nombre, Categoria categoria, String descripcion,
-			String sku, LocalDateTime fechaRegistro, String claveUnidad, int cantidad, double precio) {
+			String sku, LocalDateTime fechaRegistro, LocalDateTime fechaModificacion, String claveUnidad, int cantidad,
+			double precio) {
 		super();
 		this.idProducto = idProducto;
 		this.concepto = concepto;
@@ -77,6 +86,7 @@ public class Producto {
 		this.descripcion = descripcion;
 		this.sku = sku;
 		this.fechaRegistro = fechaRegistro;
+		this.fechaModificacion = fechaModificacion;
 		this.claveUnidad = claveUnidad;
 		this.cantidad = cantidad;
 		this.precio = precio;
@@ -164,6 +174,14 @@ public class Producto {
 		this.precio = precio;
 	}
 
+	public LocalDateTime getFechaModificacion() {
+		return fechaModificacion;
+	}
+
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(idProducto);
@@ -185,7 +203,8 @@ public class Producto {
 	public String toString() {
 		return "Producto [idProducto=" + idProducto + ", concepto=" + concepto + ", nombre=" + nombre + ", categoria="
 				+ categoria + ", descripcion=" + descripcion + ", sku=" + sku + ", fechaRegistro=" + fechaRegistro
-				+ ", claveUnidad=" + claveUnidad + ", cantidad=" + cantidad + ", precio=" + precio + "]";
+				+ ", fechaModificacion=" + fechaModificacion + ", claveUnidad=" + claveUnidad + ", cantidad=" + cantidad
+				+ ", precio=" + precio + "]";
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.david.tienda.beans;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -71,8 +70,7 @@ public class ProductoBean implements Serializable {
 			if (producto.getIdProducto() != null)
 				msg = "Actualizado";
 
-			System.out.println(obtenerClave(producto.getConcepto()));
-			//servicioProducto.guardar(producto);
+			servicioProducto.guardar(producto);
 
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
 			PrimeFaces.current().ajax().update(":messages");
@@ -102,18 +100,6 @@ public class ProductoBean implements Serializable {
 		buscar();
 	}
 
-	public String obtenerClave(String palabra) {
-		String clave = null;
-
-		char[] cadena = palabra.toCharArray();
-		for (int i = 0; i < cadena.length; i++) {
-			if (Character.isDigit(cadena[i])) {
-				clave += cadena[i];
-			}
-		}
-		return clave;
-
-	}
 
 	// getters and setters
 	public Producto getProducto() {
