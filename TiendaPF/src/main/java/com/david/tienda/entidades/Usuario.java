@@ -19,6 +19,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -28,59 +31,62 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_usuario")
 	private Long idUsuario;
-	
+
 	@NotNull
 	@Max(3)
 	@Min(1)
 	private int nivel;
 
 	@NotEmpty
-	@Size(min=4,max = 50)
+	@Size(min = 4, max = 50)
 	private String nombre;
-	
+
 	@NotNull
-	@Size(min=4,max = 50)
+	@Size(min = 4, max = 50)
 	private String appaterno;
-	
+
 	@NotNull
-	@Size(min=4,max = 50)
+	@Size(min = 4, max = 50)
 	private String apmaterno;
-	
+
 	@NotNull
 	@Max(150)
 	private int edad;
-	
-	@Size(min=1,max = 1)
+
+	@Size(min = 1, max = 1)
 	private String sexo;
-	
-	@Size(min=12,max = 13)
+
+	@Size(min = 12, max = 13)
 	private String rfc;
-	
+
 	@NotNull
-	@Size(min=4,max = 20)
+	@Size(min = 4, max = 20)
 	private String username;
-	
+
 	@NotNull
-	@Size(min=8,max = 20)
+	@Size(min = 8, max = 20)
 	private String password;
-	
-	@JoinColumn(name="contacto_id", referencedColumnName = "id_contacto")
-    @ManyToOne(cascade = CascadeType.ALL)
+
+	@JoinColumn(name = "contacto_id", referencedColumnName = "id_contacto")
+	@ManyToOne(cascade = CascadeType.ALL)
 	@Valid
 	private Contacto contacto;
-	
-	@JoinColumn(name="direccion_id", referencedColumnName = "id_direccion")
-    @ManyToOne(cascade = CascadeType.ALL)
+
+	@JoinColumn(name = "direccion_id", referencedColumnName = "id_direccion")
+	@ManyToOne(cascade = CascadeType.ALL)
 	@Valid
 	private Direccion direccion;
-	
-	@NotNull
+
+	@CreationTimestamp
 	private LocalDateTime fechaRegistro;
+
+	@UpdateTimestamp
+	private LocalDateTime fechaModificacion;
 
 	// constructores----------------
 	public Usuario() {
-		this.contacto= new Contacto();
-		this.direccion= new Direccion();
+		this.contacto = new Contacto();
+		this.direccion = new Direccion();
 	}
 
 	public Usuario(Long idUsuario, int nivel, String nombre, String appaterno, String apmaterno, int edad, String sexo,
@@ -208,6 +214,14 @@ public class Usuario {
 		this.fechaRegistro = fechaRegistro;
 	}
 
+	public LocalDateTime getFechaModificacion() {
+		return fechaModificacion;
+	}
+
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(idUsuario, rfc);
@@ -230,7 +244,7 @@ public class Usuario {
 		return "Usuario [idUsuario=" + idUsuario + ", nivel=" + nivel + ", nombre=" + nombre + ", appaterno="
 				+ appaterno + ", apmaterno=" + apmaterno + ", edad=" + edad + ", sexo=" + sexo + ", rfc=" + rfc
 				+ ", username=" + username + ", password=" + password + ", contacto=" + contacto + ", direccion="
-				+ direccion + ", fechaRegistro=" + fechaRegistro + "]";
+				+ direccion + ", fechaRegistro=" + fechaRegistro + ", fechaModificacion=" + fechaModificacion + "]";
 	}
 
 }
