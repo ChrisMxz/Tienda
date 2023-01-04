@@ -102,6 +102,7 @@
 					<!-- Tipo de busqueda -->
 					<div class="field col-12">
 						<p:outputLabel for="@next" value="Busqueda" />
+						<!-- Tipo de busqueda para productos -->
 						<p:selectOneMenu id="tipo-buscar-productos"
 							value="#{productoBean.filtro}"
 							rendered="#{!opcionesMenu.categoriaTab}">
@@ -110,12 +111,23 @@
 							<f:selectItem itemLabel="#{msg['producto.sku']}" itemValue="3" />
 							<p:ajax event="itemSelect" listener="#{productoBean.buscar}" />
 						</p:selectOneMenu>
+						<!-- Tipo de busqueda para categorias -->
 						<p:selectOneMenu id="tipo-buscar-categorias"
 							value="#{categoriaBean.filtro}"
 							rendered="#{opcionesMenu.categoriaTab}">
 							<f:selectItem itemLabel="#{msg['producto.id']}" itemValue="1" />
 							<f:selectItem itemLabel="#{msg['producto.nombre']}" itemValue="2" />
 							<p:ajax event="itemSelect" listener="#{categoriaBean.buscar}" />
+						</p:selectOneMenu>
+						<!-- Filtro para productos -->
+						<p:outputLabel for="@next" value="#{msg['producto.categoria']}"
+							rendered="#{!opcionesMenu.categoriaTab}" />
+						<p:selectOneMenu value="#{productoBean.categoria}"
+							id="filtro-categorias" rendered="#{!opcionesMenu.categoriaTab}">
+							<f:selectItem itemLabel="#{msg['texto.todo']}" Value="#{null}" />
+							<f:selectItems value="#{categoriaBean.listaCategorias}" var="c"
+								itemValue="#{c.idCategoria}" itemLabel="#{c.nombre}" />
+							<p:ajax event="itemSelect" listener="#{productoBean.buscar}" />
 						</p:selectOneMenu>
 					</div>
 

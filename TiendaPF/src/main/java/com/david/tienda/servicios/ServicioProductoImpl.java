@@ -70,9 +70,8 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 		Long id = null;
 		em = getEntityManager();
 		List<Producto> productos = null;
-
 		// existe un texto que buscar
-		if (texto!=null&&!texto.isEmpty()) {
+		if (texto != null && !texto.isEmpty()) {
 			// Busqueda por id
 			if (filtro == 1) {
 				consulta = consulta + " where p.idProducto like:id";
@@ -80,7 +79,7 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 					id = Long.parseLong(texto);
 
 				} catch (Exception e) {
-					System.out.println("Error al pasear id: " + e);
+
 				}
 			}
 
@@ -118,9 +117,11 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 				consulta = consulta + " where p.categoria.idCategoria like:idCat";
 				productos = em.createQuery(consulta, Producto.class).setParameter("idCat", categoria)
 						.setMaxResults(limite).getResultList();
+			} else {
+				// todos los productos sin filtro
+				productos = em.createQuery(consulta, Producto.class).setMaxResults(limite).getResultList();
 			}
-			// todos los productos sin filtro
-			productos = em.createQuery(consulta, Producto.class).setMaxResults(limite).getResultList();
+
 		}
 
 		return productos;

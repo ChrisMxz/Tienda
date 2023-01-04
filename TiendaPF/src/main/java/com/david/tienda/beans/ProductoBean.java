@@ -100,7 +100,6 @@ public class ProductoBean implements Serializable {
 		buscar();
 	}
 
-
 	// getters and setters
 	public Producto getProducto() {
 		return producto;
@@ -142,12 +141,8 @@ public class ProductoBean implements Serializable {
 		this.limite = limite;
 	}
 
-	public long getCategoria() {
+	public Long getCategoria() {
 		return categoria;
-	}
-
-	public void setCategoria(long categoria) {
-		this.categoria = categoria;
 	}
 
 	public String getTextoBuscar() {
