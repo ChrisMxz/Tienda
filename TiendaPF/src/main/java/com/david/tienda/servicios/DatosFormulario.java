@@ -60,17 +60,17 @@ public class DatosFormulario implements Serializable {
 		// cangando los datos
 		entidadesFederativas = cargarDatos(25, 5, 37, false, 2, 0, "Estados");
 		municipios = cargarDatos(27, 5, 0, false, 2, 0, "Municipios");
-		cargaColonias();
-		cargaCodigosPostales();
+		// cargaColonias();
+		// cargaCodigosPostales();
 
-		formasdePago = cargarDatos(0, 6, 28, true, 0, 1, "Formas de pago");
-		tiposdeComprobante = cargarDatos(2, 5, 0, true, 0, 1, "Tipo comprobante");
-		metodosdePago = cargarDatos(4, 6, 0, true, 0, 1, "Metodo Pago");
-		regimenFiscal = cargarDatos(10, 6, 0, true, 0, 1, "Regimen fiscal");
-		usoCFDI = cargarDatos(12, 6, 30, true, 0, 1, "Uso de CFDI");
+		// formasdePago = cargarDatos(0, 6, 28, true, 0, 1, "Formas de pago");
+		// tiposdeComprobante = cargarDatos(2, 5, 0, true, 0, 1, "Tipo comprobante");
+		// metodosdePago = cargarDatos(4, 6, 0, true, 0, 1, "Metodo Pago");
+		// regimenFiscal = cargarDatos(10, 6, 0, true, 0, 1, "Regimen fiscal");
+		// usoCFDI = cargarDatos(12, 6, 30, true, 0, 1, "Uso de CFDI");
 		clavesdeProducto = cargarDatos(13, 5, 0, true, 0, 1, "Claves de Productos");
 		clavesdeUnidad = cargarDatos(14, 6, 0, true, 0, 1, "Claves de unidad");
-		impuesto = cargarDatos(16, 5, 0, true, 0, 1, "Impuestos");
+		// impuesto = cargarDatos(16, 5, 0, true, 0, 1, "Impuestos");
 
 		System.out.println("--Datos Cargados--");
 
@@ -79,18 +79,18 @@ public class DatosFormulario implements Serializable {
 	@PreDestroy
 	public void desecha() {
 		System.out.println("--ELIMINANDO los datos necesarios--");
-		entidadesFederativas.removeAll(entidadesFederativas);
-		municipios.removeAll(municipios);
-		colonias.removeAll(colonias);
-		codigosPostales.removeAll(codigosPostales);
-		formasdePago.removeAll(formasdePago);
-		tiposdeComprobante.removeAll(tiposdeComprobante);
-		metodosdePago.removeAll(metodosdePago);
-		regimenFiscal.removeAll(regimenFiscal);
-		usoCFDI.removeAll(usoCFDI);
-		clavesdeProducto.removeAll(clavesdeProducto);
-		clavesdeUnidad.removeAll(clavesdeUnidad);
-		impuesto.removeAll(impuesto);
+		entidadesFederativas.clear();
+		municipios.clear();
+		colonias.clear();
+		codigosPostales.clear();
+		formasdePago.clear();
+		tiposdeComprobante.clear();
+		metodosdePago.clear();
+		regimenFiscal.clear();
+		usoCFDI.clear();
+		clavesdeProducto.clear();
+		clavesdeUnidad.clear();
+		impuesto.clear();
 	}
 
 	public void cargaColonias() {
@@ -241,8 +241,7 @@ public class DatosFormulario implements Serializable {
 
 	public List<String> completaImpuesto(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.impuesto.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
-				.collect(Collectors.toList());
+		return this.impuesto.stream().filter(t -> t.contains(texto)).collect(Collectors.toList());
 	}
 
 	public List<String> getEntidadesFederativas() {
