@@ -34,27 +34,48 @@
 
 
 
-					<p:submenu label="Ver #{opcionesMenu.limite}" icon="pi pi-eye">
-						<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
-							icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
-							<f:setPropertyActionListener value="10"
-								target="#{opcionesMenu.limite}" />
-						</p:menuitem>
-						<p:menuitem value="50 #{msg['texto.registros']}"
-							icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
-							<f:setPropertyActionListener value="50"
-								target="#{opcionesMenu.limite}" />
-						</p:menuitem>
-						<p:menuitem value="100 #{msg['texto.registros']}"
-							icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
-							<f:setPropertyActionListener value="100"
-								target="#{opcionesMenu.limite}" />
-						</p:menuitem>
-						<p:menuitem value="500 #{msg['texto.registros']}"
-							icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
-							<f:setPropertyActionListener value="500"
-								target="#{opcionesMenu.limite}" />
-						</p:menuitem>
+					<p:submenu
+						label="Ver #{opcionesMenu.limite} #{opcionesMenu.orden? 'Asc': 'Desc'}"
+						icon="pi pi-eye">
+
+						<p:submenu immediate="true" label="Cantidad" icon="pi pi-hashtag">
+							<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
+								icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
+								<f:setPropertyActionListener value="10"
+									target="#{opcionesMenu.limite}" />
+							</p:menuitem>
+							<p:menuitem value="50 #{msg['texto.registros']}"
+								icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
+								<f:setPropertyActionListener value="50"
+									target="#{opcionesMenu.limite}" />
+							</p:menuitem>
+							<p:menuitem value="100 #{msg['texto.registros']}"
+								icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
+								<f:setPropertyActionListener value="100"
+									target="#{opcionesMenu.limite}" />
+							</p:menuitem>
+							<p:menuitem value="500 #{msg['texto.registros']}"
+								icon="pi pi-database" action="#{opcionesMenu.estableceLimite}">
+								<f:setPropertyActionListener value="500"
+									target="#{opcionesMenu.limite}" />
+							</p:menuitem>
+						</p:submenu>
+						<p:submenu label="Orden" icon="pi pi-sort-alt">
+
+							<p:menuitem value="Ascendente" icon="pi pi-sort-numeric-up"
+								action="#{opcionesMenu.estableceOrden}">
+								<f:setPropertyActionListener value="true"
+									target="#{opcionesMenu.orden}" />
+							</p:menuitem>
+							<p:menuitem value="Descendente"
+								icon="pi pi-sort-numeric-down-alt"
+								action="#{opcionesMenu.estableceOrden}">
+								<f:setPropertyActionListener value="false"
+									target="#{opcionesMenu.orden}" />
+							</p:menuitem>
+
+						</p:submenu>
+
 
 					</p:submenu>
 
@@ -145,6 +166,10 @@
 						src="/resources/paginas/productos/formularioProducto.xhtml" />
 
 					<f:facet name="footer">
+						<p:staticMessage severity="info" summary="Ultima Modificacion:"
+							styleClass="text-xs p-1"
+							detail="#{productoBean.producto.fechaModificacion}"
+							rendered="#{productoBean.producto.fechaModificacion!=null}" />
 						<p:commandButton id="btn-agregar" icon="pi pi-save"
 							value="Guardar" validateClient="true"
 							update=":formulario-productos:detalles"

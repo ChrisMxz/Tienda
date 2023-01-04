@@ -21,10 +21,16 @@ public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Catego
 	}
 
 	@Override
-	public List<Categoria> listarPor(int filtro, String texto, int limite) {
+	public List<Categoria> listarPor(int filtro, String texto, int limite, boolean orden) {
 		String consulta = "SELECT c FROM Categoria c";
 		em = getEntityManager();
 		List<Categoria> categorias = new ArrayList<>();
+		String ord;
+
+		if (orden)
+			ord = "asc";
+		else
+			ord = "desc";
 
 		// no hay texto que buscar
 
@@ -32,7 +38,7 @@ public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Catego
 
 			// Busqueda por id
 			if (filtro == 1) {
-				consulta = consulta + " where c.idCategoria like:id";
+				consulta = consulta + " where c.idCategoria like:id ORDER BY c.idCategoria " + ord;
 				try {
 					Long id;
 					id = Long.parseLong(texto);
@@ -45,13 +51,14 @@ public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Catego
 
 			// Busqueda por nombre/descripcion
 			if (filtro == 2) {
-				consulta = consulta + " where c.nombre like:texto";
+				consulta = consulta + " where c.nombre like:texto ORDER BY c.idCategoria " + ord;
 
 				categorias = em.createQuery(consulta, Categoria.class).setParameter("texto", "%" + texto + "%")
 						.setMaxResults(limite).getResultList();
 			}
 
 		} else {
+			consulta = consulta + " ORDER BY c.idCategoria " + ord;
 			categorias = em.createQuery(consulta, Categoria.class).setMaxResults(limite).getResultList();
 		}
 

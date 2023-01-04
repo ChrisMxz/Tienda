@@ -20,13 +20,13 @@ public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario, 
 	}
 
 	@Override
-	public List<Usuario> listarPor(int filtro, String texto, int limite) {
+	public List<Usuario> listarPor(int filtro, String texto, int limite, boolean orden) {
 		String consulta = "SELECT u FROM Usuario u";
 		em = getEntityManager();
 		List<Usuario> usuarios = null;
 
 		// existe un texto que buscar
-		if (texto!=null&&!texto.isEmpty()) {
+		if (texto != null && !texto.isEmpty()) {
 			// Busqueda por id
 			if (filtro == 1)
 				consulta = consulta + " where u.idUsuario like:id";

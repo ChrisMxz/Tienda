@@ -7,7 +7,7 @@ import com.david.tienda.entidades.Producto;
 
 public interface ServicioProducto extends Servicio<Producto> {
 
-	List<Producto> filtrarPor(int filtro, Long categoria, String texto, int limite);
+	List<Producto> filtrarPor(int filtro, Long categoria, String texto, int limite, boolean orden);
 	
 
 	default Optional<Producto> porId(int t) {

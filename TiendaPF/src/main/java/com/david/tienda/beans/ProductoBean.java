@@ -29,6 +29,7 @@ public class ProductoBean implements Serializable {
 	private boolean bandera;
 	private int filtro;
 	private int limite;
+	private boolean orden;
 	private Long categoria;
 	private String textoBuscar;
 
@@ -37,6 +38,7 @@ public class ProductoBean implements Serializable {
 	public void inicia() {
 		servicioProducto = new ServicioProductoImpl();
 		bandera = false;
+		orden = true; // ascendente
 		limite = 100;
 		filtro = 1;
 		categoria = null;
@@ -90,12 +92,21 @@ public class ProductoBean implements Serializable {
 	}
 
 	public void buscar() {
-		listaProductos = servicioProducto.filtrarPor(filtro, categoria, textoBuscar, limite);
+		listaProductos = servicioProducto.filtrarPor(filtro, categoria, textoBuscar, limite, orden);
 	}
 
 	public void estableceLimite() {
 		String msg = "Limite establecido " + limite + " registros ";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+		PrimeFaces.current().ajax().update(":messages", ":opciones");
+		buscar();
+	}
+
+	public void estableceOrden() {
+		String msg = "Orden ascendente ";
+		if (!orden)
+			msg = "Orden descendente ";
+		FacesContext.getCurrentInstance().addMessage("Mostrando lista", new FacesMessage(msg));
 		PrimeFaces.current().ajax().update(":messages", ":opciones");
 		buscar();
 	}
@@ -155,6 +166,14 @@ public class ProductoBean implements Serializable {
 
 	public void setCategoria(Long categoria) {
 		this.categoria = categoria;
+	}
+
+	public boolean isOrden() {
+		return orden;
+	}
+
+	public void setOrden(boolean orden) {
+		this.orden = orden;
 	}
 
 }

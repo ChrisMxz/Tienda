@@ -7,7 +7,7 @@ public interface Servicio<T> {
 	
 	List<T> listarTodo();
 
-	List<T> listarPor(int filtro, String texto, int limite);
+	List<T> listarPor(int filtro, String texto, int limite,boolean orden);
 
 	Optional<T> porId(T t);
 

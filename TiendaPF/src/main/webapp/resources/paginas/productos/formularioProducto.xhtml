@@ -10,19 +10,13 @@
 
 		<p:outputPanel class="formgrid grid" id="detalles">
 
-			<div class="field col-6">
+			<div class="field col-12">
 				<p:staticMessage severity="info" summary="Fecha de Registro:"
 					styleClass="text-xs p-1"
 					detail="#{productoBean.producto.fechaRegistro}"
 					rendered="#{productoBean.producto.fechaRegistro!=null}" />
 			</div>
-			<div class="field col-6">
-				<p:staticMessage severity="info" summary="Ultima Modificacion:"
-					styleClass="text-xs p-1"
-					detail="#{productoBean.producto.fechaModificacion}"
-					rendered="#{productoBean.producto.fechaModificacion!=null}" />
-			</div>
-			
+
 			<!-- Input Nombre -->
 			<div class="field col-12 md:col-6">
 				<p:outputLabel for="@next" value="#{msg['producto.nombre']}"
@@ -48,7 +42,7 @@
 			</div>
 
 			<!-- Clave Producto -->
-			<div class="field col-6">
+			<div class="field col-12">
 				<p:outputLabel for="@next" value="Clave de producto (Concepto)"
 					indicateRequired="true" />
 				<p:message for="@next" display="text"

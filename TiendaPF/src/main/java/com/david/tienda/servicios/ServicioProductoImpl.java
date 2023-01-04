@@ -20,7 +20,7 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 	}
 
 	@Override
-	public List<Producto> listarPor(int filtro, String texto, int limite) {
+	public List<Producto> listarPor(int filtro, String texto, int limite, boolean orden) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -65,11 +65,18 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 	}
 
 	@Override
-	public List<Producto> filtrarPor(int filtro, Long categoria, String texto, int limite) {
+	public List<Producto> filtrarPor(int filtro, Long categoria, String texto, int limite, boolean orden) {
 		String consulta = "SELECT p FROM Producto p";
 		Long id = null;
 		em = getEntityManager();
+		String ord;
 		List<Producto> productos = null;
+
+		if (orden)
+			ord = "asc";
+		else
+			ord = "desc";
+
 		// existe un texto que buscar
 		if (texto != null && !texto.isEmpty()) {
 			// Busqueda por id
@@ -94,6 +101,9 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 				consulta = consulta + " and p.categoria.idCategoria like:idCat";
 			}
 
+			// aplicando orden
+			consulta = consulta + " ORDER BY p.idProducto " + ord;
+
 			// busqueda por id y categoria
 			if (filtro == 1 && categoria != null) {
 				productos = em.createQuery(consulta, Producto.class).setParameter("id", id)
@@ -114,10 +124,12 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 
 		} else { // No hay texto que buscar
 			if (categoria != null) {
-				consulta = consulta + " where p.categoria.idCategoria like:idCat";
+				consulta = consulta + " where p.categoria.idCategoria like:idCat ORDER BY p.idProducto " + ord;
 				productos = em.createQuery(consulta, Producto.class).setParameter("idCat", categoria)
 						.setMaxResults(limite).getResultList();
 			} else {
+				// aplicando orden
+				consulta = consulta + " ORDER BY p.idProducto " + ord;
 				// todos los productos sin filtro
 				productos = em.createQuery(consulta, Producto.class).setMaxResults(limite).getResultList();
 			}

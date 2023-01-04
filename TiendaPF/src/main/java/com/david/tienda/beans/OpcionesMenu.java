@@ -22,11 +22,13 @@ public class OpcionesMenu implements Serializable {
 
 	private boolean categoriaTab;
 	private int limite;
+	private boolean orden;
 	private String msgOpc;
 
 	@PostConstruct
 	public void inicia() {
 		limite = 100;
+		orden = true;
 		categoriaTab = false;
 		msgOpc = "Categorias";
 	}
@@ -34,10 +36,15 @@ public class OpcionesMenu implements Serializable {
 	// metodos
 	public void tabCambia() {
 		categoriaTab = !categoriaTab;
-		if (categoriaTab)
+		if (categoriaTab) {// esta en categorias
 			msgOpc = "Productos";
-		else
+			limite = categoriaBean.getLimite();
+			orden = categoriaBean.isOrden();
+		} else {// esta en Productos
 			msgOpc = "Categorias";
+			limite = productoBean.getLimite();
+			orden = productoBean.isOrden();
+		}
 
 		PrimeFaces.current().ajax().update(":productos");
 		PrimeFaces.current().ajax().update(":categorias");
@@ -71,9 +78,26 @@ public class OpcionesMenu implements Serializable {
 	}
 
 	public void estableceLimite() {
-		categoriaBean.setLimite(limite);
-		productoBean.setLimite(limite);
-		productoBean.estableceLimite();
+
+		if (categoriaTab) {// esta en categorias
+			categoriaBean.setLimite(limite);
+			categoriaBean.estableceLimite();
+		} else {// esta en Productos
+			productoBean.setLimite(limite);
+			productoBean.estableceLimite();
+		}
+
+	}
+
+	public void estableceOrden() {
+		if (categoriaTab) {// esta en categorias
+			categoriaBean.setOrden(orden);
+			categoriaBean.estableceOrden();
+		} else {// esta en Productos
+			productoBean.setOrden(orden);
+			productoBean.estableceOrden();
+		}
+
 	}
 
 	public void listarTodo() {
@@ -123,6 +147,14 @@ public class OpcionesMenu implements Serializable {
 
 	public void setMsgOpc(String msgOpc) {
 		this.msgOpc = msgOpc;
+	}
+
+	public boolean isOrden() {
+		return orden;
+	}
+
+	public void setOrden(boolean orden) {
+		this.orden = orden;
 	}
 
 }
