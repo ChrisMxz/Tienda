@@ -32,6 +32,7 @@ public class UsuarioBean implements Serializable {
 	private boolean bandera;
 	private int filtro;
 	private int limite;
+	private boolean orden;
 	private String textoBuscar;
 
 	// metodos
@@ -90,12 +91,21 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public void buscar() {
-		listaUsuarios = servicioUsuario.listarPor(filtro, textoBuscar, limite);
+		listaUsuarios = servicioUsuario.listarPor(filtro, textoBuscar, limite, orden);
 	}
 
 	public void estableceLimite() {
 		String msg = "Limite establecido " + limite + " registros ";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+		PrimeFaces.current().ajax().update(":usuarios:messages", ":opciones:menu-opciones");
+		buscar();
+	}
+
+	public void estableceOrden() {
+		String msg = "Orden ascendente ";
+		if (!orden)
+			msg = "Orden descendente ";
+		FacesContext.getCurrentInstance().addMessage("Mostrando lista", new FacesMessage(msg));
 		PrimeFaces.current().ajax().update(":usuarios:messages", ":opciones:menu-opciones");
 		buscar();
 	}
@@ -186,6 +196,14 @@ public class UsuarioBean implements Serializable {
 
 	public void setTextoBuscar(String textoBuscar) {
 		this.textoBuscar = textoBuscar;
+	}
+
+	public boolean isOrden() {
+		return orden;
+	}
+
+	public void setOrden(boolean orden) {
+		this.orden = orden;
 	}
 
 }

@@ -22,8 +22,12 @@ public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario, 
 	@Override
 	public List<Usuario> listarPor(int filtro, String texto, int limite, boolean orden) {
 		String consulta = "SELECT u FROM Usuario u";
+		String ord = "asc";
 		em = getEntityManager();
 		List<Usuario> usuarios = null;
+
+		if (!orden)
+			ord = "desc";
 
 		// existe un texto que buscar
 		if (texto != null && !texto.isEmpty()) {
@@ -43,6 +47,9 @@ public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario, 
 			if (filtro == 5)
 				consulta = consulta + " where u.contacto.email like:texto";
 
+			// aplicando orden
+			consulta = consulta + " ORDER BY u.idUsuario " + ord;
+
 			if (filtro != 1) {
 				usuarios = em.createQuery(consulta, Usuario.class).setParameter("texto", "%" + texto + "%")
 						.setMaxResults(limite).getResultList();
@@ -57,6 +64,8 @@ public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario, 
 				}
 			}
 		} else {
+			// aplicando orden
+			consulta = consulta + " ORDER BY u.idUsuario " + ord;
 			usuarios = em.createQuery(consulta, Usuario.class).setMaxResults(limite).getResultList();
 		}
 
