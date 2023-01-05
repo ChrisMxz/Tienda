@@ -36,7 +36,7 @@ public class LoginFiltro implements Filter {
 		try {
 			HttpServletRequest reqt = (HttpServletRequest) request;
 			HttpServletResponse resp = (HttpServletResponse) response;
-			Optional<String> username = SessionUtils.getUsername((HttpServletRequest) request);
+			Optional<Boolean> username = SessionUtils.getBandera((HttpServletRequest) request);
 
 			if (username.isPresent()) {
 				// System.out.println(" !Sesion: "+username.get());
@@ -48,7 +48,7 @@ public class LoginFiltro implements Filter {
 				}
 
 			} else {
-				//System.out.println("  !Sin iniciar sesion");
+				// System.out.println(" !Sin iniciar sesion");
 				if (!reqt.getRequestURI().endsWith(LOGIN_PAGE)) {
 					resp.sendRedirect(reqt.getContextPath() + INDEX);
 				} else {

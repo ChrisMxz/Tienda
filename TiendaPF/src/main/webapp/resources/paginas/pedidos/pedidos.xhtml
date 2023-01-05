@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantilla.xhtml">
+
+	<ui:define name="contenido">
+		<div class="container">
+			<h:panelGrid columns="1">
+				<f:facet name="header">
+					<h:outputText value="Pagina de pedidos"></h:outputText>
+				</f:facet>
+				
+				<p:outputPanel rendered="#{sesionUsuario.usuario.nivel==1}">
+				<h:outputText value="Nivel 1"/>
+				</p:outputPanel>
+				
+				<p:outputPanel rendered="#{sesionUsuario.usuario.nivel==2}">
+				<h:outputText value="Nivel 2"/>
+				</p:outputPanel>
+				
+				<p:outputPanel rendered="#{sesionUsuario.usuario.nivel==3}">
+				<p:autoUpdate></p:autoUpdate>
+				<h:outputText value="Nivel 3"/>
+				</p:outputPanel>
+
+			</h:panelGrid>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -10,10 +10,27 @@
 	<ui:define name="contenido">
 		<div class="container">
 			<h:panelGrid columns="1">
-				<f:facet name="header">
-					<h:outputText value="Bienvenido: ${username}"></h:outputText>
-				</f:facet>
-			
+				<p:card style="width: 25rem; margin-bottom: 2em">
+					<f:facet name="title">
+        Bienvenido
+    </f:facet>
+
+					<p:panelGrid columns="2">
+
+						<h:outputText value="Nombre:" />
+						<h:outputText value="#{sesionUsuario.usuario.nombre}" />
+
+						<h:outputText value="Apellido:" />
+						<h:outputText value="#{sesionUsuario.usuario.appaterno}" />
+
+						<h:outputText value="Usuario:" />
+						<h:outputText value="#{sesionUsuario.usuario.username}" />
+
+						<h:outputText value="Nivel:" />
+						<h:outputText value="#{sesionUsuario.usuario.nivel}" />
+					</p:panelGrid>
+				</p:card>
+
 
 			</h:panelGrid>
 		</div>

@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -24,12 +25,15 @@ public class LoginBean implements Serializable {
 	private String user;
 	private String pass;
 	private ServicioUsuario servicioUsuario;
+	@ManagedProperty(value = "#{sesionUsuario}")
+	private SesionUsuario sesionUsuario;
 
 	// metodos
 
 	@PostConstruct
 	public void inicia() {
 		servicioUsuario = new ServicioUsuarioImpl();
+
 	}
 
 	public String login() {
@@ -37,15 +41,15 @@ public class LoginBean implements Serializable {
 		try {
 			Optional<Usuario> u = servicioUsuario.login(user, pass);
 			if (u.isPresent()) {
-				SesionUsuario sesion = new SesionUsuario();
-				sesion.setUsuario(u.get());
+
+				sesionUsuario.setUsuario(u.get());// agregando al bean de sesion
+				sesionUsuario.setBandera(true);
 
 				HttpSession session = (HttpSession) SessionUtils.getRequest().getSession();
-				session.setAttribute("username", user);
 				session.setAttribute("bandera", true);
-				System.out.println(">Sesion: " + sesion.getUsuario());
+				System.out.println(">Sesion: " + sesionUsuario.getUsuario());
 
-				return "/index.xhtml?faces-redirect=true";
+				return "/resources/paginas/home.xhtml?faces-redirect=true";
 			} else {
 				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "¡Usuario o contraseña inconrrectos!",
 						null);
@@ -62,12 +66,12 @@ public class LoginBean implements Serializable {
 
 	public String logout() {
 		System.out.println(">logout");
-		Optional<String> username = SessionUtils.getUsername(SessionUtils.getRequest());
-		if (username.isPresent()) {
+		Optional<Boolean> bandera = SessionUtils.getBandera(SessionUtils.getRequest());
+		if (bandera.isPresent()) {
+			sesionUsuario.setUsuario(null);
+			sesionUsuario.setBandera(false);
 			HttpSession session = SessionUtils.getRequest().getSession();
-			session.removeAttribute("username");
 			session.removeAttribute("bandera");
-
 			session.invalidate();
 		}
 		return "/index.xhtml?faces-redirect=true";
@@ -89,6 +93,14 @@ public class LoginBean implements Serializable {
 
 	public void setPass(String pass) {
 		this.pass = pass;
+	}
+
+	public SesionUsuario getSesionUsuario() {
+		return sesionUsuario;
+	}
+
+	public void setSesionUsuario(SesionUsuario sesionUsuario) {
+		this.sesionUsuario = sesionUsuario;
 	}
 
 }

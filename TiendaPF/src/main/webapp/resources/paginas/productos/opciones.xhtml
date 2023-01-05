@@ -22,14 +22,16 @@
 					<p:autoUpdate></p:autoUpdate>
 
 					<p:menuitem id="opc-agregar" value="Agregar" icon="pi pi-plus"
-						actionListener="#{opcionesMenu.nuevo}">
+						actionListener="#{opcionesMenu.nuevo}"
+						rendered="#{sesionUsuario.usuario.nivel!=1}">
 					</p:menuitem>
 
 					<p:menuitem id="opc-refrescar" value="Recargar"
 						icon="pi pi-refresh" actionListener="#{opcionesMenu.refrescar}">
 					</p:menuitem>
 					<p:menuitem id="opc-categoria" value="#{opcionesMenu.msgOpc}"
-						icon="pi pi-th-large" actionListener="#{opcionesMenu.tabCambia}">
+						icon="pi pi-th-large" actionListener="#{opcionesMenu.tabCambia}"
+						rendered="#{sesionUsuario.usuario.nivel!=1}">
 					</p:menuitem>
 
 

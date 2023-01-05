@@ -9,31 +9,39 @@
 		<h:form>
 			<p:menubar>
 
-				<p:menuitem value="Inicio" outcome="/index.xhtml" icon="pi pi-home">
+				<p:menuitem value="Inicio" outcome="/resources/paginas/home.xhtml"
+					icon="pi pi-home" rendered="#{sesionUsuario.bandera}">
 				</p:menuitem>
 				<p:menuitem value="Usuarios"
 					outcome="/resources/paginas/usuarios/usuarios.xhtml"
-					icon="pi pi-user">
+					icon="pi pi-user"
+					rendered="#{sesionUsuario.usuario.nivel!=1 and sesionUsuario.bandera}">
 				</p:menuitem>
 				<p:menuitem value="#{msg['titulo.productos']}"
 					outcome="/resources/paginas/productos/productos.xhtml"
-					icon="pi pi-list">
+					icon="pi pi-list" rendered="#{sesionUsuario.bandera}">
 				</p:menuitem>
-				<p:menuitem value="Pedidos" icon="pi pi-briefcase" rendered="false">
+				<p:menuitem value="Pedidos"
+					outcome="/resources/paginas/pedidos/pedidos.xhtml"
+					icon="pi pi-shopping-cart" rendered="#{sesionUsuario.bandera}">
 				</p:menuitem>
 
 				<f:facet name="options">
 
-					<p:chip id="avatar" label="${username}" icon="pi pi-user"
+					<p:chip id="avatar" label="#{sesionUsuario.usuario.nombre}"
+						icon="pi pi-user"
 						image="https://cdn4.iconfinder.com/data/icons/diversity-v2-0-volume-03/64/superhero-spiderman-comics-512.png"
 						styleClass="mr-2" />
 
 					<p:contextMenu for="avatar" event="click">
-						<p:menuitem value="Perfil" rendered="${bandera}" icon="pi pi-user" />
+						<p:autoUpdate></p:autoUpdate>
+						<p:menuitem value="Perfil" rendered="#{sesionUsuario.bandera}"
+							icon="pi pi-user" />
 						<p:menuitem value="#{msg['texto.salir']}" icon="pi pi-sign-out"
-							rendered="${bandera}" action="#{loginBean.logout}" />
+							rendered="#{sesionUsuario.bandera}" action="#{loginBean.logout}" />
 						<p:menuitem value="#{msg['texto.login']}" icon="pi pi-sign-in"
-							rendered="${!bandera}" onclick="PF('dialogoLogin').show()" />
+							rendered="#{!sesionUsuario.bandera}"
+							onclick="PF('dialogoLogin').show()" />
 					</p:contextMenu>
 				</f:facet>
 			</p:menubar>

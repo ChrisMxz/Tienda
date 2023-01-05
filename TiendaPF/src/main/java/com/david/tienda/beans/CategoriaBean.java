@@ -72,10 +72,19 @@ public class CategoriaBean implements Serializable {
 	}
 
 	public void eliminar() {
-		servicioCategoria.eliminar(categoria);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
+		String msg;
+		if (listaCategorias.size() > 0) {
+			msg = "Hay Productos en esta categoria";
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "¡No se puede eliminar!", msg));
+		} else {
+			msg = "Categoria " + categoria.getNombre();
+			servicioCategoria.eliminar(categoria);
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Eliminado", msg));
+			listar();
+		}
 		PrimeFaces.current().ajax().update(":messages");
-		listar();
 	}
 
 	public void buscar() {
@@ -152,5 +161,4 @@ public class CategoriaBean implements Serializable {
 		this.orden = orden;
 	}
 
-	
 }

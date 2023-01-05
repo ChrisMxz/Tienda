@@ -46,6 +46,16 @@ public class SessionUtils {
 		return Optional.empty();
 	}
 
+	public static Optional<Boolean> getBandera(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		boolean bandera = (boolean) session.getAttribute("bandera");
+		if (bandera != false) {
+			return Optional.of(bandera);
+		}
+		return Optional.empty();
+
+	}
+
 	public static Connection getconexion() { // para pool
 		return (Connection) SessionUtils.getRequest().getAttribute("conn");
 	}

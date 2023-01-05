@@ -60,8 +60,8 @@ public class DatosFormulario implements Serializable {
 		// cangando los datos
 		entidadesFederativas = cargarDatos(25, 5, 37, false, 2, 0, "Estados");
 		municipios = cargarDatos(27, 5, 0, false, 2, 0, "Municipios");
-		// cargaColonias();
-		// cargaCodigosPostales();
+		cargaColonias();
+		cargaCodigosPostales();
 
 		// formasdePago = cargarDatos(0, 6, 28, true, 0, 1, "Formas de pago");
 		// tiposdeComprobante = cargarDatos(2, 5, 0, true, 0, 1, "Tipo comprobante");
@@ -240,7 +240,7 @@ public class DatosFormulario implements Serializable {
 	}
 
 	public List<String> completaImpuesto(String texto) {
-		String textoLowerCase = texto.toLowerCase();
+
 		return this.impuesto.stream().filter(t -> t.contains(texto)).collect(Collectors.toList());
 	}
 

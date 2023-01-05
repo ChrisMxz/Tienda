@@ -18,6 +18,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @Entity
 @Table(name = "pedidos")
 public class Pedido {
@@ -37,8 +40,10 @@ public class Pedido {
 	@Valid
 	private Usuario cliente;
 
-	@NotNull
+	@CreationTimestamp
 	private LocalDateTime fechaPedido;
+	@UpdateTimestamp
+	private LocalDateTime fechaModificacion;
 
 	// @OneToMany(mappedBy = "items", cascade = CascadeType.ALL, fetch =
 	// FetchType.LAZY)
@@ -57,6 +62,7 @@ public class Pedido {
 	// constructores----------------
 	public Pedido() {
 		super();
+		this.cliente = new Usuario();
 	}
 
 	public Pedido(Long idPedido, String estatus, Usuario cliente, LocalDateTime fechaPedido, List<Item> listaItems,
@@ -154,6 +160,14 @@ public class Pedido {
 		this.total = total;
 	}
 
+	public LocalDateTime getFechaModificacion() {
+		return fechaModificacion;
+	}
+
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(idPedido);
@@ -174,8 +188,8 @@ public class Pedido {
 	@Override
 	public String toString() {
 		return "Pedido [idPedido=" + idPedido + ", estatus=" + estatus + ", cliente=" + cliente + ", fechaPedido="
-				+ fechaPedido + ", cantidadProductos=" + cantidadProductos + ", descuento=" + descuento + ", iva=" + iva
-				+ ", subTotal=" + subTotal + ", total=" + total + "]";
+				+ fechaPedido + ", fechaModificacion=" + fechaModificacion + ", cantidadProductos=" + cantidadProductos
+				+ ", descuento=" + descuento + ", iva=" + iva + ", subTotal=" + subTotal + ", total=" + total + "]";
 	}
 
 }

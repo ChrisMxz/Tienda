@@ -72,7 +72,8 @@
 						<h:outputText value="#{producto.cantidad}" />
 					</p:column>
 					<p:column headerText="#{msg['producto.fechaRegistro']}"
-						sortBy="#{producto.fechaRegistro}">
+						sortBy="#{producto.fechaRegistro}"
+						rendered="#{sesionUsuario.usuario.nivel!=1}">
 						<h:outputText value="#{producto.fechaRegistro}" />
 					</p:column>
 				</p:dataTable>
@@ -82,9 +83,12 @@
 					<p:menuitem id="opc-ver-producto" value="Ver" icon="pi pi-eye"
 						rendered="false">
 					</p:menuitem>
+					<p:menuitem id="opc-carrito-producto" value="Agregar a Pedido DEV" icon="pi pi-eye">
+					</p:menuitem>
 					<p:menuitem id="opc-editar-producto" value="Editar"
 						icon="pi pi-pencil" update=":formulario-productos"
-						oncomplete="PF('dialogoProductosForm').show()">
+						oncomplete="PF('dialogoProductosForm').show()"
+						rendered="#{sesionUsuario.usuario.nivel!=1}">
 						<p:resetInput target=":formulario-productos" />
 
 					</p:menuitem>
@@ -92,7 +96,8 @@
 						icon="pi pi-upload" rendered="false">
 					</p:menuitem>
 					<p:menuitem value="Eliminar" update="dt-productos"
-						icon="pi pi-trash" actionListener="#{productoBean.eliminar}">
+						icon="pi pi-trash" actionListener="#{productoBean.eliminar}"
+						rendered="#{sesionUsuario.usuario.nivel==3}">
 						<p:confirm header="Confirmacion"
 							message="¿Seguro que desea eliminar el producto?"
 							icon="pi pi-info-circle" />

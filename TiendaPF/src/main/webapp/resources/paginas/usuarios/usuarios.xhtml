@@ -53,10 +53,12 @@
 					<p:column headerText="Nombre" sortBy="#{usuario.nombre}">
 						<h:outputText value="#{usuario.nombre}" />
 					</p:column>
-					<p:column headerText="Apellido Paterno" sortBy="#{usuario.appaterno}">
+					<p:column headerText="Apellido Paterno"
+						sortBy="#{usuario.appaterno}">
 						<h:outputText value="#{usuario.appaterno}" />
 					</p:column>
-					<p:column headerText="Apellido Materno" sortBy="#{usuario.apmaterno}">
+					<p:column headerText="Apellido Materno"
+						sortBy="#{usuario.apmaterno}">
 						<h:outputText value="#{usuario.apmaterno}" />
 					</p:column>
 					<p:column headerText="Telefono">
@@ -65,27 +67,33 @@
 					<p:column headerText="Correo" sortBy="#{usuario.contacto.email}">
 						<h:outputText value="#{usuario.contacto.email}" />
 					</p:column>
-					<p:column headerText="Nivel" sortBy="#{usuario.nivel}">
+					<p:column headerText="Nivel" sortBy="#{usuario.nivel}" rendered="#{usuarioBean.usuario.nivel==3}">
 						<h:outputText value="#{usuario.nivel}" />
 					</p:column>
 				</p:dataTable>
 
 				<!-- opciones al hacer click derecho -->
 				<p:contextMenu for="dt-usuarios">
-					<p:menuitem id="opc-ver-usuario" value="Ver" icon="pi pi-eye" rendered="false">
+					<p:menuitem id="opc-ver-usuario" value="Ver (dev)" icon="pi pi-eye">
 					</p:menuitem>
 					<p:menuitem id="opc-editar-usuario" value="Editar"
 						icon="pi pi-pencil" update=":formulario-usuarios"
-						oncomplete="PF('dialogoForm').show()">
+						oncomplete="PF('dialogoForm').show()"
+						rendered="#{sesionUsuario.usuario.nivel==3}">
 						<p:resetInput target=":formulario-usuarios" />
 
 					</p:menuitem>
 					<p:menuitem id="opc-exportar-usuario" value="Exportar XML"
-						icon="pi pi-upload" actionListener="#{usuarioBean.exportar}">
-					
+						icon="pi pi-upload" actionListener="#{usuarioBean.exportar}"
+						rendered="#{sesionUsuario.usuario.nivel==3}">
+
+					</p:menuitem>
+					<p:menuitem id="opc-nuevoPedido-usuario" value="Nuevo Pedido (dev)"
+						icon="pi pi-shopping-cart">
 					</p:menuitem>
 					<p:menuitem value="Eliminar" update="dt-usuarios"
-						icon="pi pi-trash" actionListener="#{usuarioBean.eliminar}">
+						icon="pi pi-trash" actionListener="#{usuarioBean.eliminar}"
+						rendered="#{sesionUsuario.usuario.nivel==3}">
 						<p:confirm header="Confirmacion"
 							message="¿Seguro que desea eliminar al Alumno?"
 							icon="pi pi-info-circle" />
