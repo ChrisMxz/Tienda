@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="card ui-fluid">
+
+		<p:outputPanel class="formgrid grid" id="detalles">
+
+			<div class="field col-12">
+				<p:staticMessage severity="info" summary="Fecha de Registro:"
+					styleClass="text-xs p-1"
+					detail="#{productoBean.producto.fechaRegistro}"
+					rendered="#{productoBean.producto.fechaRegistro!=null}" />
+			</div>
+
+			<!-- Input Nombre -->
+			<div class="field col-12 md:col-6">
+				<p:outputLabel for="@next" value="Cliente" indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:selectOneMenu id="cliente"
+					value="#{productoBean.producto.categoria}" filter="true"
+					filterMatchMode="startsWith" class="form-select">
+					<f:selectItems value="#{categoriaBean.listaCategorias}" var="cat"
+						itemLabel="#{cat.nombre}" />
+					<f:converter binding="#{categoriaConverter}" />
+				</p:selectOneMenu>
+			</div>
+
+			<!-- Input Categoria -->
+			<div class="field col-12 md:col-6">
+				<p:outputLabel for="@next" value="#{msg['producto.categoria']}" />
+				<p:selectOneMenu id="categoria"
+					value="#{productoBean.producto.categoria}" filter="true"
+					filterMatchMode="startsWith" class="form-select">
+					<f:selectItems value="#{categoriaBean.listaCategorias}" var="cat"
+						itemLabel="#{cat.nombre}" />
+					<f:converter binding="#{categoriaConverter}" />
+				</p:selectOneMenu>
+
+			</div>
+
+			<!-- Clave Producto -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="Clave de producto (Concepto)"
+					indicateRequired="true" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:autoComplete id="ClaveProducto" maxResults="5"
+					value="#{productoBean.producto.concepto}"
+					completeMethod="#{datosFormulario.completaClavesProducto}"
+					scrollHeight="250" required="true"
+					requiredMessage="Ingrese el dato">
+				</p:autoComplete>
+			</div>
+
+
+
+			<!-- Input Drescripcion -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="#{msg['producto.descripcion']}"
+					indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputTextarea rows="5" cols="30" autoResize="false"
+					value="#{productoBean.producto.descripcion}" maxlength="200"
+					title="Ingresa descripcion" required="true"
+					requiredMessage="#{msg['input.descripcion']}" />
+			</div>
+
+			<!-- Precio -->
+			<div class="field col-12 md:col-6">
+				<p:outputLabel for="@next" value="#{msg['producto.precio']}"
+					indicateRequired="false" />
+				<p:inputNumber id="precio" value="#{productoBean.producto.precio}"
+					label="Precio" symbol="$" maxValue="100000" decimalPlaces="2"
+					minValue="0" symbolPosition="p" emptyValue="always" required="true" />
+
+			</div>
+
+			<!-- Input SKU -->
+			<div class="field col-12 md:col-6">
+				<p:outputLabel for="@next" value="#{msg['producto.sku']}"
+					indicateRequired="false" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:inputText id="sku" value="#{productoBean.producto.sku}"
+					maxlength="12" label="Sku" required="true"
+					requiredMessage="#{msg['input.sku']}" />
+			</div>
+
+			<!-- Input Cantidad -->
+			<div class="field col-12 md:col-6">
+				<p:outputLabel for="@next" value="#{msg['producto.cantidad']}"
+					indicateRequired="false" />
+				<p:inputNumber id="cantidad"
+					value="#{productoBean.producto.cantidad}" maxlength="5"
+					minValue="0" decimalPlaces="0" label="Cantidad" required="true"
+					requiredMessage="Ingresa un valor valido" />
+			</div>
+
+			<!-- Clave Unidad -->
+			<div class="field col-6">
+				<p:outputLabel for="@next" value="Clave de unidad"
+					indicateRequired="true" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:autoComplete id="ClaveUnidad" maxResults="5"
+					value="#{productoBean.producto.claveUnidad}"
+					completeMethod="#{datosFormulario.completaClavesUnidad}"
+					scrollHeight="250" required="true"
+					requiredMessage="Ingrese el dato">
+				</p:autoComplete>
+			</div>
+		</p:outputPanel>
+	</div>
+</ui:component>

@@ -18,33 +18,33 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "items")
 public class Item {
-	
+
 	// atributos---------------------
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_item")
 	private Long idItem;
-	
+
 	@NotNull
 	@Column(name = "pedido_id")
 	private Long idPedido;
-	
-	@JoinColumn(name="producto_id", referencedColumnName = "id_producto")
-    @ManyToOne(cascade = CascadeType.ALL)
+
+	@JoinColumn(name = "producto_id", referencedColumnName = "id_producto")
+	@ManyToOne(cascade = CascadeType.ALL)
 	@Valid
 	private Producto producto;
-	
+
 	@NotNull
 	private int cantidad;
-	
+
 	@Max(1000000)
 	private double subTotal;
-	
+
 	// constructores----------------
 	public Item() {
 		super();
+		this.producto = new Producto();
 	}
-
 
 	public Item(Long idItem, Long idPedido, Producto producto, int cantidad, double subTotal) {
 		super();
@@ -56,51 +56,42 @@ public class Item {
 	}
 
 	// setters and getters----------
-	
+
 	public Long getIdItem() {
 		return idItem;
 	}
-
 
 	public void setIdItem(Long idItem) {
 		this.idItem = idItem;
 	}
 
-
 	public Long getIdPedido() {
 		return idPedido;
 	}
-
 
 	public void setIdPedido(Long idPedido) {
 		this.idPedido = idPedido;
 	}
 
-
 	public Producto getProducto() {
 		return producto;
 	}
-
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
 
-
 	public int getCantidad() {
 		return cantidad;
 	}
-
 
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
 
-
 	public double getSubTotal() {
 		return subTotal;
 	}
-
 
 	public void setSubTotal(double subTotal) {
 		this.subTotal = subTotal;
@@ -128,6 +119,5 @@ public class Item {
 		return "Item [idItem=" + idItem + ", idPedido=" + idPedido + ", producto=" + producto + ", cantidad=" + cantidad
 				+ ", subTotal=" + subTotal + "]";
 	}
-	
 
 }

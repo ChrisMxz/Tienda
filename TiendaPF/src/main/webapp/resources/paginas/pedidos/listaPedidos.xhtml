@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="card">
+
+		<h:form id="pedidos">
+			<p:outputPanel id="pedidosPanel"
+				rendered="#{!opcionesMenu.categoriaTab}">
+				<!-- divider con titulo de la tabla -->
+				<p:divider align="left">
+					<div class="inline-flex align-items-center">
+						<b> <p:outputLabel value="Pedidos" />
+						</b>
+					</div>
+				</p:divider>
+
+				<div class="flex justify-content-between align-items-center pb-3">
+					<!-- Buscador -->
+					<span class="filter-container ui-input-icon-left"> <i
+						class="pi pi-search"></i> <p:inputText id="textoBuscar"
+							value="#{pedidoBean.textoBuscar}" placeholder="Buscar">
+							<p:ajax event="keyup" update="dt-pedidos" listener="#{pedidoBean.buscar}" />
+						</p:inputText>
+					</span>
+
+				</div>
+
+				<!-- Tabla de pedidos  -->
+				<p:dataTable id="dt-pedidos" var="pedido"
+					value="#{pedidoBean.listaPedidos}" rowKey="#{pedido.idPedido}"
+					selection="#{pedidoBean.pedido}" selectionMode="single"
+					paginator="true" reflow="true" rows="10" paginatorPosition="bottom"
+					rowsPerPageTemplate="5,10,15,20"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+					<p:autoUpdate />
+
+					<p:column headerText="ID Pedido" sortBy="#{pedido.idPedido}">
+						<h:outputText value="#{pedido.idPedido}" />
+					</p:column>
+					<p:column headerText="Cliente" sortBy="#{pedido.cliente.appaterno}">
+						<h:outputText
+							value="#{pedido.cliente.nombre} #{pedido.cliente.appaterno}" />
+					</p:column>
+
+					<p:column headerText="Total" sortBy="#{pedido.total}">
+						<h:outputText value="#{pedido.total}">
+							<f:convertNumber type="currency" currencySymbol="$" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Fecha" sortBy="#{pedido.fechaPedido}">
+						<h:outputText value="#{pedido.fechaPedido}" />
+					</p:column>
+				</p:dataTable>
+
+				<!-- opciones al hacer click derecho -->
+				<p:contextMenu for="dt-pedidos">
+					<p:menuitem id="opc-ver-pedido" value="Ver" icon="pi pi-eye"
+						rendered="false">
+					</p:menuitem>
+					<p:menuitem id="opc-carrito-pedido" value="Agregar a Pedido DEV"
+						icon="pi pi-eye">
+					</p:menuitem>
+					<p:menuitem id="opc-editar-pedido" value="Editar"
+						icon="pi pi-pencil">
+
+					</p:menuitem>
+					<p:menuitem id="opc-exportar-pedido" value="Exportar XML"
+						icon="pi pi-upload" rendered="false">
+					</p:menuitem>
+					<p:menuitem value="Eliminar" update="dt-pedidos" icon="pi pi-trash">
+						<p:confirm header="Confirmacion"
+							message="¿Seguro que desea eliminar el pedido?"
+							icon="pi pi-info-circle" />
+					</p:menuitem>
+				</p:contextMenu>
+
+				<!-- Dialogo de confirmacion para eliminar -->
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+					responsive="true" width="350">
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no ui-button-flat" />
+					<p:commandButton value="Si" type="button"
+						styleClass="ui-confirmdialog-yes" />
+				</p:confirmDialog>
+			</p:outputPanel>
+		</h:form>
+	</div>
+</ui:composition>
