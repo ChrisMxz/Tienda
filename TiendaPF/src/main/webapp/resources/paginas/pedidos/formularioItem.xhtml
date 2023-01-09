@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="card ui-fluid">
+
+		<p:outputPanel class="formgrid grid" id="itemPanel">
+
+			<!-- Input Nombre -->
+			<div class="field col-12 md:col-6">
+				<p:outputLabel for="@next" value="#{itemBean.item.producto.nombre}"
+					indicateRequired="true" />
+			</div>
+
+			<!-- Input Cantidad -->
+			<div class="field col-12 md:col-6">
+				<p:outputLabel for="@next" value="Cantidad" indicateRequired="false" />
+				<p:inputNumber id="cantidad" value="#{itemBean.item.cantidad}"
+					maxlength="5" minValue="0" decimalPlaces="0" label="Cantidad"
+					required="true" requiredMessage="Ingresa un valor valido" />
+			</div>
+		</p:outputPanel>
+
+	</div>
+</ui:component>

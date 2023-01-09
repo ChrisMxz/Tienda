@@ -9,6 +9,7 @@
 
 	<!-- Barra lateral derecha con opciones -->
 	<ui:define name="barraizquierda">
+		<ui:include src="/resources/paginas/pedidos/opciones.xhtml" />
 	</ui:define>
 
 	<ui:define name="barraderecha">
@@ -21,6 +22,7 @@
 
 		<p:growl id="messages" showDetail="true" />
 		<ui:include src="/resources/paginas/pedidos/listaPedidos.xhtml" />
+		<ui:include src="/resources/paginas/pedidos/formularioPedido.xhtml" />
 
 	</ui:define>
 </ui:composition>

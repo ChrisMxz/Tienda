@@ -1,121 +1,82 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 
-<ui:component xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<div class="card ui-fluid">
+	<div class="card">
+		<h:form id="formulario-pedido">
 
-		<p:outputPanel class="formgrid grid" id="detalles">
+			<p:outputPanel class="formgrid grid" id="detalles"
+				rendered="#{pedidoBean.formularioActivo}">
 
-			<div class="field col-12">
-				<p:staticMessage severity="info" summary="Fecha de Registro:"
-					styleClass="text-xs p-1"
-					detail="#{productoBean.producto.fechaRegistro}"
-					rendered="#{productoBean.producto.fechaRegistro!=null}" />
-			</div>
+				<!-- divider con titulo -->
+				<p:divider align="left">
+					<div class="inline-flex align-items-center">
+						<b> <p:outputLabel value="Pedido" />
+						</b>
+					</div>
+				</p:divider>
 
-			<!-- Input Nombre -->
-			<div class="field col-12 md:col-6">
-				<p:outputLabel for="@next" value="Cliente" indicateRequired="false" />
-				<p:message for="@next" display="text"
-					styleClass="text-xs pl-0 py-1 border-none" />
-				<p:selectOneMenu id="cliente"
-					value="#{productoBean.producto.categoria}" filter="true"
-					filterMatchMode="startsWith" class="form-select">
-					<f:selectItems value="#{categoriaBean.listaCategorias}" var="cat"
-						itemLabel="#{cat.nombre}" />
-					<f:converter binding="#{categoriaConverter}" />
-				</p:selectOneMenu>
-			</div>
+				<div class="field col-12">
+					<p:staticMessage severity="info" summary="Fecha de Registro:"
+						styleClass="text-xs p-1"
+						detail="#{pedidoBean.pedidoSeleccionado.fechaPedido}"
+						rendered="#{pedidoBean.pedidoSeleccionado.fechaPedido!=null}" />
+				</div>
+				<div class="field col-12">
+					<p:staticMessage severity="info" summary="Estatus"
+						styleClass="text-xs p-1"
+						detail="#{pedidoBean.pedidoSeleccionado.estatus}"
+						rendered="#{pedidoBean.pedidoSeleccionado.estatus!=null}" />
+				</div>
+				<!-- Input Cliente -->
+				<div class="field col-12 md:col-12">
+					<p:outputLabel for="@next" value="Cliente" />
+					<p:message for="@next" display="text"
+						styleClass="text-xs pl-0 py-1 border-none" />
+					<p:selectOneMenu value="#{pedidoBean.pedidoSeleccionado.cliente}"
+						id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
+						required="true" requiredMessage="Elige un cliente"
+						rendered="#{pedidoBean.pedidoSeleccionado.cliente.nivel!=1}">
+						<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+						<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
+							itemLabel="#{cliente.nombre}" />
+						<f:converter binding="#{clienteConverter}" />
+					</p:selectOneMenu>
+				</div>
 
-			<!-- Input Categoria -->
-			<div class="field col-12 md:col-6">
-				<p:outputLabel for="@next" value="#{msg['producto.categoria']}" />
-				<p:selectOneMenu id="categoria"
-					value="#{productoBean.producto.categoria}" filter="true"
-					filterMatchMode="startsWith" class="form-select">
-					<f:selectItems value="#{categoriaBean.listaCategorias}" var="cat"
-						itemLabel="#{cat.nombre}" />
-					<f:converter binding="#{categoriaConverter}" />
-				</p:selectOneMenu>
-
-			</div>
-
-			<!-- Clave Producto -->
-			<div class="field col-12">
-				<p:outputLabel for="@next" value="Clave de producto (Concepto)"
-					indicateRequired="true" />
-				<p:message for="@next" display="text"
-					styleClass="text-xs pl-0 py-1 border-none" />
-				<p:autoComplete id="ClaveProducto" maxResults="5"
-					value="#{productoBean.producto.concepto}"
-					completeMethod="#{datosFormulario.completaClavesProducto}"
-					scrollHeight="250" required="true"
-					requiredMessage="Ingrese el dato">
-				</p:autoComplete>
-			</div>
+				<!-- Lista de items del pedido -->
+				<ui:include src="/resources/paginas/pedidos/listaItems.xhtml" />
+			</p:outputPanel>
 
 
+		</h:form>
 
-			<!-- Input Drescripcion -->
-			<div class="field col-12">
-				<p:outputLabel for="@next" value="#{msg['producto.descripcion']}"
-					indicateRequired="false" />
-				<p:message for="@next" display="text"
-					styleClass="text-xs pl-0 py-1 border-none" />
-				<p:inputTextarea rows="5" cols="30" autoResize="false"
-					value="#{productoBean.producto.descripcion}" maxlength="200"
-					title="Ingresa descripcion" required="true"
-					requiredMessage="#{msg['input.descripcion']}" />
-			</div>
+		<h:form id="formulario-items">
+			<!-- Dialogo modal para mostrar los detalles del item -->
+			<p:dialog header="Categoria" widgetVar="dialogoItemsForm"
+				minHeight="230" minWidth="250" width="500" height="280"
+				responsive="true" showEffect="fade" modal="true" hideEffect="fade"
+				closeOnEscape="true">
 
-			<!-- Precio -->
-			<div class="field col-12 md:col-6">
-				<p:outputLabel for="@next" value="#{msg['producto.precio']}"
-					indicateRequired="false" />
-				<p:inputNumber id="precio" value="#{productoBean.producto.precio}"
-					label="Precio" symbol="$" maxValue="100000" decimalPlaces="2"
-					minValue="0" symbolPosition="p" emptyValue="always" required="true" />
+				<ui:include src="/resources/paginas/pedidos/formularioItem.xhtml" />
 
-			</div>
+				<f:facet name="footer">
+					<p:commandButton id="btn-agregar" icon="pi pi-save" value="Guardar"
+						validateClient="true" update=":formulario-items:itemPanel"
+						actionListener="#{itemBean.guardar}"
+						styleClass="ui-button-primary rounded-button">
+					</p:commandButton>
 
-			<!-- Input SKU -->
-			<div class="field col-12 md:col-6">
-				<p:outputLabel for="@next" value="#{msg['producto.sku']}"
-					indicateRequired="false" />
-				<p:message for="@next" display="text"
-					styleClass="text-xs pl-0 py-1 border-none" />
-				<p:inputText id="sku" value="#{productoBean.producto.sku}"
-					maxlength="12" label="Sku" required="true"
-					requiredMessage="#{msg['input.sku']}" />
-			</div>
+				</f:facet>
 
-			<!-- Input Cantidad -->
-			<div class="field col-12 md:col-6">
-				<p:outputLabel for="@next" value="#{msg['producto.cantidad']}"
-					indicateRequired="false" />
-				<p:inputNumber id="cantidad"
-					value="#{productoBean.producto.cantidad}" maxlength="5"
-					minValue="0" decimalPlaces="0" label="Cantidad" required="true"
-					requiredMessage="Ingresa un valor valido" />
-			</div>
+			</p:dialog>
 
-			<!-- Clave Unidad -->
-			<div class="field col-6">
-				<p:outputLabel for="@next" value="Clave de unidad"
-					indicateRequired="true" />
-				<p:message for="@next" display="text"
-					styleClass="text-xs pl-0 py-1 border-none" />
-				<p:autoComplete id="ClaveUnidad" maxResults="5"
-					value="#{productoBean.producto.claveUnidad}"
-					completeMethod="#{datosFormulario.completaClavesUnidad}"
-					scrollHeight="250" required="true"
-					requiredMessage="Ingrese el dato">
-				</p:autoComplete>
-			</div>
-		</p:outputPanel>
+		</h:form>
+
+
 	</div>
-</ui:component>
+</ui:composition>

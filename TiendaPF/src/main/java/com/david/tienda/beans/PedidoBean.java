@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -22,7 +23,10 @@ public class PedidoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Pedido Pedido;
+	@ManagedProperty(value = "#{sesionUsuario}")
+	private SesionUsuario sesionUsuario;
+
+	private Pedido pedidoSeleccionado;
 	private List<Pedido> listaPedidos;
 	private ServicioPedido servicioPedido;
 	private boolean bandera;
@@ -32,6 +36,7 @@ public class PedidoBean implements Serializable {
 	private LocalDateTime fecha;
 	private String estatus;
 	private String textoBuscar;
+	private boolean formularioActivo;
 
 	// metodos
 	@PostConstruct
@@ -43,12 +48,12 @@ public class PedidoBean implements Serializable {
 		filtro = 1;
 		fecha = null;
 		estatus = null;
+		formularioActivo = false;
 		listar();
 	}
 
 	public void nuevo() {
-		Pedido = new Pedido();
-
+		sesionUsuario.nuevoPedido();
 	}
 
 	public void listar() {
@@ -68,12 +73,13 @@ public class PedidoBean implements Serializable {
 	}
 
 	public void guardar() {
+		Pedido pedido = sesionUsuario.getPedido();
 		if (!bandera) {
 			String msg = "Guardado";
-			if (Pedido.getIdPedido() != null)
+			if (pedido.getIdPedido() != null)
 				msg = "Actualizado";
 
-			servicioPedido.guardar(Pedido);
+			servicioPedido.guardar(pedido);
 
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
 			PrimeFaces.current().ajax().update(":messages");
@@ -86,7 +92,8 @@ public class PedidoBean implements Serializable {
 	}
 
 	public void eliminar() {
-		servicioPedido.eliminar(Pedido);
+		Pedido pedido = sesionUsuario.getPedido();
+		servicioPedido.eliminar(pedido);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
 		PrimeFaces.current().ajax().update(":messages");
 		listar();
@@ -112,13 +119,21 @@ public class PedidoBean implements Serializable {
 		buscar();
 	}
 
-	// getters and setters
-	public Pedido getPedido() {
-		return Pedido;
+	public void cambia() {
+		formularioActivo = !formularioActivo;
+
+		PrimeFaces.current().ajax().update(":pedidos");
+		PrimeFaces.current().ajax().update(":opciones");
+		PrimeFaces.current().ajax().update(":formulario-pedido");
 	}
 
-	public void setPedido(Pedido Pedido) {
-		this.Pedido = Pedido;
+	public String textoBtnAgregar() {
+		String msgBtn = "Nuevo pedido";
+
+		if (formularioActivo)
+			msgBtn = "Volver";
+
+		return msgBtn;
 	}
 
 	public List<Pedido> getListaPedidos() {
@@ -183,6 +198,30 @@ public class PedidoBean implements Serializable {
 
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
+	}
+
+	public Pedido getPedidoSeleccionado() {
+		return pedidoSeleccionado;
+	}
+
+	public void setPedidoSeleccionado(Pedido pedidoSeleccionado) {
+		this.pedidoSeleccionado = pedidoSeleccionado;
+	}
+
+	public SesionUsuario getSesionUsuario() {
+		return sesionUsuario;
+	}
+
+	public void setSesionUsuario(SesionUsuario sesionUsuario) {
+		this.sesionUsuario = sesionUsuario;
+	}
+
+	public boolean isFormularioActivo() {
+		return formularioActivo;
+	}
+
+	public void setFormularioActivo(boolean formularioActivo) {
+		this.formularioActivo = formularioActivo;
 	}
 
 }

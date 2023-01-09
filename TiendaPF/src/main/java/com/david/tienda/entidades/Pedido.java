@@ -7,11 +7,13 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -45,9 +47,9 @@ public class Pedido {
 	@UpdateTimestamp
 	private LocalDateTime fechaModificacion;
 
-	// @OneToMany(mappedBy = "items", cascade = CascadeType.ALL, fetch =
-	// FetchType.LAZY)
-	// private List<Item> listaItems;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pedido_id")
+	private List<Item> listaItems;
 
 	private int cantidadProductos;
 	private double descuento;
@@ -114,12 +116,14 @@ public class Pedido {
 		this.fechaPedido = fechaPedido;
 	}
 
-	/*
-	 * public List<Item> getListaItems() { return listaItems; }
-	 * 
-	 * public void setListaItems(List<Item> listaItems) { this.listaItems =
-	 * listaItems; }
-	 */
+	public List<Item> getListaItems() {
+		return listaItems;
+	}
+
+	public void setListaItems(List<Item> listaItems) {
+		this.listaItems = listaItems;
+	}
+
 	public int getCantidadProductos() {
 		return cantidadProductos;
 	}

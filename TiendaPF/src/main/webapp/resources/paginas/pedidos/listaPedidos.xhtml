@@ -10,7 +10,7 @@
 
 		<h:form id="pedidos">
 			<p:outputPanel id="pedidosPanel"
-				rendered="#{!opcionesMenu.categoriaTab}">
+				rendered="#{!pedidoBean.formularioActivo}">
 				<!-- divider con titulo de la tabla -->
 				<p:divider align="left">
 					<div class="inline-flex align-items-center">
@@ -24,7 +24,8 @@
 					<span class="filter-container ui-input-icon-left"> <i
 						class="pi pi-search"></i> <p:inputText id="textoBuscar"
 							value="#{pedidoBean.textoBuscar}" placeholder="Buscar">
-							<p:ajax event="keyup" update="dt-pedidos" listener="#{pedidoBean.buscar}" />
+							<p:ajax event="keyup" update="dt-pedidos"
+								listener="#{pedidoBean.buscar}" />
 						</p:inputText>
 					</span>
 
@@ -33,7 +34,7 @@
 				<!-- Tabla de pedidos  -->
 				<p:dataTable id="dt-pedidos" var="pedido"
 					value="#{pedidoBean.listaPedidos}" rowKey="#{pedido.idPedido}"
-					selection="#{pedidoBean.pedido}" selectionMode="single"
+					selection="#{pedidoBean.pedidoSeleccionado}" selectionMode="single"
 					paginator="true" reflow="true" rows="10" paginatorPosition="bottom"
 					rowsPerPageTemplate="5,10,15,20"
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
@@ -60,20 +61,16 @@
 
 				<!-- opciones al hacer click derecho -->
 				<p:contextMenu for="dt-pedidos">
-					<p:menuitem id="opc-ver-pedido" value="Ver" icon="pi pi-eye"
-						rendered="false">
-					</p:menuitem>
-					<p:menuitem id="opc-carrito-pedido" value="Agregar a Pedido DEV"
-						icon="pi pi-eye">
-					</p:menuitem>
+
 					<p:menuitem id="opc-editar-pedido" value="Editar"
-						icon="pi pi-pencil">
+						icon="pi pi-pencil" update=":formulario-pedido"
+						actionListener="#{pedidoBean.cambia}">
+						<p:resetInput target=":formulario-pedido" />
 
 					</p:menuitem>
-					<p:menuitem id="opc-exportar-pedido" value="Exportar XML"
-						icon="pi pi-upload" rendered="false">
-					</p:menuitem>
-					<p:menuitem value="Eliminar" update="dt-pedidos" icon="pi pi-trash">
+
+					<p:menuitem value="Eliminar" update="dt-pedidos" icon="pi pi-trash"
+						actionListener="#{pedidoBean.eliminar}">
 						<p:confirm header="Confirmacion"
 							message="¿Seguro que desea eliminar el pedido?"
 							icon="pi pi-info-circle" />
