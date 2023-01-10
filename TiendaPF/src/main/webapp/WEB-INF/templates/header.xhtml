@@ -39,9 +39,6 @@
 							icon="pi pi-user" />
 						<p:menuitem value="#{msg['texto.salir']}" icon="pi pi-sign-out"
 							rendered="#{sesionUsuario.bandera}" action="#{loginBean.logout}" />
-						<p:menuitem value="#{msg['texto.login']}" icon="pi pi-sign-in"
-							rendered="#{!sesionUsuario.bandera}"
-							onclick="PF('dialogoLogin').show()" />
 					</p:contextMenu>
 				</f:facet>
 			</p:menubar>

@@ -1,19 +1,46 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates/plantilla.xhtml">
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Tienda PrimeFaces</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<h:outputStylesheet library="css" name="primeflex.css" />
+	<h:outputStylesheet library="css" name="primeicons.css" />
+</h:head>
+<h:body>
+
+	<div class="card">
+		<div class="flex card-container">
+			<div
+				class="flex-shrink-1 md:flex-shrink-0 flex  justify-content-center p-2 m-2"
+				style="width: 200px">
+				<ui:insert name="barraizquierda" />
+			</div>
+			<div class="flex-grow-1 flex justify-content-center p-2 m-2">
+				<div class="container">
+					<h:panelGrid columns="1">
+						<p:card style="width: 25rem; margin-bottom: 2em">
+
+							<ui:include src="/resources/paginas/login.xhtml" />
 
 
-	<ui:define name="contenido">
+						</p:card>
 
 
-		<p:dialog header="#{msg['texto.login']}" widgetVar="dialogoLogin"
-			minHeight="200" minWidth="350" showEffect="fade" modal="true"
-			closeOnEscape="true" width="350">
-			<ui:include src="/resources/paginas/login.xhtml" />
-		</p:dialog>
-	</ui:define>
-</ui:composition>
+					</h:panelGrid>
+				</div>
+			</div>
+			<div
+				class="flex-shrink-1 md:flex-shrink-0 flex  justify-content-center p-2 m-2"
+				style="width: 200px">
+				<ui:insert name="barraderecha" />
+			</div>
+		</div>
+	</div>
+
+</h:body>
+</html>
