@@ -20,11 +20,59 @@
 			<h:form id="opciones">
 				<p:slideMenu id="menu-opciones">
 
-					<p:menuitem id="opc-agregar"
-						value="#{pedidoBean.textoBtnAgregar()}"
-						actionListener="#{pedidoBean.cambia}">
+					<p:menuitem id="opc-agregar" icon="pi pi-plus" value="Agregar"
+						oncomplete="PF('dialogoPedidoForm').show()"
+						actionListener="#{pedidoBean.nuevo}" update=":formulario-pedido">
+						<p:resetInput target=":formulario-pedido" />
 					</p:menuitem>
 				</p:slideMenu>
+			</h:form>
+
+			<h:form id="formulario-pedido">
+				<!-- Dialogo modal para mostrar los detalles del item -->
+				<p:dialog header="Pedido #{pedidoBean.pedido.idPedido}"
+					widgetVar="dialogoPedidoForm" minHeight="230" minWidth="250"
+					width="800" height="600" responsive="true" showEffect="fade"
+					hideEffect="fade" closeOnEscape="true" minimizable="true">
+
+					<ui:include src="/resources/paginas/pedidos/formularioPedido.xhtml" />
+
+					<f:facet name="footer">
+						<p:commandButton id="btn-agregar" icon="pi pi-save"
+							value="Guardar" validateClient="true"
+							update=":formulario-pedido:detalles"
+							actionListener="#{pedidoBean.guardar}"
+							styleClass="ui-button-primary rounded-button">
+						</p:commandButton>
+
+					</f:facet>
+
+				</p:dialog>
+
+			</h:form>
+
+			<h:form id="formulario-items">
+				<!-- Dialogo modal para mostrar los detalles del item -->
+				<p:dialog header="#{itemBean.item.producto.nombre}"
+					widgetVar="dialogoItemsForm" minHeight="230" minWidth="250"
+					width="500" height="450" responsive="true" showEffect="fade"
+					modal="true" hideEffect="fade" closeOnEscape="true">
+
+					<ui:include src="/resources/paginas/pedidos/formularioItem.xhtml" />
+
+					<f:facet name="footer">
+						<p:commandButton id="btn-agregar" icon="pi pi-save"
+							value="Guardar" validateClient="true"
+							update=":formulario-items:itemPanel"
+							oncomplete="PF('dialogoItemsForm').hide()"
+							actionListener="#{itemBean.guardar}"
+							styleClass="ui-button-primary rounded-button">
+						</p:commandButton>
+
+					</f:facet>
+
+				</p:dialog>
+
 			</h:form>
 
 

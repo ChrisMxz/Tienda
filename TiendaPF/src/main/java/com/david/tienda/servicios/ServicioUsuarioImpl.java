@@ -74,7 +74,7 @@ public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario, 
 	}
 
 	@Override
-	public Optional<Usuario> porId(int t) {
+	public Optional<Usuario> porId(Long t) {
 		em = getEntityManager();
 		return Optional.ofNullable(em.find(Usuario.class, t));
 	}

@@ -26,7 +26,7 @@ public class PedidoBean implements Serializable {
 	@ManagedProperty(value = "#{sesionUsuario}")
 	private SesionUsuario sesionUsuario;
 
-	private Pedido pedidoSeleccionado;
+	private Pedido pedido;
 	private List<Pedido> listaPedidos;
 	private ServicioPedido servicioPedido;
 	private boolean bandera;
@@ -53,7 +53,7 @@ public class PedidoBean implements Serializable {
 	}
 
 	public void nuevo() {
-		sesionUsuario.nuevoPedido();
+		pedido = new Pedido();
 	}
 
 	public void listar() {
@@ -73,12 +73,13 @@ public class PedidoBean implements Serializable {
 	}
 
 	public void guardar() {
-		Pedido pedido = sesionUsuario.getPedido();
+
 		if (!bandera) {
 			String msg = "Guardado";
 			if (pedido.getIdPedido() != null)
 				msg = "Actualizado";
-
+			
+			pedido.setListaItems(null);
 			servicioPedido.guardar(pedido);
 
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
@@ -92,7 +93,6 @@ public class PedidoBean implements Serializable {
 	}
 
 	public void eliminar() {
-		Pedido pedido = sesionUsuario.getPedido();
 		servicioPedido.eliminar(pedido);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
 		PrimeFaces.current().ajax().update(":messages");
@@ -200,12 +200,12 @@ public class PedidoBean implements Serializable {
 		this.estatus = estatus;
 	}
 
-	public Pedido getPedidoSeleccionado() {
-		return pedidoSeleccionado;
+	public Pedido getpedido() {
+		return pedido;
 	}
 
-	public void setPedidoSeleccionado(Pedido pedidoSeleccionado) {
-		this.pedidoSeleccionado = pedidoSeleccionado;
+	public void setpedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 
 	public SesionUsuario getSesionUsuario() {

@@ -23,6 +23,9 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.david.tienda.servicios.ServicioItem;
+import com.david.tienda.servicios.ServicioItemImpl;
+
 @Entity
 @Table(name = "pedidos")
 public class Pedido {
@@ -117,7 +120,8 @@ public class Pedido {
 	}
 
 	public List<Item> getListaItems() {
-		return listaItems;
+		ServicioItem s = new ServicioItemImpl();
+		return s.listarPorPedido(idPedido, true);
 	}
 
 	public void setListaItems(List<Item> listaItems) {

@@ -83,7 +83,8 @@
 					<p:menuitem id="opc-ver-producto" value="Ver" icon="pi pi-eye"
 						rendered="false">
 					</p:menuitem>
-					<p:menuitem id="opc-carrito-producto" value="Agregar a Pedido DEV" icon="pi pi-eye">
+					<p:menuitem id="opc-carrito-producto" value="Agregar a Pedido DEV"
+						icon="pi pi-eye" actionListener="#{itemBean.guardar}">
 					</p:menuitem>
 					<p:menuitem id="opc-editar-producto" value="Editar"
 						icon="pi pi-pencil" update=":formulario-productos"

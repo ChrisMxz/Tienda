@@ -24,7 +24,7 @@ public class ClienteConverter implements Converter {
 		}
 		Optional<Usuario> UsuarioOptional = Optional.empty();
 		try {
-			UsuarioOptional = servicio.porId(Integer.parseInt(id));
+			UsuarioOptional = servicio.porId(Long.parseLong(id));
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

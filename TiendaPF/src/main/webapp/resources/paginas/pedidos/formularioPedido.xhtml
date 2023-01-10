@@ -7,76 +7,49 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<div class="card">
-		<h:form id="formulario-pedido">
 
-			<p:outputPanel class="formgrid grid" id="detalles"
-				rendered="#{pedidoBean.formularioActivo}">
+		<p:outputPanel class="formgrid grid" id="detalles">
 
-				<!-- divider con titulo -->
-				<p:divider align="left">
-					<div class="inline-flex align-items-center">
-						<b> <p:outputLabel value="Pedido" />
-						</b>
-					</div>
-				</p:divider>
+			<div class="field col-6">
+				<p:staticMessage severity="info" summary="Fecha de Registro:"
+					styleClass="text-xs p-1" detail="#{pedidoBean.pedido.fechaPedido}"
+					rendered="#{pedidoBean.pedido.fechaPedido!=null}" />
+			</div>
+			<div class="field col-6">
+				<p:staticMessage severity="info" summary="Estatus"
+					styleClass="text-xs p-1" detail="#{pedidoBean.pedido.estatus}"
+					rendered="#{pedidoBean.pedido.estatus!=null}" />
+			</div>
+			<!-- Input Cliente -->
+			<div class="field col-12">
+				<p:outputLabel for="@next" value="Cliente" />
+				<p:message for="@next" display="text"
+					styleClass="text-xs pl-0 py-1 border-none" />
+				<p:selectOneMenu value="#{pedidoBean.pedido.cliente}"
+					id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
+					required="true" requiredMessage="Elige un cliente">
+					<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+					<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
+						itemLabel="#{cliente.appaterno} #{cliente.nombre} " />
+					<f:converter binding="#{clienteConverter}" />
+				</p:selectOneMenu>
+			</div>
 
-				<div class="field col-12">
-					<p:staticMessage severity="info" summary="Fecha de Registro:"
-						styleClass="text-xs p-1"
-						detail="#{pedidoBean.pedidoSeleccionado.fechaPedido}"
-						rendered="#{pedidoBean.pedidoSeleccionado.fechaPedido!=null}" />
-				</div>
-				<div class="field col-12">
-					<p:staticMessage severity="info" summary="Estatus"
-						styleClass="text-xs p-1"
-						detail="#{pedidoBean.pedidoSeleccionado.estatus}"
-						rendered="#{pedidoBean.pedidoSeleccionado.estatus!=null}" />
-				</div>
-				<!-- Input Cliente -->
-				<div class="field col-12 md:col-12">
-					<p:outputLabel for="@next" value="Cliente" />
-					<p:message for="@next" display="text"
-						styleClass="text-xs pl-0 py-1 border-none" />
-					<p:selectOneMenu value="#{pedidoBean.pedidoSeleccionado.cliente}"
-						id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
-						required="true" requiredMessage="Elige un cliente"
-						rendered="#{pedidoBean.pedidoSeleccionado.cliente.nivel!=1}">
-						<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
-						<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
-							itemLabel="#{cliente.nombre}" />
-						<f:converter binding="#{clienteConverter}" />
-					</p:selectOneMenu>
-				</div>
-
-				<!-- Lista de items del pedido -->
+			<div class="field col-4">
+				<p:commandButton id="btn-agregar-Item" icon="pi pi-plus"
+					value="Agregar Producto" update=":formulario-items:itemPanel"
+					oncomplete="PF('dialogoItemsForm').show()"
+					actionListener="#{itemBean.nuevo}"
+					styleClass="ui-button-primary rounded-button">
+				</p:commandButton>
+			</div>
+			<!-- Lista de items del pedido -->
+			<div class="col-12">
 				<ui:include src="/resources/paginas/pedidos/listaItems.xhtml" />
-			</p:outputPanel>
+			</div>
 
 
-		</h:form>
-
-		<h:form id="formulario-items">
-			<!-- Dialogo modal para mostrar los detalles del item -->
-			<p:dialog header="Categoria" widgetVar="dialogoItemsForm"
-				minHeight="230" minWidth="250" width="500" height="280"
-				responsive="true" showEffect="fade" modal="true" hideEffect="fade"
-				closeOnEscape="true">
-
-				<ui:include src="/resources/paginas/pedidos/formularioItem.xhtml" />
-
-				<f:facet name="footer">
-					<p:commandButton id="btn-agregar" icon="pi pi-save" value="Guardar"
-						validateClient="true" update=":formulario-items:itemPanel"
-						actionListener="#{itemBean.guardar}"
-						styleClass="ui-button-primary rounded-button">
-					</p:commandButton>
-
-				</f:facet>
-
-			</p:dialog>
-
-		</h:form>
-
+		</p:outputPanel>
 
 	</div>
 </ui:composition>

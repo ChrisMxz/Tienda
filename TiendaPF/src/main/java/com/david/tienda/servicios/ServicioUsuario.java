@@ -10,7 +10,7 @@ public interface ServicioUsuario extends Servicio<Usuario> {
 	Usuario porUsername(String user);
 	Usuario porRFC(String rfc);
 	
-	default Optional<Usuario> porId(int t) {
+	default Optional<Usuario> porId(Long t) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}

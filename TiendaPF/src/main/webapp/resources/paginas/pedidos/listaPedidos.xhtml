@@ -34,7 +34,7 @@
 				<!-- Tabla de pedidos  -->
 				<p:dataTable id="dt-pedidos" var="pedido"
 					value="#{pedidoBean.listaPedidos}" rowKey="#{pedido.idPedido}"
-					selection="#{pedidoBean.pedidoSeleccionado}" selectionMode="single"
+					selection="#{pedidoBean.pedido}" selectionMode="single"
 					paginator="true" reflow="true" rows="10" paginatorPosition="bottom"
 					rowsPerPageTemplate="5,10,15,20"
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
@@ -63,8 +63,8 @@
 				<p:contextMenu for="dt-pedidos">
 
 					<p:menuitem id="opc-editar-pedido" value="Editar"
-						icon="pi pi-pencil" update=":formulario-pedido"
-						actionListener="#{pedidoBean.cambia}">
+						oncomplete="PF('dialogoPedidoForm').show()" icon="pi pi-pencil"
+						update=":formulario-pedido">
 						<p:resetInput target=":formulario-pedido" />
 
 					</p:menuitem>

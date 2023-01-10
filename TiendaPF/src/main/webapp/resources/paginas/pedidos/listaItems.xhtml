@@ -12,10 +12,10 @@
 
 			<!-- Tabla de items  -->
 			<p:dataTable id="dt-items" var="item"
-				value="#{pedidoBean.pedidoSeleccionado.listaItems}"
-				rowKey="#{item.idItem}" selection="#{itemBean.item}"
-				selectionMode="single" paginator="true" reflow="true" rows="10"
-				paginatorPosition="bottom" rowsPerPageTemplate="5,10,15,20"
+				value="#{pedidoBean.pedido.listaItems}" rowKey="#{item.idItem}"
+				selection="#{itemBean.item}" selectionMode="single" paginator="true"
+				reflow="true" rows="5" paginatorPosition="bottom"
+				rowsPerPageTemplate="5,10"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
 				<p:autoUpdate />
 
@@ -29,6 +29,11 @@
 				<p:column headerText="Cantidad" sortBy="#{item.cantidad}">
 					<h:outputText value="#{item.cantidad}" />
 				</p:column>
+				<p:column headerText="Precio" sortBy="#{item.producto.precio}">
+					<h:outputText value="#{item.producto.precio}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
 
 				<p:column headerText="Total" sortBy="#{item.subTotal}">
 					<h:outputText value="#{item.subTotal}">
@@ -36,16 +41,18 @@
 					</h:outputText>
 				</p:column>
 
-				<p:column headerText="Fecha" sortBy="#{pedido.fechaPedido}">
-					<h:outputText value="#{pedido.fechaPedido}" />
-				</p:column>
+				<f:facet name="footer">
+					<p:outputLabel
+						value="Cantidad de productos: #{pedidoBean.pedido.cantidadProductos}" />
+				</f:facet>
 			</p:dataTable>
 
 			<!-- opciones al hacer click derecho -->
 			<p:contextMenu for="dt-items">
 				<p:menuitem id="opc-editar-item" value="editar" icon="pi pi-pencil"
 					update=":formulario-items"
-					oncomplete="PF('dialogoItmesmForm').show()">
+					actionListener="#{itemBean.consultaProducto}"
+					oncomplete="PF('dialogoItemsForm').show()">
 					<p:resetInput target=":formulario-items" />
 				</p:menuitem>
 

@@ -2,7 +2,6 @@ package com.david.tienda.entidades;
 
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
@@ -30,8 +28,7 @@ public class Item {
 	private Long idPedido;
 
 	@JoinColumn(name = "producto_id", referencedColumnName = "id_producto")
-	@ManyToOne(cascade = CascadeType.ALL)
-	@Valid
+	@ManyToOne
 	private Producto producto;
 
 	@NotNull

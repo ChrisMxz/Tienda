@@ -15,4 +15,7 @@ public interface ServicioProducto extends Servicio<Producto> {
 		return Optional.empty();
 	}
 
+
+	Optional<Producto> porId(Long t);
+
 }

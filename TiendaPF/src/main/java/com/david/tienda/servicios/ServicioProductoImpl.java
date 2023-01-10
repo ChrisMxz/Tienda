@@ -26,7 +26,7 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 	}
 
 	@Override
-	public Optional<Producto> porId(int t) {
+	public Optional<Producto> porId(Long t) {
 		em = getEntityManager();
 		return Optional.ofNullable(em.find(Producto.class, t));
 	}
