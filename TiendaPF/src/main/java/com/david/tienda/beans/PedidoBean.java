@@ -38,6 +38,7 @@ public class PedidoBean implements Serializable {
 	private String estatus;
 	private String textoBuscar;
 	private boolean formularioActivo;
+	private boolean editable;
 
 	// metodos
 	@PostConstruct
@@ -49,12 +50,14 @@ public class PedidoBean implements Serializable {
 		filtro = 1;
 		fecha = null;
 		estatus = null;
+		editable = true;
 		formularioActivo = false;
 		listar();
 	}
 
 	public void nuevo() {
 		pedido = new Pedido();
+		editable = true;
 		if (sesionUsuario.getUsuario().getNivel() == 1) {
 			pedido.setCliente(sesionUsuario.getUsuario());
 			guardar();
@@ -151,6 +154,14 @@ public class PedidoBean implements Serializable {
 		this.pedido.getListaItems().add(x);
 	}
 
+	public void verificaEstatus() {
+
+		if (pedido.getEstatus().equalsIgnoreCase("hecho"))
+			editable = false;
+		else
+			editable = true;
+	}
+
 	public List<Pedido> getListaPedidos() {
 		return listaPedidos;
 	}
@@ -237,6 +248,22 @@ public class PedidoBean implements Serializable {
 
 	public void setFormularioActivo(boolean formularioActivo) {
 		this.formularioActivo = formularioActivo;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 
 }

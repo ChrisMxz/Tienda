@@ -14,36 +14,46 @@
 				<p:staticMessage severity="info" summary="Fecha de Registro:"
 					styleClass="text-xs p-1" detail="#{pedidoBean.pedido.fechaPedido}"
 					rendered="#{pedidoBean.pedido.fechaPedido!=null}" />
-			</div>
-			<div class="field col-6">
 				<p:staticMessage severity="info" summary="Estatus"
 					styleClass="text-xs p-1" detail="#{pedidoBean.pedido.estatus}"
 					rendered="#{pedidoBean.pedido.estatus!=null}" />
 			</div>
+			<div class="field col-6"></div>
 			<!-- Input Cliente -->
-			<div class="field col-12">
-				<p:outputLabel for="seleccion-cliente" value="Cliente" />
+			<div class="field col-6">
 				<p:message for="seleccion-cliente" display="text"
 					styleClass="text-xs pl-0 py-1 border-none" />
 				<p:selectOneMenu value="#{pedidoBean.pedido.cliente}"
 					id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
 					required="true" requiredMessage="Elige un cliente"
-					disabled="#{sesionUsuario.usuario.nivel==1}">
-					<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+					rendered="#{sesionUsuario.usuario.nivel!=1 }"
+					disabled="#{!pedidoBean.editable or sesionUsuario.usuario.nivel!=3}">
+					<f:selectItem itemLabel="Seleccionar Cliente " Value="#{null}" />
 					<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
 						itemLabel="#{cliente.appaterno} #{cliente.nombre} " />
 					<f:converter binding="#{clienteConverter}" />
 				</p:selectOneMenu>
 			</div>
+			<!-- btn crear pedido -->
+			<div class="field col-12">
+				<p:commandButton id="btn-guardar-pedido" icon="pi pi-save"
+					value="Crear" validateClient="true"
+					update=":formulario-pedido:detalles"
+					actionListener="#{pedidoBean.guardar}"
+					styleClass="ui-button-primary
+				rounded-button"
+					rendered="#{pedidoBean.pedido.idPedido==null}">
+				</p:commandButton>
+			</div>
 
 			<!-- Agregar producto a pedido -->
 			<div class="field col-4">
 				<p:commandButton id="btn-agregar-Item" icon="pi pi-plus"
-					value="Agregar Producto" update=":formulario-items:itemPanel"
+					value="Nuevo Item" update=":formulario-items"
 					oncomplete="PF('dialogoItemsForm').show()"
 					actionListener="#{itemBean.nuevo}"
 					styleClass="ui-button-primary rounded-button"
-					rendered="#{pedidoBean.pedido.idPedido>0}">
+					rendered="#{pedidoBean.pedido.idPedido>0 and pedidoBean.editable}">
 					<p:resetInput target=":formulario-items" />
 					<f:setPropertyActionListener value="#{pedidoBean.pedido.idPedido}"
 						target="#{itemBean.item.idPedido}" />

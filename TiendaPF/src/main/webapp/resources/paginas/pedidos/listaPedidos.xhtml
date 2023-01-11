@@ -55,6 +55,10 @@
 						</h:outputText>
 					</p:column>
 
+					<p:column headerText="Estatus" sortBy="#{pedido.estatus}">
+						<h:outputText value="#{pedido.estatus}" />
+					</p:column>
+
 					<p:column headerText="Fecha" sortBy="#{pedido.fechaPedido}">
 						<h:outputText value="#{pedido.fechaPedido}" />
 					</p:column>
@@ -65,6 +69,7 @@
 
 					<p:menuitem id="opc-editar-pedido" value="Editar"
 						oncomplete="PF('dialogoPedidoForm').show()" icon="pi pi-pencil"
+						actionListener="#{pedidoBean.verificaEstatus}"
 						update=":formulario-pedido">
 						<p:resetInput target=":formulario-pedido" />
 

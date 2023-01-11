@@ -20,12 +20,84 @@
 			<h:form id="opciones">
 				<p:slideMenu id="menu-opciones">
 
-					<p:menuitem id="opc-agregar" icon="pi pi-plus" value="Agregar"
+					<p:menuitem id="opc-agregar" icon="pi pi-plus" value="Nuevo Pedido"
 						oncomplete="PF('dialogoPedidoForm').show()"
 						actionListener="#{pedidoBean.nuevo}" update=":formulario-pedido">
 						<p:resetInput target=":formulario-pedido" />
 					</p:menuitem>
+					<p:menuitem id="opc-refrescar" value="Recargar"
+						icon="pi pi-refresh" actionListener="#{pedidoBean.refrescar}">
+					</p:menuitem>
+
+					<p:submenu
+						label="Ver #{pedidoBean.limite} #{pedidoBean.orden? 'Asc': 'Desc'}"
+						icon="pi pi-eye">
+						<p:submenu immediate="true" label="Cantidad" icon="pi pi-hashtag">
+							<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
+								icon="pi pi-database" action="#{pedidoBean.estableceLimite}">
+								<f:setPropertyActionListener value="10"
+									target="#{pedidoBean.limite}" />
+							</p:menuitem>
+							<p:menuitem value="50 #{msg['texto.registros']}"
+								icon="pi pi-database" action="#{pedidoBean.estableceLimite}">
+								<f:setPropertyActionListener value="50"
+									target="#{pedidoBean.limite}" />
+							</p:menuitem>
+							<p:menuitem value="100 #{msg['texto.registros']}"
+								icon="pi pi-database" action="#{pedidoBean.estableceLimite}">
+								<f:setPropertyActionListener value="100"
+									target="#{pedidoBean.limite}" />
+							</p:menuitem>
+							<p:menuitem value="500 #{msg['texto.registros']}"
+								icon="pi pi-database" action="#{pedidoBean.estableceLimite}">
+								<f:setPropertyActionListener value="500"
+									target="#{pedidoBean.limite}" />
+							</p:menuitem>
+						</p:submenu>
+
+						<p:submenu label="Orden" icon="pi pi-sort-alt">
+							<p:menuitem value="Ascendente" icon="pi pi-sort-numeric-up"
+								action="#{pedidoBean.estableceOrden}">
+								<f:setPropertyActionListener value="true"
+									target="#{pedidoBean.orden}" />
+							</p:menuitem>
+							<p:menuitem value="Descendente"
+								icon="pi pi-sort-numeric-down-alt"
+								action="#{pedidoBean.estableceOrden}">
+								<f:setPropertyActionListener value="false"
+									target="#{pedidoBean.orden}" />
+							</p:menuitem>
+						</p:submenu>
+					</p:submenu>
 				</p:slideMenu>
+
+				<!-- divider con titulo Filtros -->
+				<p:divider align="left">
+					<div class="inline-flex align-items-center">
+						<b> <p:outputLabel value="Filtros"
+								rendered="#{sesionUsuario.usuario.idUsuario!=1}" />
+						</b>
+					</div>
+				</p:divider>
+
+				<div class="card ui-fluid formgrid grid">
+					<!-- Tipo de busqueda -->
+					<div class="field col-12">
+						<p:outputLabel for="@next" value="Busqueda"
+							rendered="#{sesionUsuario.usuario.nivel!=1}" />
+						<!-- Tipo de busqueda para pedidos -->
+						<p:selectOneMenu id="tipo-buscar-productos"
+							value="#{pedidoBean.filtro}"
+							rendered="#{sesionUsuario.usuario.nivel!=1}">
+							<f:selectItem itemLabel="ID" itemValue="1" />
+							<f:selectItem itemLabel="Cliente ID" itemValue="2" />
+							<p:ajax event="itemSelect" listener="#{pedidoBean.buscar}" />
+						</p:selectOneMenu>
+
+					</div>
+
+				</div>
+
 			</h:form>
 
 			<h:form id="formulario-pedido">
@@ -38,11 +110,10 @@
 					<ui:include src="/resources/paginas/pedidos/formularioPedido.xhtml" />
 
 					<f:facet name="footer">
-						<p:commandButton id="btn-agregar" icon="pi pi-save"
-							value="Guardar" validateClient="true"
-							update=":formulario-pedido:detalles"
-							actionListener="#{pedidoBean.guardar}"
-							styleClass="ui-button-primary rounded-button">
+						<p:commandButton id="btn-pagar-pedido" icon="pi pi-money-bill"
+							value="Pagar" actionListener="#{pedidoBean.guardar}"
+							styleClass="ui-button-success rounded-button"
+							rendered="#{pedidoBean.editable and pedidoBean.pedido.idPedido>0}">
 						</p:commandButton>
 
 					</f:facet>
@@ -53,7 +124,8 @@
 
 			<h:form id="formulario-items">
 				<!-- Dialogo modal para mostrar los detalles del item -->
-				<p:dialog header="#{itemBean.item.producto.nombre}"
+				<p:dialog
+					header="#{itemBean.item.idItem>0? itemBean.item.producto.nombre: 'Nuevo Item' }"
 					widgetVar="dialogoItemsForm" minHeight="230" minWidth="250"
 					width="500" height="550" responsive="true" showEffect="fade"
 					modal="true" hideEffect="fade" closeOnEscape="true">
