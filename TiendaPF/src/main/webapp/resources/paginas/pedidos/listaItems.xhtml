@@ -15,7 +15,7 @@
 				value="#{pedidoBean.pedido.listaItems}" rowKey="#{item.idItem}"
 				selection="#{itemBean.item}" selectionMode="single" paginator="true"
 				reflow="true" rows="5" paginatorPosition="bottom"
-				rowsPerPageTemplate="5,10"
+				rowsPerPageTemplate="5,10" scrollable="true" 
 				rendered="#{pedidoBean.pedido.idPedido>0}"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
 
@@ -53,7 +53,7 @@
 			</p:dataTable>
 
 			<!-- opciones al hacer click derecho -->
-			<p:contextMenu for="dt-items">
+			<p:contextMenu for="dt-items" rendered="#{pedidoBean.editable}">
 				<p:menuitem id="opc-editar-item" value="editar" icon="pi pi-pencil"
 					update=":formulario-items"
 					oncomplete="PF('dialogoItemsForm').show()">
