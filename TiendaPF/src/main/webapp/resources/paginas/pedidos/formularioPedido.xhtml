@@ -27,7 +27,8 @@
 					styleClass="text-xs pl-0 py-1 border-none" />
 				<p:selectOneMenu value="#{pedidoBean.pedido.cliente}"
 					id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
-					required="true" requiredMessage="Elige un cliente">
+					required="true" requiredMessage="Elige un cliente"
+					disabled="#{sesionUsuario.usuario.nivel==1}">
 					<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
 					<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
 						itemLabel="#{cliente.appaterno} #{cliente.nombre} " />

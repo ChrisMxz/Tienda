@@ -23,7 +23,8 @@
 					<!-- Buscador -->
 					<span class="filter-container ui-input-icon-left"> <i
 						class="pi pi-search"></i> <p:inputText id="textoBuscar"
-							value="#{pedidoBean.textoBuscar}" placeholder="Buscar">
+							value="#{pedidoBean.textoBuscar}" placeholder="Buscar"
+							rendered="#{sesionUsuario.usuario.nivel!=1}">
 							<p:ajax event="keyup" update="dt-pedidos"
 								listener="#{pedidoBean.buscar}" />
 						</p:inputText>

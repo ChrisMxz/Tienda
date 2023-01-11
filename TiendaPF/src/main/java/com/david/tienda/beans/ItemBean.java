@@ -4,9 +4,13 @@ import java.io.Serializable;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.PrimeFaces;
 
 import com.david.tienda.entidades.Item;
 import com.david.tienda.entidades.Producto;
@@ -40,22 +44,27 @@ public class ItemBean implements Serializable {
 	}
 
 	public void guardar() {
+		String msg = "";
+
+		if (item.getIdPedido() == null) {
+			msg = "Item sin pedido asociado";
+			return;
+		}
 
 		if (item.getIdItem() == null) {// no encontro el item
-			System.out.println("Guardado Nuevo");
+			msg = "Item Guardado";
 			modificarCantidadProducto(item.getCantidad());
-			servicioItem.guardar(item);
 		} else {
 
 			Optional<Item> busqueda = servicioItem.porId(item.getIdItem());
 			int dif = this.item.getCantidad() - busqueda.get().getCantidad(); // calculando la diferencia
-			System.out.println("Cantidad item: " + this.item);
-			System.out.println("Cantidad item buscado: " + busqueda.get());
 			modificarCantidadProducto(dif);
-
-			servicioItem.guardar(item);
-			System.out.println("Actualiza");
+			msg = "Item Actualizado";
 		}
+		servicioItem.guardar(item);
+		pedidoBean.guardar();
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+		PrimeFaces.current().ajax().update(":messages");
 	}
 
 	public void eliminar() {

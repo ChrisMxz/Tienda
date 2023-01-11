@@ -55,6 +55,10 @@ public class PedidoBean implements Serializable {
 
 	public void nuevo() {
 		pedido = new Pedido();
+		if (sesionUsuario.getUsuario().getNivel() == 1) {
+			pedido.setCliente(sesionUsuario.getUsuario());
+			guardar();
+		}
 	}
 
 	public void listar() {
@@ -76,10 +80,12 @@ public class PedidoBean implements Serializable {
 	public void guardar() {
 
 		if (!bandera) {
-			String msg = "Guardado";
+			String msg = "Pedido Guardado";
 			if (pedido.getIdPedido() != null)
-				msg = "Actualizado";
-			
+				msg = "Pedido Actualizado";
+
+			contarProductos();
+			calcularSubtotal();
 			pedido.setEstatus("pendiente");
 			servicioPedido.guardar(pedido);
 
@@ -101,6 +107,10 @@ public class PedidoBean implements Serializable {
 	}
 
 	public void buscar() {
+		if (sesionUsuario.getUsuario().getNivel() == 1) {
+			filtro = 2; // por id cliente
+			textoBuscar = sesionUsuario.getUsuario().getIdUsuario().toString();
+		}
 		listaPedidos = servicioPedido.filtrarPor(filtro, estatus, fecha, textoBuscar, limite, orden);
 	}
 
@@ -118,6 +128,23 @@ public class PedidoBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage("Mostrando lista", new FacesMessage(msg));
 		PrimeFaces.current().ajax().update(":messages", ":opciones");
 		buscar();
+	}
+
+	public void contarProductos() {
+		int cuenta = 0;
+		for (Item i : pedido.getListaItems()) {
+			cuenta = cuenta + i.getCantidad();
+		}
+		pedido.setCantidadProductos(cuenta);
+	}
+
+	public void calcularSubtotal() {
+		double cuenta = 0;
+		for (Item i : pedido.getListaItems()) {
+			cuenta = cuenta + i.getSubTotal();
+		}
+		pedido.setSubTotal(cuenta);
+		pedido.setTotal(cuenta + (cuenta * pedido.getIva()));
 	}
 
 	public void agregarItemaLista(Item x) {

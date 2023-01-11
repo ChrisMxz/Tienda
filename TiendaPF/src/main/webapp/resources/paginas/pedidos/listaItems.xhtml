@@ -18,7 +18,7 @@
 				rowsPerPageTemplate="5,10"
 				rendered="#{pedidoBean.pedido.idPedido>0}"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
-				
+
 
 				<f:facet name="header">
 					<p:outputLabel value="Items" />
@@ -45,6 +45,10 @@
 				<f:facet name="footer">
 					<p:outputLabel
 						value="Cantidad de productos: #{pedidoBean.pedido.cantidadProductos}" />
+					<br />
+					<p:outputLabel value="Subtotal: $ #{pedidoBean.pedido.subTotal}" />
+					<br />
+					<p:outputLabel value="Total(IVA): $ #{pedidoBean.pedido.total}" />
 				</f:facet>
 			</p:dataTable>
 
