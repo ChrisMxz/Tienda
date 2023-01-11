@@ -55,15 +55,24 @@
 				<!-- Dialogo modal para mostrar los detalles del item -->
 				<p:dialog header="#{itemBean.item.producto.nombre}"
 					widgetVar="dialogoItemsForm" minHeight="230" minWidth="250"
-					width="500" height="450" responsive="true" showEffect="fade"
+					width="500" height="550" responsive="true" showEffect="fade"
 					modal="true" hideEffect="fade" closeOnEscape="true">
 
 					<ui:include src="/resources/paginas/pedidos/formularioItem.xhtml" />
 
 					<f:facet name="footer">
-						<p:commandButton id="btn-agregar" icon="pi pi-save"
+						<p:commandButton id="btn-eliminar-item" icon="pi pi-trash"
+							value="Eliminar" actionListener="#{itemBean.eliminar}"
+							oncomplete="PF('dialogoItemsForm').hide()"
+							styleClass="ui-button-danger rounded-button"
+							rendered="#{itemBean.item.idItem>0}">
+							<p:confirm header="Confirmacion"
+								message="¿Seguro que desea eliminar el item?"
+								icon="pi pi-info-circle" />
+						</p:commandButton>
+						<p:commandButton id="btn-agregar-item" icon="pi pi-save"
 							value="Guardar" validateClient="true"
-							update=":formulario-items:itemPanel"
+							update=":formulario-items:itemPanel :formulario-pedido:dt-items"
 							oncomplete="PF('dialogoItemsForm').hide()"
 							actionListener="#{itemBean.guardar}"
 							styleClass="ui-button-primary rounded-button">

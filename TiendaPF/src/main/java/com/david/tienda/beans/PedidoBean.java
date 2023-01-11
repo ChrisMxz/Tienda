@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 
+import com.david.tienda.entidades.Item;
 import com.david.tienda.entidades.Pedido;
 import com.david.tienda.servicios.ServicioPedido;
 import com.david.tienda.servicios.ServicioPedidoImpl;
@@ -79,7 +80,7 @@ public class PedidoBean implements Serializable {
 			if (pedido.getIdPedido() != null)
 				msg = "Actualizado";
 			
-			pedido.setListaItems(null);
+			pedido.setEstatus("pendiente");
 			servicioPedido.guardar(pedido);
 
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
@@ -119,21 +120,8 @@ public class PedidoBean implements Serializable {
 		buscar();
 	}
 
-	public void cambia() {
-		formularioActivo = !formularioActivo;
-
-		PrimeFaces.current().ajax().update(":pedidos");
-		PrimeFaces.current().ajax().update(":opciones");
-		PrimeFaces.current().ajax().update(":formulario-pedido");
-	}
-
-	public String textoBtnAgregar() {
-		String msgBtn = "Nuevo pedido";
-
-		if (formularioActivo)
-			msgBtn = "Volver";
-
-		return msgBtn;
+	public void agregarItemaLista(Item x) {
+		this.pedido.getListaItems().add(x);
 	}
 
 	public List<Pedido> getListaPedidos() {

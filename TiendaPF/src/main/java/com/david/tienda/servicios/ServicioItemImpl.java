@@ -20,7 +20,7 @@ public class ServicioItemImpl extends ConexionBD implements ServicioItem, Serial
 	}
 
 	@Override
-	public Optional<Item> porId(int t) {
+	public Optional<Item> porId(Long t) {
 		em = getEntityManager();
 		return Optional.ofNullable(em.find(Item.class, t));
 	}

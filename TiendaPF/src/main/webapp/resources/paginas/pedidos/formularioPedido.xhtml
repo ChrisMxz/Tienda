@@ -22,8 +22,8 @@
 			</div>
 			<!-- Input Cliente -->
 			<div class="field col-12">
-				<p:outputLabel for="@next" value="Cliente" />
-				<p:message for="@next" display="text"
+				<p:outputLabel for="seleccion-cliente" value="Cliente" />
+				<p:message for="seleccion-cliente" display="text"
 					styleClass="text-xs pl-0 py-1 border-none" />
 				<p:selectOneMenu value="#{pedidoBean.pedido.cliente}"
 					id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
@@ -35,12 +35,17 @@
 				</p:selectOneMenu>
 			</div>
 
+			<!-- Agregar producto a pedido -->
 			<div class="field col-4">
 				<p:commandButton id="btn-agregar-Item" icon="pi pi-plus"
 					value="Agregar Producto" update=":formulario-items:itemPanel"
 					oncomplete="PF('dialogoItemsForm').show()"
 					actionListener="#{itemBean.nuevo}"
-					styleClass="ui-button-primary rounded-button">
+					styleClass="ui-button-primary rounded-button"
+					rendered="#{pedidoBean.pedido.idPedido>0}">
+					<p:resetInput target=":formulario-items" />
+					<f:setPropertyActionListener value="#{pedidoBean.pedido.idPedido}"
+						target="#{itemBean.item.idPedido}" />
 				</p:commandButton>
 			</div>
 			<!-- Lista de items del pedido -->

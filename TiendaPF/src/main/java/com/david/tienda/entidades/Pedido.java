@@ -1,6 +1,7 @@
 package com.david.tienda.entidades;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,6 +69,7 @@ public class Pedido {
 	public Pedido() {
 		super();
 		this.cliente = new Usuario();
+		listaItems = new ArrayList<>();
 	}
 
 	public Pedido(Long idPedido, String estatus, Usuario cliente, LocalDateTime fechaPedido, List<Item> listaItems,

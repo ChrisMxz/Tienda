@@ -9,7 +9,6 @@
 	<div class="card ui-fluid">
 
 		<p:outputPanel class="formgrid grid" id="itemPanel">
-
 			<!-- Input Producto -->
 			<div class="field col-12">
 				<p:outputLabel for="@next" value="Producto" />
@@ -18,74 +17,66 @@
 				<p:selectOneMenu value="#{itemBean.item.producto}"
 					id="seleccion-cliente" filter="true" filterMatchMode="contains"
 					required="true" requiredMessage="Elige un Producto"
-					disabled="#{itemBean.item!=null}">
+					disabled="#{itemBean.item.idItem!=null}">
 					<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
 					<f:selectItems value="#{productoBean.listaProductos}"
 						var="producto"
 						itemLabel="#{producto.idProducto}  #{producto.nombre}" />
 					<f:converter binding="#{productoConverter}" />
+					<p:ajax event="itemSelect" update="formulario-items:itemPanel" />
 				</p:selectOneMenu>
 			</div>
-
-
 			<div class="field col-12">
-				<h:panelGrid columns="1">
-					<p:outputPanel>
-						<p:autoUpdate />
-						<f:facet name="title">
-							<p:outputLabel value="#{itemBean.item.producto.nombre}" />
-						</f:facet>
-
-						<p:panelGrid columns="2">
+				<p:outputPanel id="verProducto">
 
 
-							<h:outputText value="ID:" styleClass="font-bold" />
-							<h:outputText value="#{itemBean.item.producto.idProducto}" />
 
-							<h:outputText value="SKU:" />
-							<h:outputText value="#{itemBean.item.producto.sku}" />
+					<p:panelGrid columns="2">
 
-							<h:outputText value="Descripcion:" />
-							<h:outputText value="#{itemBean.item.producto.descripcion}" />
+						<h:outputText value="ID:" styleClass="font-bold" />
+						<h:outputText value="#{itemBean.item.producto.idProducto}" />
 
-							<h:outputText value="Concepto:" />
-							<h:outputText value="#{itemBean.item.producto.concepto}" />
+						<h:outputText value="SKU:" />
+						<h:outputText value="#{itemBean.item.producto.sku}" />
 
-							<h:outputText value="Stock:" />
-							<p:outputLabel id="stock-producto"
-								value="#{itemBean.item.producto.cantidad}" />
+						<h:outputText value="Descripcion:" />
+						<h:outputText value="#{itemBean.item.producto.descripcion}" />
 
-							<h:outputText value="Precio:" />
-							<h:outputText value="#{itemBean.item.producto.precio}" />
-						</p:panelGrid>
-					</p:outputPanel>
+						<h:outputText value="Concepto:" />
+						<h:outputText value="#{itemBean.item.producto.concepto}" />
+
+						<h:outputText value="Stock:" />
+						<h:outputText value="#{itemBean.item.producto.cantidad}" />
+
+						<h:outputText value="Precio:" />
+						<h:outputText value="#{itemBean.item.producto.precio}" />
+					</p:panelGrid>
 
 
-				</h:panelGrid>
+				</p:outputPanel>
+
 			</div>
 			<!-- Input Cantidad -->
-			<div class="field col-3">
+			<div class="field col-6">
 				<p:outputLabel for="@next" value="Cantidad: "
 					indicateRequired="false" styleClass="font-bold" />
-				<p:spinner id="cantidad" value="#{itemBean.cantidadProductos}"
-					min="0" max="#{itemBean.item.producto.cantidad}" required="true">
-					<p:ajax event="valueChange" listener="#{itemBean.calcularSubtotal}"
-						update="subtotalItem stock-producto" />
+				<p:spinner id="cantidad" value="#{itemBean.item.cantidad}" min="1"
+					max="#{itemBean.obtenerCantidad()}">
+					<p:ajax listener="#{itemBean.calcularSubtotal}"
+						update="subtotalItem" />
 				</p:spinner>
 
 			</div>
 			<!-- Vista Subtotal  -->
-			<div class="field col-3">
+			<div class="field col-6">
 				<p:outputLabel for="@next" value="Sub Total" />
 				<p:message for="@next" display="text"
 					styleClass="text-xs pl-0 py-1 border-none" />
 				<p:inputNumber id="subtotalItem" styleClass="font-bold"
-					value="#{itemBean.subTotal}" label="Precio" symbol="$"
+					value="#{itemBean.item.subTotal}" label="subTotal" symbol="$"
 					maxValue="100000" decimalPlaces="2" minValue="0" symbolPosition="p"
 					emptyValue="always" disabled="true" />
 			</div>
 		</p:outputPanel>
-
-
 	</div>
 </ui:component>
