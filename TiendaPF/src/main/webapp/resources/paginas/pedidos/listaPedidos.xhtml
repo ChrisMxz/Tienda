@@ -11,6 +11,7 @@
 		<h:form id="pedidos">
 			<p:outputPanel id="pedidosPanel"
 				rendered="#{!pedidoBean.formularioActivo}">
+				<p:autoUpdate></p:autoUpdate>
 				<!-- divider con titulo de la tabla -->
 				<p:divider align="left">
 					<div class="inline-flex align-items-center">
@@ -65,22 +66,13 @@
 				</p:dataTable>
 
 				<!-- opciones al hacer click derecho -->
-				<p:contextMenu for="dt-pedidos">
+				<p:contextMenu for="dt-pedidos" event="click">
 
-					<p:menuitem id="opc-editar-pedido" value="Editar"
-						oncomplete="PF('dialogoPedidoForm').show()" icon="pi pi-pencil"
-						actionListener="#{pedidoBean.verificaEstatus}"
-						update=":formulario-pedido">
+					<p:menuitem id="opc-editar-pedido" value="Ver" icon="pi pi-eye"
+						actionListener="#{pedidoBean.contextItemVerPedido}">
 						<p:resetInput target=":formulario-pedido" />
-
 					</p:menuitem>
 
-					<p:menuitem value="Eliminar" update="dt-pedidos" icon="pi pi-trash"
-						actionListener="#{pedidoBean.eliminar}">
-						<p:confirm header="Confirmacion"
-							message="¿Seguro que desea eliminar el pedido?"
-							icon="pi pi-info-circle" />
-					</p:menuitem>
 				</p:contextMenu>
 
 				<!-- Dialogo de confirmacion para eliminar -->

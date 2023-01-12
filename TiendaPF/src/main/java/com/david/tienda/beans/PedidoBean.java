@@ -61,12 +61,19 @@ public class PedidoBean implements Serializable {
 		if (sesionUsuario.getUsuario().getNivel() == 1) {
 			pedido.setCliente(sesionUsuario.getUsuario());
 			guardar();
+		} else {
+			PrimeFaces.current().executeScript("PF('dialogoCrearPedidoForm').show()");
 		}
 	}
 
 	public void listar() {
 		// lista segun lo establecido
 		buscar();
+	}
+
+	public void cambiaVista() {
+		formularioActivo = !formularioActivo;
+		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":pedidos", ":detalles-pedidos");
 	}
 
 	public void listarTodo() {
@@ -161,6 +168,18 @@ public class PedidoBean implements Serializable {
 		else
 			editable = true;
 	}
+
+	public void btnEliminar() {
+		eliminar();
+		cambiaVista();
+	}
+
+	public void contextItemVerPedido() {
+		verificaEstatus();
+		cambiaVista();
+	}
+
+	// Getters an setters
 
 	public List<Pedido> getListaPedidos() {
 		return listaPedidos;

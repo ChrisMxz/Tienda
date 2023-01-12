@@ -42,7 +42,7 @@ public class Pedido {
 	private String estatus;
 
 	@JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario")
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@Valid
 	private Usuario cliente;
 

@@ -21,12 +21,30 @@
 				<p:slideMenu id="menu-opciones">
 
 					<p:menuitem id="opc-agregar" icon="pi pi-plus" value="Nuevo Pedido"
-						oncomplete="PF('dialogoPedidoForm').show()"
-						actionListener="#{pedidoBean.nuevo}" update=":formulario-pedido">
-						<p:resetInput target=":formulario-pedido" />
+						update=":formulario-crear-item"
+						actionListener="#{pedidoBean.nuevo}"
+						rendered="#{!pedidoBean.formularioActivo}">
+						<p:resetInput target=":formulario-crear-item" />
+					</p:menuitem>
+					<p:menuitem id="opc-agregar-item" icon="pi pi-plus"
+						value="Nuevo Item" update=":formulario-items"
+						oncomplete="PF('dialogoItemsForm').show()"
+						actionListener="#{itemBean.nuevo}"
+						rendered="#{pedidoBean.formularioActivo and pedidoBean.editable}">
+						<p:resetInput target=":formulario-items" />
+						<f:setPropertyActionListener value="#{pedidoBean.pedido.idPedido}"
+							target="#{itemBean.item.idPedido}" />
 					</p:menuitem>
 					<p:menuitem id="opc-refrescar" value="Recargar"
 						icon="pi pi-refresh" actionListener="#{pedidoBean.refrescar}">
+					</p:menuitem>
+					<p:menuitem id="opc-eliminar" value="Eliminar Pedido"
+						icon="pi pi-trash" actionListener="#{pedidoBean.btnEliminar}"
+						rendered="#{pedidoBean.formularioActivo}"
+						disabled="#{!pedidoBean.editable and sesionUsuario.usuario.nivel!=3}">
+						<p:confirm header="Confirmacion"
+							message="¿Seguro que desea eliminar el pedido?"
+							icon="pi pi-info-circle" />
 					</p:menuitem>
 
 					<p:submenu
@@ -69,6 +87,11 @@
 							</p:menuitem>
 						</p:submenu>
 					</p:submenu>
+
+					<p:menuitem id="opc-regresar" value="Volver"
+						icon="pi pi-arrow-left" actionListener="#{pedidoBean.cambiaVista}"
+						rendered="#{pedidoBean.formularioActivo}">
+					</p:menuitem>
 				</p:slideMenu>
 
 				<!-- divider con titulo Filtros -->
@@ -100,61 +123,10 @@
 
 			</h:form>
 
-			<h:form id="formulario-pedido">
-				<!-- Dialogo modal para mostrar los detalles del item -->
-				<p:dialog header="Pedido #{pedidoBean.pedido.idPedido}"
-					widgetVar="dialogoPedidoForm" minHeight="230" minWidth="250"
-					width="800" height="600" responsive="true" showEffect="fade"
-					hideEffect="fade" closeOnEscape="true" minimizable="true">
-
-					<ui:include src="/resources/paginas/pedidos/formularioPedido.xhtml" />
-
-					<f:facet name="footer">
-						<p:commandButton id="btn-pagar-pedido" icon="pi pi-money-bill"
-							value="Pagar" actionListener="#{pedidoBean.guardar}"
-							styleClass="ui-button-success rounded-button"
-							rendered="#{pedidoBean.editable and pedidoBean.pedido.idPedido>0}">
-						</p:commandButton>
-
-					</f:facet>
-
-				</p:dialog>
-
-			</h:form>
-
-			<h:form id="formulario-items">
-				<!-- Dialogo modal para mostrar los detalles del item -->
-				<p:dialog
-					header="#{itemBean.item.idItem>0? itemBean.item.producto.nombre: 'Nuevo Item' }"
-					widgetVar="dialogoItemsForm" minHeight="230" minWidth="250"
-					width="500" height="550" responsive="true" showEffect="fade"
-					modal="true" hideEffect="fade" closeOnEscape="true">
-
-					<ui:include src="/resources/paginas/pedidos/formularioItem.xhtml" />
-
-					<f:facet name="footer">
-						<p:commandButton id="btn-eliminar-item" icon="pi pi-trash"
-							value="Eliminar" actionListener="#{itemBean.eliminar}"
-							oncomplete="PF('dialogoItemsForm').hide()"
-							styleClass="ui-button-danger rounded-button"
-							rendered="#{itemBean.item.idItem>0}">
-							<p:confirm header="Confirmacion"
-								message="¿Seguro que desea eliminar el item?"
-								icon="pi pi-info-circle" />
-						</p:commandButton>
-						<p:commandButton id="btn-agregar-item" icon="pi pi-save"
-							value="Guardar" validateClient="true"
-							update=":formulario-items:itemPanel :formulario-pedido:dt-items"
-							oncomplete="PF('dialogoItemsForm').hide()"
-							actionListener="#{itemBean.guardar}"
-							styleClass="ui-button-primary rounded-button">
-						</p:commandButton>
-
-					</f:facet>
-
-				</p:dialog>
-
-			</h:form>
+			<!-- Modal   dialogoCrearPedidoForm Crear un pedido nuevo -->
+			<ui:include src="/resources/paginas/pedidos/crearPedidoForm.xhtml" />
+			<!-- Modal   dialogoItemsForm Formulario Item -->
+			<ui:include src="/resources/paginas/pedidos/formularioItem.xhtml" />
 
 
 		</div>

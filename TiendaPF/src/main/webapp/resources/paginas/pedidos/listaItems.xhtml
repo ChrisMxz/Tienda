@@ -15,7 +15,7 @@
 				value="#{pedidoBean.pedido.listaItems}" rowKey="#{item.idItem}"
 				selection="#{itemBean.item}" selectionMode="single" paginator="true"
 				reflow="true" rows="5" paginatorPosition="bottom"
-				rowsPerPageTemplate="5,10" scrollable="true" 
+				rowsPerPageTemplate="5,10" scrollable="true"
 				rendered="#{pedidoBean.pedido.idPedido>0}"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
 
@@ -41,27 +41,20 @@
 						<f:convertNumber type="currency" currencySymbol="$" />
 					</h:outputText>
 				</p:column>
-
-				<f:facet name="footer">
-					<p:outputLabel
-						value="Cantidad de productos: #{pedidoBean.pedido.cantidadProductos}" />
-					<br />
-					<p:outputLabel value="Subtotal: $ #{pedidoBean.pedido.subTotal}" />
-					<br />
-					<p:outputLabel value="Total(IVA): $ #{pedidoBean.pedido.total}" />
-				</f:facet>
 			</p:dataTable>
 
 			<!-- opciones al hacer click derecho -->
-			<p:contextMenu for="dt-items" rendered="#{pedidoBean.editable}">
+			<p:contextMenu for="dt-items">
 				<p:menuitem id="opc-editar-item" value="editar" icon="pi pi-pencil"
 					update=":formulario-items"
-					oncomplete="PF('dialogoItemsForm').show()">
+					oncomplete="PF('dialogoItemsForm').show()"
+					disabled="#{!pedidoBean.editable}">
 					<p:resetInput target=":formulario-items" />
 				</p:menuitem>
 
 				<p:menuitem value="Eliminar" update="dt-items" icon="pi pi-trash"
-					actionListener="#{itemBean.eliminar}">
+					actionListener="#{itemBean.eliminar}"
+					disabled="#{!pedidoBean.editable}">
 					<p:confirm header="Confirmacion"
 						message="¿Seguro que desea eliminar el item?"
 						icon="pi pi-info-circle" />

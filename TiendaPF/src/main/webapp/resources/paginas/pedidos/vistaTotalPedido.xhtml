@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="grid">
+		<!-- divider con titulo opciones -->
+		<h:form id="detalles-pedidos">
+			<p:outputPanel styleClass="col-12" id="panel-pedidos-detalles"
+				rendered="#{pedidoBean.formularioActivo}">
+				<p:divider align="left">
+					<div class="inline-flex align-items-center">
+						<b> <p:outputLabel value="Detalles" />
+						</b>
+					</div>
+				</p:divider>
+
+				<p:panelGrid columns="2" id="total"
+					class="col-12 ui-slidemenu-content">
+
+					<h:outputText value="Pedido" />
+					<h:outputText value="#{pedidoBean.pedido.idPedido}" />
+
+					<h:outputText value="Productos" />
+					<h:outputText value="#{pedidoBean.pedido.cantidadProductos}" />
+
+					<h:outputText value="Subtotal" />
+					<h:outputText value="#{pedidoBean.pedido.subTotal}" />
+
+					<h:outputText value="Total" />
+					<h:outputText value="#{pedidoBean.pedido.total}" />
+
+					<p:commandButton id="btn-pagar-pedido" icon="pi pi-money-bill"
+						value="Pagar" validateClient="true"
+						styleClass="ui-button-primary rounded-button"
+						disabled="#{!pedidoBean.editable}">
+					</p:commandButton>
+				</p:panelGrid>
+
+			</p:outputPanel>
+		</h:form>
+	</div>
+</ui:composition>

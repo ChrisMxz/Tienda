@@ -7,65 +7,70 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<div class="card">
+		<h:form id="formulario-pedido">
 
-		<p:outputPanel class="formgrid grid" id="detalles">
+			<p:outputPanel class="formgrid grid" id="detalles"
+				rendered="#{pedidoBean.formularioActivo}">
+				<!-- Titulo pedido editando -->
+				<p:divider align="left">
+					<div class="inline-flex align-items-center">
+						<b> <p:outputLabel
+								value=" Pedido: #{pedidoBean.pedido.idPedido}" />
+						</b>
+					</div>
+				</p:divider>
 
-			<div class="field col-6">
-				<p:staticMessage severity="info" summary="Fecha de Registro:"
-					styleClass="text-xs p-1" detail="#{pedidoBean.pedido.fechaPedido}"
-					rendered="#{pedidoBean.pedido.fechaPedido!=null}" />
-				<p:staticMessage severity="info" summary="Estatus"
-					styleClass="text-xs p-1" detail="#{pedidoBean.pedido.estatus}"
-					rendered="#{pedidoBean.pedido.estatus!=null}" />
-			</div>
-			<div class="field col-6"></div>
-			<!-- Input Cliente -->
-			<div class="field col-6">
-				<p:message for="seleccion-cliente" display="text"
-					styleClass="text-xs pl-0 py-1 border-none" />
-				<p:selectOneMenu value="#{pedidoBean.pedido.cliente}"
-					id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
-					required="true" requiredMessage="Elige un cliente"
-					rendered="#{sesionUsuario.usuario.nivel!=1 }"
-					disabled="#{!pedidoBean.editable or sesionUsuario.usuario.nivel!=3}">
-					<f:selectItem itemLabel="Seleccionar Cliente " Value="#{null}" />
-					<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
-						itemLabel="#{cliente.appaterno} #{cliente.nombre} " />
-					<f:converter binding="#{clienteConverter}" />
-				</p:selectOneMenu>
-			</div>
-			<!-- btn crear pedido -->
-			<div class="field col-12">
-				<p:commandButton id="btn-guardar-pedido" icon="pi pi-save"
-					value="Crear" validateClient="true"
-					update=":formulario-pedido:detalles"
-					actionListener="#{pedidoBean.guardar}"
-					styleClass="ui-button-primary
+				<div class="field col-6">
+					<p:staticMessage severity="info" summary="Fecha de Registro:"
+						styleClass="text-xs p-1" detail="#{pedidoBean.pedido.fechaPedido}"
+						rendered="#{pedidoBean.pedido.fechaPedido!=null}" />
+					<p:staticMessage severity="info" summary="Estatus"
+						styleClass="text-xs p-1" detail="#{pedidoBean.pedido.estatus}"
+						rendered="#{pedidoBean.pedido.estatus!=null}" />
+				</div>
+				<div class="field col-6"></div>
+				<!-- Input Cliente -->
+				<div class="field col-6">
+					<p:message for="seleccion-cliente" display="text"
+						styleClass="text-xs pl-0 py-1 border-none" />
+					<p:selectOneMenu value="#{pedidoBean.pedido.cliente}"
+						id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
+						required="true" requiredMessage="Elige un cliente"
+						rendered="#{sesionUsuario.usuario.nivel!=1 }"
+						disabled="#{!pedidoBean.editable or sesionUsuario.usuario.nivel!=3}">
+						<f:selectItem itemLabel="Seleccionar Cliente " Value="#{null}" />
+						<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
+							itemLabel="#{cliente.appaterno} #{cliente.nombre} " />
+						<f:converter binding="#{clienteConverter}" />
+					</p:selectOneMenu>
+				</div>
+				<!-- btn crear pedido -->
+				<div class="field col-12">
+					<p:commandButton id="btn-guardar-pedido" icon="pi pi-save"
+						value="Crear" validateClient="true"
+						update=":formulario-pedido:detalles"
+						actionListener="#{pedidoBean.guardar}"
+						styleClass="ui-button-primary
 				rounded-button"
-					rendered="#{pedidoBean.pedido.idPedido==null}">
+						rendered="#{pedidoBean.pedido.idPedido==null}">
+					</p:commandButton>
+				</div>
+
+				<!-- Lista de items del pedido -->
+				<div class="col-12">
+					<ui:include src="/resources/paginas/pedidos/listaItems.xhtml" />
+				</div>
+
+
+			</p:outputPanel>
+			<f:facet name="footer">
+				<p:commandButton id="btn-pagar-pedido" icon="pi pi-money-bill"
+					value="Pagar" actionListener="#{pedidoBean.guardar}"
+					styleClass="ui-button-success rounded-button"
+					rendered="#{pedidoBean.editable and pedidoBean.pedido.idPedido>0}">
 				</p:commandButton>
-			</div>
 
-			<!-- Agregar producto a pedido -->
-			<div class="field col-4">
-				<p:commandButton id="btn-agregar-Item" icon="pi pi-plus"
-					value="Nuevo Item" update=":formulario-items"
-					oncomplete="PF('dialogoItemsForm').show()"
-					actionListener="#{itemBean.nuevo}"
-					styleClass="ui-button-primary rounded-button"
-					rendered="#{pedidoBean.pedido.idPedido>0 and pedidoBean.editable}">
-					<p:resetInput target=":formulario-items" />
-					<f:setPropertyActionListener value="#{pedidoBean.pedido.idPedido}"
-						target="#{itemBean.item.idPedido}" />
-				</p:commandButton>
-			</div>
-			<!-- Lista de items del pedido -->
-			<div class="col-12">
-				<ui:include src="/resources/paginas/pedidos/listaItems.xhtml" />
-			</div>
-
-
-		</p:outputPanel>
-
+			</f:facet>
+		</h:form>
 	</div>
 </ui:composition>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formulario-crear-item">
+		<!-- Dialogo modal para mostrar los detalles del item -->
+		<p:dialog header="Nuevo Pedido" widgetVar="dialogoCrearPedidoForm"
+			minHeight="200" minWidth="200" width="500" height="400"
+			responsive="true" showEffect="fade" modal="true" hideEffect="fade"
+			closeOnEscape="true">
+
+			<div class="card ui-fluid">
+				<p:outputPanel class="formgrid grid" id="crearPedido">
+					<!-- Input Cliente -->
+					<div class="field col-12">
+						<p:outputLabel for="@next" value="Cliente"></p:outputLabel>
+						<p:message for="seleccion-cliente" display="text"
+							styleClass="text-xs pl-0 py-1 border-none" />
+						<p:selectOneMenu value="#{pedidoBean.pedido.cliente}"
+							id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
+							required="true" requiredMessage="Elige un cliente"
+							rendered="#{sesionUsuario.usuario.nivel!=1 }"
+							disabled="#{!pedidoBean.editable or sesionUsuario.usuario.nivel!=3}">
+							<f:selectItem itemLabel="Seleccionar Cliente " Value="#{null}" />
+							<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
+								itemLabel="#{cliente.appaterno} #{cliente.nombre} " />
+							<f:converter binding="#{clienteConverter}" />
+							<p:ajax event="itemSelect" update="verUsuario" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="field col-12">
+						<p:panelGrid columns="2" id="verUsuario">
+
+							<h:outputText value="ID:" styleClass="font-bold" />
+							<h:outputText value="#{pedidoBean.pedido.cliente.idUsuario}" />
+
+							<h:outputText value="Nombre" />
+							<h:outputText value="#{pedidoBean.pedido.cliente.nombre}" />
+
+							<h:outputText value="Apellido Paterno " />
+							<h:outputText value="#{pedidoBean.pedido.cliente.appaterno}" />
+
+							<h:outputText value="Apellido Materno" />
+							<h:outputText value="#{pedidoBean.pedido.cliente.apmaterno}" />
+
+						</p:panelGrid>
+
+					</div>
+				</p:outputPanel>
+
+
+			</div>
+
+			<f:facet name="footer">
+				<!-- btn crear pedido -->
+				<p:commandButton id="btn-guardar-pedido" icon="pi pi-save"
+					value="Crear" validateClient="true"
+					update=":formulario-crear-item:crearPedido"
+					actionListener="#{pedidoBean.guardar}"
+					oncomplete="PF('dialogoCrearPedidoForm').hide()"
+					styleClass="ui-button-primary rounded-button"
+					>
+				</p:commandButton>
+			</f:facet>
+
+		</p:dialog>
+
+	</h:form>
+
+</ui:component>

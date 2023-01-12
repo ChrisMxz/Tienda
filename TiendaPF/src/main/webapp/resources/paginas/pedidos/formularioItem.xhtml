@@ -6,77 +6,109 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<div class="card ui-fluid">
+	<h:form id="formulario-items">
+		<!-- Dialogo modal para mostrar los detalles del item -->
+		<p:dialog
+			header="#{itemBean.item.idItem>0? itemBean.item.producto.nombre: 'Nuevo Item' }"
+			widgetVar="dialogoItemsForm" minHeight="230" minWidth="250"
+			width="500" height="550" responsive="true" showEffect="fade"
+			modal="true" hideEffect="fade" closeOnEscape="true">
 
-		<p:outputPanel class="formgrid grid" id="itemPanel">
-			<!-- Input Producto -->
-			<div class="field col-12">
-				<p:outputLabel for="@next" value="Producto" />
-				<p:message for="@next" display="text"
-					styleClass="text-xs pl-0 py-1 border-none" />
-				<p:selectOneMenu value="#{itemBean.item.producto}"
-					id="seleccion-cliente" filter="true" filterMatchMode="contains"
-					required="true" requiredMessage="Elige un Producto"
-					disabled="#{itemBean.item.idItem!=null}">
-					<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
-					<f:selectItems value="#{productoBean.listaProductos}"
-						var="producto"
-						itemLabel="#{producto.idProducto}  #{producto.nombre}" />
-					<f:converter binding="#{productoConverter}" />
-					<p:ajax event="itemSelect" update="formulario-items:itemPanel" />
-				</p:selectOneMenu>
-			</div>
-			<div class="field col-12">
-				<p:outputPanel id="verProducto">
+			<div class="card ui-fluid">
 
-
-
-					<p:panelGrid columns="2">
-
-						<h:outputText value="ID:" styleClass="font-bold" />
-						<h:outputText value="#{itemBean.item.producto.idProducto}" />
-
-						<h:outputText value="SKU:" />
-						<h:outputText value="#{itemBean.item.producto.sku}" />
-
-						<h:outputText value="Descripcion:" />
-						<h:outputText value="#{itemBean.item.producto.descripcion}" />
-
-						<h:outputText value="Concepto:" />
-						<h:outputText value="#{itemBean.item.producto.concepto}" />
-
-						<h:outputText value="Stock:" />
-						<h:outputText value="#{itemBean.item.producto.cantidad}" />
-
-						<h:outputText value="Precio:" />
-						<h:outputText value="#{itemBean.item.producto.precio}" />
-					</p:panelGrid>
+				<p:outputPanel class="formgrid grid" id="itemPanel">
+					<!-- Input Producto -->
+					<div class="field col-12">
+						<p:outputLabel for="@next" value="Producto" />
+						<p:message for="@next" display="text"
+							styleClass="text-xs pl-0 py-1 border-none" />
+						<p:selectOneMenu value="#{itemBean.item.producto}"
+							id="seleccion-cliente" filter="true" filterMatchMode="contains"
+							required="true" requiredMessage="Elige un Producto"
+							disabled="#{itemBean.item.idItem!=null}">
+							<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+							<f:selectItems value="#{productoBean.listaProductos}"
+								var="producto"
+								itemLabel="#{producto.idProducto}  #{producto.nombre}" />
+							<f:converter binding="#{productoConverter}" />
+							<p:ajax event="itemSelect" update="formulario-items:itemPanel" />
+						</p:selectOneMenu>
+					</div>
+					<div class="field col-12">
+						<p:outputPanel id="verProducto">
 
 
+
+							<p:panelGrid columns="2">
+
+								<h:outputText value="ID:" styleClass="font-bold" />
+								<h:outputText value="#{itemBean.item.producto.idProducto}" />
+
+								<h:outputText value="SKU:" />
+								<h:outputText value="#{itemBean.item.producto.sku}" />
+
+								<h:outputText value="Descripcion:" />
+								<h:outputText value="#{itemBean.item.producto.descripcion}" />
+
+								<h:outputText value="Concepto:" />
+								<h:outputText value="#{itemBean.item.producto.concepto}" />
+
+								<h:outputText value="Stock:" />
+								<h:outputText value="#{itemBean.item.producto.cantidad}" />
+
+								<h:outputText value="Precio:" />
+								<h:outputText value="#{itemBean.item.producto.precio}" />
+							</p:panelGrid>
+
+
+						</p:outputPanel>
+
+					</div>
+					<!-- Input Cantidad -->
+					<div class="field col-6">
+						<p:outputLabel for="@next" value="Cantidad: "
+							indicateRequired="false" styleClass="font-bold" />
+						<p:spinner id="cantidad" value="#{itemBean.item.cantidad}" min="1"
+							max="#{itemBean.obtenerCantidad()}">
+							<p:ajax listener="#{itemBean.calcularSubtotal}"
+								update="subtotalItem" />
+						</p:spinner>
+
+					</div>
+					<!-- Vista Subtotal  -->
+					<div class="field col-6">
+						<p:outputLabel for="@next" value="Sub Total" />
+						<p:message for="@next" display="text"
+							styleClass="text-xs pl-0 py-1 border-none" />
+						<p:inputNumber id="subtotalItem" styleClass="font-bold"
+							value="#{itemBean.item.subTotal}" label="subTotal" symbol="$"
+							maxValue="100000" decimalPlaces="2" minValue="0"
+							symbolPosition="p" emptyValue="always" disabled="true" />
+					</div>
 				</p:outputPanel>
+			</div>
 
-			</div>
-			<!-- Input Cantidad -->
-			<div class="field col-6">
-				<p:outputLabel for="@next" value="Cantidad: "
-					indicateRequired="false" styleClass="font-bold" />
-				<p:spinner id="cantidad" value="#{itemBean.item.cantidad}" min="1"
-					max="#{itemBean.obtenerCantidad()}">
-					<p:ajax listener="#{itemBean.calcularSubtotal}"
-						update="subtotalItem" />
-				</p:spinner>
+			<f:facet name="footer">
+				<p:commandButton id="btn-eliminar-item" icon="pi pi-trash"
+					value="Eliminar" actionListener="#{itemBean.eliminar}"
+					oncomplete="PF('dialogoItemsForm').hide()"
+					styleClass="ui-button-danger rounded-button"
+					rendered="#{itemBean.item.idItem>0}">
+					<p:confirm header="Confirmacion"
+						message="¿Seguro que desea eliminar el item?"
+						icon="pi pi-info-circle" />
+				</p:commandButton>
+				<p:commandButton id="btn-agregar-item" icon="pi pi-save"
+					value="Guardar" validateClient="true"
+					update=":formulario-items:itemPanel :formulario-pedido:dt-items"
+					oncomplete="PF('dialogoItemsForm').hide()"
+					actionListener="#{itemBean.guardar}"
+					styleClass="ui-button-primary rounded-button">
+				</p:commandButton>
 
-			</div>
-			<!-- Vista Subtotal  -->
-			<div class="field col-6">
-				<p:outputLabel for="@next" value="Sub Total" />
-				<p:message for="@next" display="text"
-					styleClass="text-xs pl-0 py-1 border-none" />
-				<p:inputNumber id="subtotalItem" styleClass="font-bold"
-					value="#{itemBean.item.subTotal}" label="subTotal" symbol="$"
-					maxValue="100000" decimalPlaces="2" minValue="0" symbolPosition="p"
-					emptyValue="always" disabled="true" />
-			</div>
-		</p:outputPanel>
-	</div>
+			</f:facet>
+
+		</p:dialog>
+
+	</h:form>
 </ui:component>
