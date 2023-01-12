@@ -1,5 +1,6 @@
 package com.david.tienda.entidades;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import java.util.Objects;
@@ -22,7 +23,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "productos")
-public class Producto {
+public class Producto implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	// atributos---------------------
 	@Id

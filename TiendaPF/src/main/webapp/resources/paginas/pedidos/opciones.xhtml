@@ -77,13 +77,13 @@
 						<p:submenu label="Orden" icon="pi pi-sort-alt">
 							<p:menuitem value="Ascendente" icon="pi pi-sort-numeric-up"
 								action="#{pedidoBean.estableceOrden}">
-								<f:setPropertyActionListener value="#{true}"
+								<f:setPropertyActionListener value="true"
 									target="#{pedidoBean.orden}" />
 							</p:menuitem>
 							<p:menuitem value="Descendente"
 								icon="pi pi-sort-numeric-down-alt"
 								action="#{pedidoBean.estableceOrden}">
-								<f:setPropertyActionListener value="#{false}"
+								<f:setPropertyActionListener value="false"
 									target="#{pedidoBean.orden}" />
 							</p:menuitem>
 						</p:submenu>
@@ -98,8 +98,8 @@
 
 
 				<p:outputPanel styleClass="card ui-fluid formgrid grid"
-					rendered="#{sesionUsuario.usuario.idUsuario!=1 and !pedidoBean.formularioActivo}">
-					<p:autoUpdate></p:autoUpdate>
+					rendered="#{sesionUsuario.usuario.nivel!=1 and !pedidoBean.formularioActivo}">
+
 					<!-- divider con titulo Filtros -->
 					<p:divider align="left">
 						<div class="inline-flex align-items-center">

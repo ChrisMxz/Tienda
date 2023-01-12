@@ -1,5 +1,6 @@
 package com.david.tienda.entidades;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -7,8 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.Valid;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "facturas")
@@ -19,21 +24,44 @@ public class Factura {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "folio")
 	private Long folio;
-	
-	@NotNull
-	@Column(name = "pedido_id")
-	private Long pedidoId;
-	// pendiente xml almacenado
+
+	@JoinColumn(name = "pedido_id", referencedColumnName = "id_pedido")
+	@OneToOne
+	@Valid
+	private Pedido pedido;
+
+	private String usoCFDI;
+
+	private String tipoComprobante;
+
+	private String regimenFiscal;
+
+	private String impuesto;
+
+	private String rfcEmisor;
+
+	private String codigoPostalEmisor;
+	@CreationTimestamp
+	private LocalDateTime fechaExpedicion;
 
 	// constructores----------------
 	public Factura() {
 		super();
+		this.pedido = new Pedido();
 	}
 
-	public Factura(Long folio, Long pedidoId) {
+	public Factura(Long folio, Pedido pedido, String usoCFDI, String tipoComprobante, String regimenFiscal,
+			String impuesto, String rfcEmisor, String codigoPostalEmisor, LocalDateTime fechaExpedicion) {
 		super();
 		this.folio = folio;
-		this.pedidoId = pedidoId;
+		this.pedido = pedido;
+		this.usoCFDI = usoCFDI;
+		this.tipoComprobante = tipoComprobante;
+		this.regimenFiscal = regimenFiscal;
+		this.impuesto = impuesto;
+		this.rfcEmisor = rfcEmisor;
+		this.codigoPostalEmisor = codigoPostalEmisor;
+		this.fechaExpedicion = fechaExpedicion;
 	}
 
 	// setters and getters----------
@@ -46,12 +74,68 @@ public class Factura {
 		this.folio = folio;
 	}
 
-	public Long getPedidoId() {
-		return pedidoId;
+	public Pedido getPedido() {
+		return pedido;
 	}
 
-	public void setPedidoId(Long pedidoId) {
-		this.pedidoId = pedidoId;
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	public String getUsoCFDI() {
+		return usoCFDI;
+	}
+
+	public void setUsoCFDI(String usoCFDI) {
+		this.usoCFDI = usoCFDI;
+	}
+
+	public String getTipoComprobante() {
+		return tipoComprobante;
+	}
+
+	public void setTipoComprobante(String tipoComprobante) {
+		this.tipoComprobante = tipoComprobante;
+	}
+
+	public String getRegimenFiscal() {
+		return regimenFiscal;
+	}
+
+	public void setRegimenFiscal(String regimenFiscal) {
+		this.regimenFiscal = regimenFiscal;
+	}
+
+	public String getImpuesto() {
+		return impuesto;
+	}
+
+	public void setImpuesto(String impuesto) {
+		this.impuesto = impuesto;
+	}
+
+	public String getRfcEmisor() {
+		return rfcEmisor;
+	}
+
+	public void setRfcEmisor(String rfcEmisor) {
+		this.rfcEmisor = rfcEmisor;
+	}
+
+	public String getCodigoPostalEmisor() {
+		return codigoPostalEmisor;
+	}
+
+	public void setCodigoPostalEmisor(String codigoPostalEmisor) {
+		this.codigoPostalEmisor = codigoPostalEmisor;
+	}
+
+	public LocalDateTime getFechaExpedicion() {
+		return fechaExpedicion;
+	}
+
+	public void setFechaExpedicion(LocalDateTime fechaExpedicion) {
+		this.fechaExpedicion = fechaExpedicion;
 	}
 
 	@Override
@@ -73,7 +157,10 @@ public class Factura {
 
 	@Override
 	public String toString() {
-		return "Factura [folio=" + folio + ", pedidoId=" + pedidoId + "]";
+		return "Factura [folio=" + folio + ", pedido=" + pedido + ", usoCFDI=" + usoCFDI + ", tipoComprobante="
+				+ tipoComprobante + ", regimenFiscal=" + regimenFiscal + ", impuesto=" + impuesto + ", rfcEmisor="
+				+ rfcEmisor + ", codigoPostalEmisor=" + codigoPostalEmisor + ", fechaExpedicion=" + fechaExpedicion
+				+ "]";
 	}
 
 }

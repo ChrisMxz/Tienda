@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formulario-pago">
+		<!-- Dialogo modal para mostrar los detalles del Pago -->
+		<p:dialog header="Pago" widgetVar="dialogoPagoForm" minHeight="230"
+			minWidth="250" width="500" height="350" responsive="true"
+			showEffect="fade" modal="true" hideEffect="fade" closeOnEscape="true">
+
+			<p:outputPanel class="formgrid grid" id="pago-panel">
+
+				<!-- Input Forma de pago -->
+				<div class="field col-12">
+					<p:outputLabel for="@next" value="Forma Pago"
+						indicateRequired="true" />
+					<p:message for="@next" display="text"
+						styleClass="text-xs pl-0 py-1 border-none" />
+					<p:selectOneMenu value="#{pedidoBean.pedido.formaPago}"
+						id="formaPago" filter="true" filterMatchMode="contains"
+						required="true" requiredMessage="Elige una opcion">
+						<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+						<f:selectItems value="#{datosFormulario.formasdePago}" var="dato"
+							itemValue="#{dato}" itemLabel="#{dato}" />
+					</p:selectOneMenu>
+				</div>
+
+				<!-- Input metodo de pago -->
+				<div class="field col-12">
+					<p:outputLabel for="@next" value="Metodo Pago"
+						indicateRequired="true" />
+					<p:message for="@next" display="text"
+						styleClass="text-xs pl-0 py-1 border-none" />
+					<p:selectOneMenu value="#{pedidoBean.pedido.metodoPago}"
+						id="MetodoPago" filter="true" filterMatchMode="contains"
+						required="true" requiredMessage="Elige una opcion">
+						<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+						<f:selectItems value="#{datosFormulario.metodosdePago}" var="dato"
+							itemValue="#{dato}" itemLabel="#{dato}" />
+					</p:selectOneMenu>
+				</div>
+
+			</p:outputPanel>
+
+			<f:facet name="footer">
+				<p:commandButton id="btn-confirmar-Pago" icon="pi pi-check"
+					value="Confirmar"
+					update=":formulario-pago :formulario-pedido :opciones "
+					actionListener="#{pedidoBean.pagar}"
+					styleClass="ui-button-primary rounded-button">
+					<p:confirm header="Confirmacion" message="¿Proceder al pago?"
+						escape="Hola" icon="pi pi-info-circle" />
+				</p:commandButton>
+
+			</f:facet>
+
+		</p:dialog>
+
+	</h:form>
+</ui:component>

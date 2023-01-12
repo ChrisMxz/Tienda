@@ -65,6 +65,10 @@ public class Pedido {
 	@Max(1000000)
 	private double total;
 
+	private String formaPago;
+
+	private String metodoPago;
+
 	// constructores----------------
 	public Pedido() {
 		super();
@@ -176,6 +180,22 @@ public class Pedido {
 
 	public void setFechaModificacion(LocalDateTime fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
+	}
+
+	public String getFormaPago() {
+		return formaPago;
+	}
+
+	public void setFormaPago(String formaPago) {
+		this.formaPago = formaPago;
+	}
+
+	public String getMetodoPago() {
+		return metodoPago;
+	}
+
+	public void setMetodoPago(String metodoPago) {
+		this.metodoPago = metodoPago;
 	}
 
 	@Override

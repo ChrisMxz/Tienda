@@ -37,11 +37,14 @@
 					<p:commandButton id="btn-pagar-pedido" icon="pi pi-money-bill"
 						value="Pagar" validateClient="true"
 						styleClass="ui-button-primary rounded-button"
-						disabled="#{!pedidoBean.editable}">
+						oncomplete="PF('dialogoPagoForm').show()"
+						disabled="#{!pedidoBean.editable and pedidoBean.pedido.cantidadProductos>0}">
 					</p:commandButton>
 				</p:panelGrid>
 
 			</p:outputPanel>
 		</h:form>
+
+		<ui:include src="/resources/paginas/pedidos/formularioPago.xhtml" />
 	</div>
 </ui:composition>
