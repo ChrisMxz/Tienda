@@ -6,7 +6,6 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -26,8 +25,6 @@ public class ItemBean implements Serializable {
 
 	private Item item;
 	private ServicioItem servicioItem;
-	@ManagedProperty(value = "#{pedidoBean}")
-	private PedidoBean pedidoBean;
 
 	@PostConstruct
 	public void iniciar() {
@@ -62,12 +59,12 @@ public class ItemBean implements Serializable {
 			msg = "Item Actualizado";
 		}
 		servicioItem.guardar(item);
-		pedidoBean.guardar();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
 		PrimeFaces.current().ajax().update(":messages");
 	}
 
 	public void eliminar() {
+		modificarCantidadProducto(-item.getCantidad());
 		servicioItem.eliminar(item);
 	}
 
@@ -98,14 +95,6 @@ public class ItemBean implements Serializable {
 
 	public void setItem(Item item) {
 		this.item = item;
-	}
-
-	public PedidoBean getPedidoBean() {
-		return pedidoBean;
-	}
-
-	public void setPedidoBean(PedidoBean pedidoBean) {
-		this.pedidoBean = pedidoBean;
 	}
 
 }

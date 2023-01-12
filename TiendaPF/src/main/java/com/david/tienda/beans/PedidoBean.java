@@ -27,6 +27,9 @@ public class PedidoBean implements Serializable {
 	@ManagedProperty(value = "#{sesionUsuario}")
 	private SesionUsuario sesionUsuario;
 
+	@ManagedProperty(value = "#{itemBean}")
+	private ItemBean itemBean;
+
 	private Pedido pedido;
 	private List<Pedido> listaPedidos;
 	private ServicioPedido servicioPedido;
@@ -61,6 +64,7 @@ public class PedidoBean implements Serializable {
 		if (sesionUsuario.getUsuario().getNivel() == 1) {
 			pedido.setCliente(sesionUsuario.getUsuario());
 			guardar();
+			cambiaVista();
 		} else {
 			PrimeFaces.current().executeScript("PF('dialogoCrearPedidoForm').show()");
 		}
@@ -110,6 +114,12 @@ public class PedidoBean implements Serializable {
 	}
 
 	public void eliminar() {
+
+		for (Item i : pedido.getListaItems()) {
+			itemBean.setItem(i);
+			itemBean.eliminar();
+		}
+
 		servicioPedido.eliminar(pedido);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
 		PrimeFaces.current().ajax().update(":messages");
@@ -127,7 +137,7 @@ public class PedidoBean implements Serializable {
 	public void estableceLimite() {
 		String msg = "Limite establecido " + limite + " registros ";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages", ":opciones");
+		PrimeFaces.current().ajax().update(":messages", ":opciones", "pedidos");
 		buscar();
 	}
 
@@ -136,7 +146,7 @@ public class PedidoBean implements Serializable {
 		if (!orden)
 			msg = "Orden descendente ";
 		FacesContext.getCurrentInstance().addMessage("Mostrando lista", new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages", ":opciones");
+		PrimeFaces.current().ajax().update(":messages", ":opciones", "pedidos");
 		buscar();
 	}
 
@@ -177,6 +187,22 @@ public class PedidoBean implements Serializable {
 	public void contextItemVerPedido() {
 		verificaEstatus();
 		cambiaVista();
+	}
+
+	public void contextUsuarioNuevoPedido() {
+		nuevo();
+		System.out.println(pedido);
+		guardar();
+	}
+
+	public void btnEliminarItem() {
+		itemBean.eliminar();
+		guardar();
+	}
+
+	public void btnAgregarItem() {
+		itemBean.guardar();
+		guardar();
 	}
 
 	// Getters an setters
@@ -283,6 +309,14 @@ public class PedidoBean implements Serializable {
 
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
+	}
+
+	public ItemBean getItemBean() {
+		return itemBean;
+	}
+
+	public void setItemBean(ItemBean itemBean) {
+		this.itemBean = itemBean;
 	}
 
 }

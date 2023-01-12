@@ -36,7 +36,8 @@
 							target="#{itemBean.item.idPedido}" />
 					</p:menuitem>
 					<p:menuitem id="opc-refrescar" value="Recargar"
-						icon="pi pi-refresh" actionListener="#{pedidoBean.refrescar}">
+						icon="pi pi-refresh" actionListener="#{pedidoBean.refrescar}"
+						rendered="#{!pedidoBean.formularioActivo}">
 					</p:menuitem>
 					<p:menuitem id="opc-eliminar" value="Eliminar Pedido"
 						icon="pi pi-trash" actionListener="#{pedidoBean.btnEliminar}"
@@ -49,7 +50,7 @@
 
 					<p:submenu
 						label="Ver #{pedidoBean.limite} #{pedidoBean.orden? 'Asc': 'Desc'}"
-						icon="pi pi-eye">
+						icon="pi pi-eye" rendered="#{!pedidoBean.formularioActivo}">
 						<p:submenu immediate="true" label="Cantidad" icon="pi pi-hashtag">
 							<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
 								icon="pi pi-database" action="#{pedidoBean.estableceLimite}">
@@ -76,13 +77,13 @@
 						<p:submenu label="Orden" icon="pi pi-sort-alt">
 							<p:menuitem value="Ascendente" icon="pi pi-sort-numeric-up"
 								action="#{pedidoBean.estableceOrden}">
-								<f:setPropertyActionListener value="true"
+								<f:setPropertyActionListener value="#{true}"
 									target="#{pedidoBean.orden}" />
 							</p:menuitem>
 							<p:menuitem value="Descendente"
 								icon="pi pi-sort-numeric-down-alt"
 								action="#{pedidoBean.estableceOrden}">
-								<f:setPropertyActionListener value="false"
+								<f:setPropertyActionListener value="#{false}"
 									target="#{pedidoBean.orden}" />
 							</p:menuitem>
 						</p:submenu>
@@ -94,24 +95,25 @@
 					</p:menuitem>
 				</p:slideMenu>
 
-				<!-- divider con titulo Filtros -->
-				<p:divider align="left">
-					<div class="inline-flex align-items-center">
-						<b> <p:outputLabel value="Filtros"
-								rendered="#{sesionUsuario.usuario.idUsuario!=1}" />
-						</b>
-					</div>
-				</p:divider>
 
-				<div class="card ui-fluid formgrid grid">
+
+				<p:outputPanel styleClass="card ui-fluid formgrid grid"
+					rendered="#{sesionUsuario.usuario.idUsuario!=1 and !pedidoBean.formularioActivo}">
+					<p:autoUpdate></p:autoUpdate>
+					<!-- divider con titulo Filtros -->
+					<p:divider align="left">
+						<div class="inline-flex align-items-center">
+							<b> <p:outputLabel value="Filtros" />
+							</b>
+						</div>
+					</p:divider>
+
 					<!-- Tipo de busqueda -->
 					<div class="field col-12">
-						<p:outputLabel for="@next" value="Busqueda"
-							rendered="#{sesionUsuario.usuario.nivel!=1}" />
+						<p:outputLabel for="@next" value="Busqueda" />
 						<!-- Tipo de busqueda para pedidos -->
 						<p:selectOneMenu id="tipo-buscar-productos"
-							value="#{pedidoBean.filtro}"
-							rendered="#{sesionUsuario.usuario.nivel!=1}">
+							value="#{pedidoBean.filtro}">
 							<f:selectItem itemLabel="ID" itemValue="1" />
 							<f:selectItem itemLabel="Cliente ID" itemValue="2" />
 							<p:ajax event="itemSelect" listener="#{pedidoBean.buscar}" />
@@ -119,11 +121,13 @@
 
 					</div>
 
-				</div>
+				</p:outputPanel>
+
+
 
 			</h:form>
 
-			<!-- Modal   dialogoCrearPedidoForm Crear un pedido nuevo -->
+			<!-- Modal   dialogoCrearPedidoForm -->
 			<ui:include src="/resources/paginas/pedidos/crearPedidoForm.xhtml" />
 			<!-- Modal   dialogoItemsForm Formulario Item -->
 			<ui:include src="/resources/paginas/pedidos/formularioItem.xhtml" />

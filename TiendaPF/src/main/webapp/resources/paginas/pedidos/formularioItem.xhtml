@@ -36,9 +36,6 @@
 					</div>
 					<div class="field col-12">
 						<p:outputPanel id="verProducto">
-
-
-
 							<p:panelGrid columns="2">
 
 								<h:outputText value="ID:" styleClass="font-bold" />
@@ -90,7 +87,8 @@
 
 			<f:facet name="footer">
 				<p:commandButton id="btn-eliminar-item" icon="pi pi-trash"
-					value="Eliminar" actionListener="#{itemBean.eliminar}"
+					value="Eliminar" actionListener="#{pedidoBean.btnEliminarItem}"
+					update=":formulario-pedido:dt-items"
 					oncomplete="PF('dialogoItemsForm').hide()"
 					styleClass="ui-button-danger rounded-button"
 					rendered="#{itemBean.item.idItem>0}">
@@ -100,9 +98,9 @@
 				</p:commandButton>
 				<p:commandButton id="btn-agregar-item" icon="pi pi-save"
 					value="Guardar" validateClient="true"
-					update=":formulario-items:itemPanel :formulario-pedido:dt-items"
+					update=":formulario-items :formulario-pedido:dt-items"
 					oncomplete="PF('dialogoItemsForm').hide()"
-					actionListener="#{itemBean.guardar}"
+					actionListener="#{pedidoBean.btnAgregarItem}"
 					styleClass="ui-button-primary rounded-button">
 				</p:commandButton>
 
