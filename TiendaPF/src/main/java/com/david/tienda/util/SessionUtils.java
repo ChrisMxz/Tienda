@@ -46,14 +46,22 @@ public class SessionUtils {
 		return Optional.empty();
 	}
 
-	public static Optional<Boolean> getBandera(HttpServletRequest request) {
+	public static Boolean getBandera(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		boolean bandera = (boolean) session.getAttribute("bandera");
-		if (bandera != false) {
-			return Optional.of(bandera);
-		}
-		return Optional.empty();
+		boolean bandera = false;
+		if (session.getAttribute("bandera") != null)
+			bandera = (boolean) session.getAttribute("bandera");
 
+		return bandera;
+	}
+
+	public static int getNivel(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Integer nivel = 0;
+		if (session.getAttribute("nivel") != null)
+			nivel = (Integer) session.getAttribute("nivel");
+
+		return nivel;
 	}
 
 	public static Connection getconexion() { // para pool

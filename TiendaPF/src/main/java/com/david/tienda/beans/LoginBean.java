@@ -47,7 +47,8 @@ public class LoginBean implements Serializable {
 
 				HttpSession session = (HttpSession) SessionUtils.getRequest().getSession();
 				session.setAttribute("bandera", true);
-				System.out.println(">Sesion: " + sesionUsuario.getUsuario());
+				session.setAttribute("nivel", u.get().getNivel());
+				System.out.println(">Sesion: " + u.get().getNombre());
 
 				return "/resources/paginas/home.xhtml?faces-redirect=true";
 			} else {
@@ -66,14 +67,13 @@ public class LoginBean implements Serializable {
 
 	public String logout() {
 		System.out.println(">logout");
-		Optional<Boolean> bandera = SessionUtils.getBandera(SessionUtils.getRequest());
-		if (bandera.isPresent()) {
-			sesionUsuario.setUsuario(null);
-			sesionUsuario.setBandera(false);
-			HttpSession session = SessionUtils.getRequest().getSession();
-			session.removeAttribute("bandera");
-			session.invalidate();
-		}
+
+		sesionUsuario.setUsuario(null);
+		sesionUsuario.setBandera(false);
+		HttpSession session = SessionUtils.getRequest().getSession();
+		session.removeAttribute("bandera");
+		session.removeAttribute("nivel");
+		session.invalidate();
 		return "/index.xhtml?faces-redirect=true";
 	}
 
