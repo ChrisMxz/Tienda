@@ -172,6 +172,7 @@ public class ServicioPedidoImpl extends ConexionBD implements ServicioPedido, Se
 				}
 
 			} else {
+				consulta = consulta + " ORDER BY p.idPedido " + ord;
 				try {
 					Pedidos = em.createQuery(consulta, Pedido.class).setMaxResults(limite).getResultList();
 				} catch (Exception e) {
