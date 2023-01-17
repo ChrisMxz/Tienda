@@ -16,7 +16,7 @@
 
 			<div class="card ui-fluid">
 
-				<p:outputPanel class="formgrid grid" id="itemPanel">
+				<p:outputPanel class="formgrid grid" id="detalles">
 					<!-- Input Producto -->
 					<div class="field col-12">
 						<p:outputLabel for="@next" value="Producto" />
@@ -31,7 +31,8 @@
 								var="producto"
 								itemLabel="#{producto.idProducto}  #{producto.nombre}" />
 							<f:converter binding="#{productoConverter}" />
-							<p:ajax event="itemSelect" update="formulario-items:itemPanel" />
+							<p:ajax event="itemSelect" update="detalles"
+								listener="#{itemBean.cargaCantidad}" />
 						</p:selectOneMenu>
 					</div>
 					<div class="field col-12">
@@ -65,20 +66,21 @@
 					<div class="field col-6">
 						<p:outputLabel for="@next" value="Cantidad: "
 							indicateRequired="false" styleClass="font-bold" />
-						<p:spinner id="cantidad" value="#{itemBean.item.cantidad}" min="1"
-							max="#{itemBean.obtenerCantidad()}">
+						<p:spinner id="cantidad" value="#{itemBean.cantidad}" min="0"
+							max="#{itemBean.obtenerCantidad()}" placeholder="Hola">
 							<p:ajax listener="#{itemBean.calcularSubtotal}"
-								update="subtotalItem" />
+								update="subtotalItem btn-agregar-item" />
 						</p:spinner>
 
 					</div>
 					<!-- Vista Subtotal  -->
 					<div class="field col-6">
-						<p:outputLabel for="@next" value="Sub Total" />
+						<p:outputLabel for="@next" value="Sub Total"
+							styleClass="font-bold" />
 						<p:message for="@next" display="text"
 							styleClass="text-xs pl-0 py-1 border-none" />
 						<p:inputNumber id="subtotalItem" styleClass="font-bold"
-							value="#{itemBean.item.subTotal}" label="subTotal" symbol="$"
+							value="#{itemBean.total}" label="subTotal" symbol="$"
 							maxValue="100000" decimalPlaces="2" minValue="0"
 							symbolPosition="p" emptyValue="always" disabled="true" />
 					</div>
@@ -98,9 +100,9 @@
 				</p:commandButton>
 				<p:commandButton id="btn-agregar-item" icon="pi pi-save"
 					value="Guardar" validateClient="true"
-					update=":formulario-items :formulario-pedido:dt-items"
-					oncomplete="PF('dialogoItemsForm').hide()"
+					update="formulario-items:detalles"
 					actionListener="#{pedidoBean.btnAgregarItem}"
+					disabled="#{itemBean.cantidad==0}"
 					styleClass="ui-button-primary rounded-button">
 				</p:commandButton>
 

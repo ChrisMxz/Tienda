@@ -25,6 +25,8 @@ public class ItemBean implements Serializable {
 
 	private Item item;
 	private ServicioItem servicioItem;
+	private int cantidad;
+	private double total;
 
 	@PostConstruct
 	public void iniciar() {
@@ -38,6 +40,8 @@ public class ItemBean implements Serializable {
 
 	public void nuevo() {
 		item = new Item();
+		cantidad = 0;
+		total = 0;
 	}
 
 	public void guardar() {
@@ -50,17 +54,22 @@ public class ItemBean implements Serializable {
 
 		if (item.getIdItem() == null) {// no encontro el item
 			msg = "Item Guardado";
-			modificarCantidadProducto(item.getCantidad());
+			modificarCantidadProducto(cantidad);
 		} else {
 
 			Optional<Item> busqueda = servicioItem.porId(item.getIdItem());
-			int dif = this.item.getCantidad() - busqueda.get().getCantidad(); // calculando la diferencia
+			int dif = cantidad - busqueda.get().getCantidad(); // calculando la diferencia
 			modificarCantidadProducto(dif);
 			msg = "Item Actualizado";
 		}
+		item.setCantidad(cantidad);
+		item.setSubTotal(total);
 		servicioItem.guardar(item);
+		cantidad = 0;
+		total = 0;
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
 		PrimeFaces.current().ajax().update(":messages");
+		PrimeFaces.current().executeScript("PF('dialogoItemsForm').hide()");
 	}
 
 	public void eliminar() {
@@ -69,7 +78,7 @@ public class ItemBean implements Serializable {
 	}
 
 	public void calcularSubtotal() {
-		item.setSubTotal(item.getCantidad() * item.getProducto().getPrecio());
+		total = cantidad * item.getProducto().getPrecio();
 	}
 
 	public int obtenerCantidad() {
@@ -89,12 +98,33 @@ public class ItemBean implements Serializable {
 
 	}
 
+	public void cargaCantidad() {
+		cantidad = item.getCantidad();
+		total = item.getSubTotal();
+	}
+
 	public Item getItem() {
 		return item;
 	}
 
 	public void setItem(Item item) {
 		this.item = item;
+	}
+
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
 	}
 
 }
