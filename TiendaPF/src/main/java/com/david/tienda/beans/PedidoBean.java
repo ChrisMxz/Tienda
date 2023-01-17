@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 
@@ -18,6 +16,7 @@ import com.david.tienda.entidades.Item;
 import com.david.tienda.entidades.Pedido;
 import com.david.tienda.servicios.ServicioPedido;
 import com.david.tienda.servicios.ServicioPedidoImpl;
+import com.david.tienda.util.MensajeGrowl;
 
 @ManagedBean
 @ViewScoped
@@ -54,7 +53,6 @@ public class PedidoBean implements Serializable {
 		limite = 100;
 		filtro = 1;
 		fecha = null;
-		estatus = null;
 		editable = true;
 		formularioActivo = false;
 		textoBuscar = null;
@@ -63,6 +61,8 @@ public class PedidoBean implements Serializable {
 
 	public void nuevo() {
 		pedido = new Pedido();
+		pedido.setEstatus("pendiente");
+		pedido.setIva(0.16);
 		editable = true;
 		if (sesionUsuario.getUsuario().getNivel() == 1) {
 			pedido.setCliente(sesionUsuario.getUsuario());
@@ -89,30 +89,25 @@ public class PedidoBean implements Serializable {
 
 	public void refrescar() {
 		listar();
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Refrescado"));
-		PrimeFaces.current().ajax().update(":messages", ":formulario-pedido", ":opciones", ":pedidos",
-				":detalles-pedidos");
+		MensajeGrowl.msgInformacion("Actualizado", "Actualizando vista");
+		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":pedidos", ":detalles-pedidos");
 	}
 
 	public void guardar() {
 
 		if (!bandera) {
-			String msg = "Pedido Guardado";
+			String msg = "Guardado";
 			if (pedido.getIdPedido() != null)
-				msg = "Pedido Actualizado";
+				msg = "Actualizado";
 
 			contarProductos();
-			calcularSubtotal();
-			pedido.setEstatus("pendiente");
+			calcularTotal();
 			servicioPedido.guardar(pedido);
-
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-			PrimeFaces.current().ajax().update(":messages");
+			MensajeGrowl.msgInformacion("Pedido", msg);
 			PrimeFaces.current().executeScript("PF('dialogoPedidosForm').hide()");
 			listar();
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Verifica tus datos"));
-			PrimeFaces.current().ajax().update(":messages");
+			MensajeGrowl.msgInformacion("Verificar", "Verifica tus datos");
 		}
 	}
 
@@ -124,8 +119,7 @@ public class PedidoBean implements Serializable {
 		}
 
 		servicioPedido.eliminar(pedido);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
-		PrimeFaces.current().ajax().update(":messages");
+		MensajeGrowl.msgInformacion("Pedido", "Eliminado");
 		listar();
 	}
 
@@ -140,8 +134,8 @@ public class PedidoBean implements Serializable {
 
 	public void estableceLimite() {
 		String msg = "Limite establecido " + limite + " registros ";
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages", ":opciones", ":pedidos");
+		MensajeGrowl.msgInformacion("Limite", msg);
+		PrimeFaces.current().ajax().update(":opciones", ":pedidos");
 		buscar();
 	}
 
@@ -149,8 +143,9 @@ public class PedidoBean implements Serializable {
 		String msg = "Orden ascendente ";
 		if (!orden)
 			msg = "Orden descendente ";
-		FacesContext.getCurrentInstance().addMessage("Mostrando lista", new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages", ":opciones", ":pedidos");
+
+		MensajeGrowl.msgInformacion("Mostrando lista", msg);
+		PrimeFaces.current().ajax().update(":opciones", ":pedidos");
 		buscar();
 	}
 
@@ -162,7 +157,7 @@ public class PedidoBean implements Serializable {
 		pedido.setCantidadProductos(cuenta);
 	}
 
-	public void calcularSubtotal() {
+	public void calcularTotal() {
 		double cuenta = 0;
 		for (Item i : pedido.getListaItems()) {
 			cuenta = cuenta + i.getSubTotal();
@@ -211,10 +206,17 @@ public class PedidoBean implements Serializable {
 
 	public void pagar() {
 		pedido.setEstatus("hecho");
-		servicioPedido.guardar(pedido);
+		guardar();
 		verificaEstatus();
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pedido Hecho"));
-		PrimeFaces.current().ajax().update(":messages");
+		MensajeGrowl.msgInformacion("Pago", "Aplicado correctamente");
+		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":pedidos", ":detalles-pedidos");
+	}
+
+	public void devCambiaEstatus() {
+		guardar();
+		verificaEstatus();
+		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":pedidos", ":detalles-pedidos");
+		MensajeGrowl.msgInformacion("Estatus", pedido.getEstatus());
 	}
 
 	// Getters an setters

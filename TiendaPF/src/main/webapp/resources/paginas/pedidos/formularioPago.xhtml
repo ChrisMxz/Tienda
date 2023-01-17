@@ -12,7 +12,7 @@
 			minWidth="250" width="500" height="350" responsive="true"
 			showEffect="fade" modal="true" hideEffect="fade" closeOnEscape="true">
 
-			<p:outputPanel class="formgrid grid" id="pago-panel">
+			<p:outputPanel class="formgrid grid" id="detalles">
 
 				<!-- Input Forma de pago -->
 				<div class="field col-12">
@@ -21,8 +21,7 @@
 					<p:message for="@next" display="text"
 						styleClass="text-xs pl-0 py-1 border-none" />
 					<p:selectOneMenu value="#{pedidoBean.pedido.formaPago}"
-						id="formaPago" filter="true" filterMatchMode="contains"
-						required="true" requiredMessage="Elige una opcion">
+						id="formaPago" required="true" requiredMessage="Elige una opcion">
 						<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
 						<f:selectItems value="#{datosFormulario.formasdePago}" var="dato"
 							itemValue="#{dato}" itemLabel="#{dato}" />
@@ -48,10 +47,9 @@
 
 			<f:facet name="footer">
 				<p:commandButton id="btn-confirmar-Pago" icon="pi pi-check"
-					value="Confirmar"
-					update=":formulario-pago :formulario-pedido :opciones "
+					value="Confirmar" update=":formulario-pago:detalles"
 					actionListener="#{pedidoBean.pagar}"
-					styleClass="ui-button-primary rounded-button">
+					styleClass="rounded-button ui-button-outlined">
 					<p:confirm header="Confirmacion" message="¿Proceder al pago?"
 						escape="Hola" icon="pi pi-info-circle" />
 				</p:commandButton>

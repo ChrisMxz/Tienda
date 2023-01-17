@@ -62,17 +62,16 @@
 					<p:column headerText="Fecha" sortBy="#{pedido.fechaPedido}">
 						<h:outputText value="#{pedido.fechaPedido}" />
 					</p:column>
+					<p:column headerText="Accciones">
+						<p:commandButton id="btn-ver-pedido" icon="pi pi-eye"
+							styleClass="rounded-button ui-button-flat">
+							<p:resetInput target=":formulario-pedido" />
+							<f:setPropertyActionListener value="#{pedido}"
+								target="#{pedidoBean.pedido}" />
+							<f:actionListener binding="#{pedidoBean.contextItemVerPedido()}" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
-
-				<!-- opciones al hacer click derecho -->
-				<p:contextMenu for="dt-pedidos" event="click">
-
-					<p:menuitem id="opc-editar-pedido" value="Ver" icon="pi pi-eye"
-						actionListener="#{pedidoBean.contextItemVerPedido}">
-						<p:resetInput target=":formulario-pedido" />
-					</p:menuitem>
-
-				</p:contextMenu>
 
 				<!-- Dialogo de confirmacion para eliminar -->
 				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"

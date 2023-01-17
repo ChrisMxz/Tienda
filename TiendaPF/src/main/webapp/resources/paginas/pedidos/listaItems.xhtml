@@ -14,52 +14,63 @@
 			<p:dataTable id="dt-items" var="item"
 				value="#{pedidoBean.pedido.listaItems}" rowKey="#{item.idItem}"
 				selection="#{itemBean.item}" selectionMode="single" paginator="true"
-				reflow="true" rows="5" paginatorPosition="bottom"
+				reflow="true" rows="10" paginatorPosition="bottom"
 				rowsPerPageTemplate="5,10" scrollable="true"
 				rendered="#{pedidoBean.pedido.idPedido>0}"
-				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
-
+				paginatorTemplate="{RowsPerPageDropdown} {PreviousPageLink} {CurrentPageReport} {NextPageLink}">
+				<p:autoUpdate />
 
 				<f:facet name="header">
 					<p:outputLabel value="Items" />
 				</f:facet>
 
-				<p:column headerText="Producto" sortBy="#{item.producto.nombre}">
+				<p:column headerText="Producto">
 					<h:outputText value="#{item.producto.nombre}" />
 				</p:column>
-				<p:column headerText="Cantidad" sortBy="#{item.cantidad}">
+				<p:column headerText="Cantidad">
 					<h:outputText value="#{item.cantidad}" />
 				</p:column>
-				<p:column headerText="Precio" sortBy="#{item.producto.precio}">
+				<p:column headerText="Unidad">
+					<h:outputText value="#{item.producto.claveUnidad}" />
+				</p:column>
+				<p:column headerText="Precio">
 					<h:outputText value="#{item.producto.precio}">
 						<f:convertNumber type="currency" currencySymbol="$" />
 					</h:outputText>
 				</p:column>
 
-				<p:column headerText="Total" sortBy="#{item.subTotal}">
+				<p:column headerText="Total">
 					<h:outputText value="#{item.subTotal}">
 						<f:convertNumber type="currency" currencySymbol="$" />
 					</h:outputText>
 				</p:column>
+				<p:column headerText="Accciones">
+					<p:commandButton id="btn-editar-item" icon="pi pi-pencil"
+						update=":formulario-items"
+						oncomplete="PF('dialogoItemsForm').show()"
+						disabled="#{!pedidoBean.editable}"
+						styleClass="rounded-button ui-button-flat">
+						<p:resetInput target=":formulario-items" />
+						<f:setPropertyActionListener value="#{item}"
+							target="#{itemBean.item}" />
+						<f:actionListener binding="#{itemBean.cargaCantidad()}" />
+
+					</p:commandButton>
+					<p:commandButton id="btn-eliminar-item" icon="pi pi-trash"
+						styleClass="rounded-button ui-button-danger ui-button-flat"
+						disabled="#{!pedidoBean.editable}">
+						<p:confirm header="Confirmacion"
+							message="¿Seguro que desea eliminar el item?"
+							icon="pi pi-info-circle">
+						</p:confirm>
+						<f:setPropertyActionListener value="#{item}"
+							target="#{itemBean.item}" />
+						<f:actionListener binding="#{pedidoBean.btnEliminarItem}" />
+
+					</p:commandButton>
+
+				</p:column>
 			</p:dataTable>
-
-			<!-- opciones al hacer click derecho -->
-			<p:contextMenu for="dt-items">
-				<p:menuitem id="opc-editar-item" value="editar" icon="pi pi-pencil"
-					update=":formulario-items"
-					oncomplete="PF('dialogoItemsForm').show()"
-					disabled="#{!pedidoBean.editable}">
-					<p:resetInput target=":formulario-items" />
-				</p:menuitem>
-
-				<p:menuitem value="Eliminar" update="dt-items" icon="pi pi-trash"
-					actionListener="#{itemBean.eliminar}"
-					disabled="#{!pedidoBean.editable}">
-					<p:confirm header="Confirmacion"
-						message="¿Seguro que desea eliminar el item?"
-						icon="pi pi-info-circle" />
-				</p:menuitem>
-			</p:contextMenu>
 
 			<!-- Dialogo de confirmacion para eliminar -->
 			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"

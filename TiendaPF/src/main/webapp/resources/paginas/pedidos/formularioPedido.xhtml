@@ -28,9 +28,20 @@
 						styleClass="text-xs p-1" detail="#{pedidoBean.pedido.estatus}"
 						rendered="#{pedidoBean.pedido.estatus!=null}" />
 				</div>
-				<div class="field col-6"></div>
+				<div class="field col-12">
+					<p:message for="seleccion-cliente" display="text"
+						styleClass="text-xs pl-0 py-1 border-none" />
+					<p:selectOneMenu value="#{pedidoBean.pedido.estatus}"
+						id="seleccion-estatus"
+						rendered="#{sesionUsuario.usuario.nivel==3}">
+						<f:selectItem itemLabel="pendiente" itemValue="pendiente" />
+						<f:selectItem itemLabel="hecho" itemValue="hecho" />
+						<p:ajax event="itemSelect"
+							listener="#{pedidoBean.devCambiaEstatus}" />
+					</p:selectOneMenu>
+				</div>
 				<!-- Input Cliente -->
-				<div class="field col-6">
+				<div class="field col-12">
 					<p:message for="seleccion-cliente" display="text"
 						styleClass="text-xs pl-0 py-1 border-none" />
 					<p:selectOneMenu value="#{pedidoBean.pedido.cliente}"

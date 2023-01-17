@@ -6,10 +6,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<div class="grid">
+	<div class="card">
 		<!-- divider con titulo opciones -->
 		<h:form id="detalles-pedidos">
-			<p:outputPanel styleClass="col-12" id="panel-pedidos-detalles"
+			<p:outputPanel styleClass="card col-12" id="panel-pedidos-detalles"
 				rendered="#{pedidoBean.formularioActivo}">
 				<p:autoUpdate />
 				<p:divider align="left">
@@ -19,20 +19,15 @@
 					</div>
 				</p:divider>
 
-				<p:panelGrid columns="2" id="total"
-					class="col-12 ui-slidemenu-content">
+				<p:panelGrid columns="1" id="total">
 
-					<h:outputText value="Pedido" />
-					<h:outputText value="#{pedidoBean.pedido.idPedido}" />
+					<h:outputText
+						value="Productos: #{pedidoBean.pedido.cantidadProductos}" />
 
-					<h:outputText value="Productos" />
-					<h:outputText value="#{pedidoBean.pedido.cantidadProductos}" />
+					<h:outputText value="Subtotal : $ #{pedidoBean.pedido.subTotal}" />
 
-					<h:outputText value="Subtotal" />
-					<h:outputText value="#{pedidoBean.pedido.subTotal}" />
-
-					<h:outputText value="Total" />
-					<h:outputText value="#{pedidoBean.pedido.total}" />
+					<h:outputText
+						value="Total(IVA): $ #{pedidoBean.pedido.total}" />
 
 					<p:commandButton id="btn-pagar-pedido" icon="pi pi-money-bill"
 						value="Pagar" validateClient="true"
