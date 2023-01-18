@@ -39,6 +39,15 @@
 						icon="pi pi-refresh" actionListener="#{pedidoBean.refrescar}"
 						rendered="#{!pedidoBean.formularioActivo}">
 					</p:menuitem>
+					<p:menuitem id="opc-factura" value="Generar Factura"
+						icon="pi pi-file" update=":formulario-facturas"
+						actionListener="#{pedidoBean.opcionGenerarFactura}"
+						rendered="#{pedidoBean.formularioActivo}"
+						disabled="#{pedidoBean.editable}">
+						<p:resetInput target=":formulario-facturas" />
+						<f:setPropertyActionListener value="#{pedidoBean.pedido.factura}"
+							target="#{facturaBean.factura}" />
+					</p:menuitem>
 					<p:menuitem id="opc-eliminar" value="Eliminar Pedido"
 						icon="pi pi-trash" actionListener="#{pedidoBean.btnEliminar}"
 						rendered="#{pedidoBean.formularioActivo}"
@@ -131,6 +140,8 @@
 			<ui:include src="/resources/paginas/pedidos/crearPedidoForm.xhtml" />
 			<!-- Modal   dialogoItemsForm Formulario Item -->
 			<ui:include src="/resources/paginas/pedidos/formularioItem.xhtml" />
+			<!-- Modal   dialogoFacturasForm Formulario Factura -->
+			<ui:include src="/resources/paginas/pedidos/formularioFactura.xhtml" />
 
 
 		</div>

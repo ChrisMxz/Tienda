@@ -4,16 +4,13 @@ import java.io.Serializable;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.PrimeFaces;
 
 import com.david.tienda.entidades.Factura;
 import com.david.tienda.servicios.ServicioFactura;
 import com.david.tienda.servicios.ServicioFacturaImpl;
+import com.david.tienda.util.MensajeGrowl;
 
 @ManagedBean
 @ViewScoped
@@ -26,7 +23,6 @@ public class FacturaBean implements Serializable {
 	@PostConstruct
 	public void iniciar() {
 		servicioFactura = new ServicioFacturaImpl();
-		nuevo();
 	}
 
 	public void nuevo() {
@@ -34,14 +30,18 @@ public class FacturaBean implements Serializable {
 	}
 
 	public void guardar() {
-
 		servicioFactura.guardar(factura);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Guardado"));
-		PrimeFaces.current().ajax().update(":messages");
+
+		if (factura.getFolio() > 0)
+			MensajeGrowl.msgInformacion("Factura", "Actualizado");
+		else
+			MensajeGrowl.msgInformacion("Factura", "Guardada");
+
 	}
 
 	public void eliminar() {
 		servicioFactura.eliminar(factura);
+		MensajeGrowl.msgInformacion("Factura", "Eliminada");
 	}
 
 	public Factura buscar() {

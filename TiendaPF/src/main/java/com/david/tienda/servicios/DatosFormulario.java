@@ -37,7 +37,7 @@ public class DatosFormulario implements Serializable {
 
 	@PostConstruct
 	public void inicia() {
-		//cargaTodo();
+		cargaTodo();
 	}
 
 	public void cargaTodo() {
@@ -64,13 +64,13 @@ public class DatosFormulario implements Serializable {
 		cargaCodigosPostales();
 
 		formasdePago = cargarDatos(0, 6, 28, true, 0, 1, "Formas de pago");
-		// tiposdeComprobante = cargarDatos(2, 5, 0, true, 0, 1, "Tipo comprobante");
+		tiposdeComprobante = cargarDatos(2, 5, 0, true, 0, 1, "Tipo comprobante");
 		metodosdePago = cargarDatos(4, 6, 0, true, 0, 1, "Metodo Pago");
-		// regimenFiscal = cargarDatos(10, 6, 0, true, 0, 1, "Regimen fiscal");
-		// usoCFDI = cargarDatos(12, 6, 30, true, 0, 1, "Uso de CFDI");
+		regimenFiscal = cargarDatos(10, 6, 0, true, 0, 1, "Regimen fiscal");
+		usoCFDI = cargarDatos(12, 6, 30, true, 0, 1, "Uso de CFDI");
 		clavesdeProducto = cargarDatos(13, 5, 0, true, 0, 1, "Claves de Productos");
 		clavesdeUnidad = cargarDatos(14, 6, 0, true, 0, 1, "Claves de unidad");
-		// impuesto = cargarDatos(16, 5, 0, true, 0, 1, "Impuestos");
+		impuesto = cargarDatos(16, 5, 0, true, 0, 1, "Impuestos");
 
 		System.out.println("--Datos Cargados--");
 

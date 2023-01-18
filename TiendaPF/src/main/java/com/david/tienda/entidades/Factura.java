@@ -8,10 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.Valid;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -25,10 +22,7 @@ public class Factura {
 	@Column(name = "folio")
 	private Long folio;
 
-	@JoinColumn(name = "pedido_id", referencedColumnName = "id_pedido")
-	@OneToOne
-	@Valid
-	private Pedido pedido;
+	private String empresa;
 
 	private String usoCFDI;
 
@@ -41,20 +35,20 @@ public class Factura {
 	private String rfcEmisor;
 
 	private String codigoPostalEmisor;
+
 	@CreationTimestamp
 	private LocalDateTime fechaExpedicion;
 
 	// constructores----------------
 	public Factura() {
 		super();
-		this.pedido = new Pedido();
 	}
 
-	public Factura(Long folio, Pedido pedido, String usoCFDI, String tipoComprobante, String regimenFiscal,
+	public Factura(Long folio, String empresa, String usoCFDI, String tipoComprobante, String regimenFiscal,
 			String impuesto, String rfcEmisor, String codigoPostalEmisor, LocalDateTime fechaExpedicion) {
 		super();
 		this.folio = folio;
-		this.pedido = pedido;
+		this.empresa = empresa;
 		this.usoCFDI = usoCFDI;
 		this.tipoComprobante = tipoComprobante;
 		this.regimenFiscal = regimenFiscal;
@@ -72,14 +66,6 @@ public class Factura {
 
 	public void setFolio(Long folio) {
 		this.folio = folio;
-	}
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
 	}
 
 	public String getUsoCFDI() {
@@ -138,6 +124,14 @@ public class Factura {
 		this.fechaExpedicion = fechaExpedicion;
 	}
 
+	public String getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(String empresa) {
+		this.empresa = empresa;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(folio);
@@ -157,10 +151,9 @@ public class Factura {
 
 	@Override
 	public String toString() {
-		return "Factura [folio=" + folio + ", pedido=" + pedido + ", usoCFDI=" + usoCFDI + ", tipoComprobante="
-				+ tipoComprobante + ", regimenFiscal=" + regimenFiscal + ", impuesto=" + impuesto + ", rfcEmisor="
-				+ rfcEmisor + ", codigoPostalEmisor=" + codigoPostalEmisor + ", fechaExpedicion=" + fechaExpedicion
-				+ "]";
+		return "Factura [folio=" + folio + ", usoCFDI=" + usoCFDI + ", tipoComprobante=" + tipoComprobante
+				+ ", regimenFiscal=" + regimenFiscal + ", impuesto=" + impuesto + ", rfcEmisor=" + rfcEmisor
+				+ ", codigoPostalEmisor=" + codigoPostalEmisor + ", fechaExpedicion=" + fechaExpedicion + "]";
 	}
 
 }

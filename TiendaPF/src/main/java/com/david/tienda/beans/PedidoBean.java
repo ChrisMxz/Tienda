@@ -17,6 +17,7 @@ import com.david.tienda.entidades.Pedido;
 import com.david.tienda.servicios.ServicioPedido;
 import com.david.tienda.servicios.ServicioPedidoImpl;
 import com.david.tienda.util.MensajeGrowl;
+import com.david.tienda.util.SessionUtils;
 
 @ManagedBean
 @ViewScoped
@@ -29,6 +30,9 @@ public class PedidoBean implements Serializable {
 
 	@ManagedProperty(value = "#{itemBean}")
 	private ItemBean itemBean;
+
+	@ManagedProperty(value = "#{facturaBean}")
+	private FacturaBean facturaBean;
 
 	private Pedido pedido;
 	private List<Pedido> listaPedidos;
@@ -219,6 +223,33 @@ public class PedidoBean implements Serializable {
 		MensajeGrowl.msgInformacion("Estatus", pedido.getEstatus());
 	}
 
+	public void opcionGenerarFactura() {
+
+		int nivel = SessionUtils.getNivel(SessionUtils.getRequest());
+
+		// es admin
+		if (nivel == 3) {
+			PrimeFaces.current().executeScript("PF('dialogoFacturasForm').show()");
+			return;
+		}
+
+		if (pedido.getFactura().getFolio() > 0) {
+			imprimirFactura();
+		} else {
+			PrimeFaces.current().executeScript("PF('dialogoFacturasForm').show()");
+		}
+
+	}
+
+	public void btnGuadarFactura() {
+		guardar();
+		MensajeGrowl.msgInformacion("Factura", "Generada");
+	}
+
+	public void imprimirFactura() {
+		MensajeGrowl.msgInformacion("descarga", "DEV");
+	}
+
 	// Getters an setters
 
 	public List<Pedido> getListaPedidos() {
@@ -331,6 +362,14 @@ public class PedidoBean implements Serializable {
 
 	public void setItemBean(ItemBean itemBean) {
 		this.itemBean = itemBean;
+	}
+
+	public FacturaBean getFacturaBean() {
+		return facturaBean;
+	}
+
+	public void setFacturaBean(FacturaBean facturaBean) {
+		this.facturaBean = facturaBean;
 	}
 
 }

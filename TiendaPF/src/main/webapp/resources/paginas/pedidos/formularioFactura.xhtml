@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formulario-facturas">
+		<!-- Dialogo modal para mostrar los detalles de la factura -->
+		<p:dialog header="Factura #{pedidoBean.pedido.factura.folio}"
+			widgetVar="dialogoFacturasForm" minHeight="230" minWidth="250"
+			width="700" height="350" responsive="true" showEffect="fade"
+			modal="true" hideEffect="fade" closeOnEscape="true">
+
+			<div class="card ui-fluid">
+
+				<p:tabView id="detalles">
+					<p:tab title="Datos Personales">
+
+						<p:outputPanel class="formgrid grid">
+
+							<div class="field col-12">
+
+								<p:outputLabel for="@next" value="RFC Receptor"
+									indicateRequired="true" />
+								<p:message for="@next" display="text"
+									styleClass="text-xs pl-0 py-1 border-none" />
+								<p:inputText id="rfcR" value="#{pedidoBean.pedido.cliente.rfc}"
+									required="true" requiredMessage="Ingresa el dato" />
+							</div>
+							<div class="field col-12">
+								<p:outputLabel for="@next" value="Codigo Postal" />
+								<p:inputText id="cpcliente"
+									value="#{pedidoBean.pedido.cliente.direccion.codigoPostal}"
+									disabled="true" />
+							</div>
+
+							<!-- Input Uso CFDI -->
+							<div class="field col-12">
+								<p:outputLabel for="@next" value="Uso CFDI"
+									indicateRequired="true" />
+								<p:message for="@next" display="text"
+									styleClass="text-xs pl-0 py-1 border-none" />
+								<p:selectOneMenu value="#{pedidoBean.pedido.factura.usoCFDI}"
+									id="usocfdi" required="true" requiredMessage="Elige una opcion">
+									<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+									<f:selectItems value="#{datosFormulario.usoCFDI}" var="dato"
+										itemValue="#{dato}" itemLabel="#{dato}" />
+								</p:selectOneMenu>
+							</div>
+						</p:outputPanel>
+					</p:tab>
+					<p:tab title="Empresa" rendered="${nivel!=1}">
+						<p:outputPanel class="formgrid grid">
+							<div class="field col-4">
+								<p:outputLabel for="@next" value="Nombre"
+									indicateRequired="true" />
+								<p:message for="@next" display="text"
+									styleClass="text-xs pl-0 py-1 border-none" />
+								<p:inputText id="cp" placeholder="Tienda PF" required="true"
+									requiredMessage="Ingresa el dato" />
+							</div>
+							<div class="field col-4">
+								<p:outputLabel for="@next" value="RFC Emisor"
+									indicateRequired="true" />
+								<p:message for="@next" display="text"
+									styleClass="text-xs pl-0 py-1 border-none" />
+								<p:inputText id="rfcE"
+									value="#{pedidoBean.pedido.factura.rfcEmisor}" required="true"
+									requiredMessage="Ingresa el dato" />
+							</div>
+							<div class="field col-4">
+								<p:outputLabel for="@next" value="Codigo Postal"
+									indicateRequired="true" />
+								<p:message for="@next" display="text"
+									styleClass="text-xs pl-0 py-1 border-none" />
+								<p:inputText id="codigoPostalEmisor"
+									value="#{pedidoBean.pedido.factura.codigoPostalEmisor}"
+									required="true" requiredMessage="Ingresa el dato" />
+							</div>
+							<!-- Input Regimen Fiscal -->
+							<div class="field col-12">
+								<p:outputLabel for="@next" value="Regimen Fiscal"
+									indicateRequired="true" />
+								<p:message for="@next" display="text"
+									styleClass="text-xs pl-0 py-1 border-none" />
+								<p:selectOneMenu
+									value="#{pedidoBean.pedido.factura.regimenFiscal}"
+									id="regimenfiscal" required="true"
+									requiredMessage="Elige una opcion">
+									<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+									<f:selectItems value="#{datosFormulario.regimenFiscal}"
+										var="dato" itemValue="#{dato}" itemLabel="#{dato}" />
+								</p:selectOneMenu>
+							</div>
+
+							<!-- Input Tipo comprobante -->
+							<div class="field col-6">
+								<p:outputLabel for="@next" value="Tipo Comprobante"
+									indicateRequired="true" />
+								<p:message for="@next" display="text"
+									styleClass="text-xs pl-0 py-1 border-none" />
+								<p:selectOneMenu
+									value="#{pedidoBean.pedido.factura.tipoComprobante}"
+									id="tipocomprobante" required="true"
+									requiredMessage="Elige una opcion">
+									<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+									<f:selectItems value="#{datosFormulario.tiposdeComprobante}"
+										var="dato" itemValue="#{dato}" itemLabel="#{dato}" />
+								</p:selectOneMenu>
+							</div>
+
+
+
+							<!-- Input Impuesto -->
+							<div class="field col-6">
+								<p:outputLabel for="@next" value="Impuesto"
+									indicateRequired="true" />
+								<p:message for="@next" display="text"
+									styleClass="text-xs pl-0 py-1 border-none" />
+								<p:selectOneMenu value="#{pedidoBean.pedido.factura.impuesto}"
+									id="impueesto" required="true"
+									requiredMessage="Elige una opcion">
+									<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
+									<f:selectItems value="#{datosFormulario.impuesto}" var="dato"
+										itemValue="#{dato}" itemLabel="#{dato}" />
+								</p:selectOneMenu>
+							</div>
+						</p:outputPanel>
+					</p:tab>
+				</p:tabView>
+
+			</div>
+
+
+			<f:facet name="footer">
+				<p:commandButton id="btn-imprimir-factura" icon="pi pi-file"
+					value="Imprimir" actionListener="#{pedidoBean.imprimirFactura}"
+					styleClass="ui-button-primary rounded-button">
+				</p:commandButton>
+				<p:commandButton id="btn-agregar-factura" icon="pi pi-save"
+					value="Guardar" validateClient="true"
+					update="formulario-facturas:detalles"
+					actionListener="#{pedidoBean.btnGuadarFactura}"
+					styleClass="ui-button-primary rounded-button">
+				</p:commandButton>
+
+			</f:facet>
+
+		</p:dialog>
+
+	</h:form>
+</ui:component>
