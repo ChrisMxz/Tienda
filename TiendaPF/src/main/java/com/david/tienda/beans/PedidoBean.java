@@ -12,12 +12,12 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.PrimeFaces;
 
+import com.david.tienda.entidades.Factura;
 import com.david.tienda.entidades.Item;
 import com.david.tienda.entidades.Pedido;
 import com.david.tienda.servicios.ServicioPedido;
 import com.david.tienda.servicios.ServicioPedidoImpl;
 import com.david.tienda.util.MensajeGrowl;
-import com.david.tienda.util.SessionUtils;
 
 @ManagedBean
 @ViewScoped
@@ -225,25 +225,22 @@ public class PedidoBean implements Serializable {
 
 	public void opcionGenerarFactura() {
 
-		int nivel = SessionUtils.getNivel(SessionUtils.getRequest());
+		try {
+			Factura f = facturaBean.buscar(pedido.getIdPedido());
+			facturaBean.nuevo();
 
-		// es admin
-		if (nivel == 3) {
+			if (f != null) // verificamos si existe
+				facturaBean.setFactura(f);
+			else // no existe
+				facturaBean.getFactura().setPedido(pedido);
+
 			PrimeFaces.current().executeScript("PF('dialogoFacturasForm').show()");
-			return;
+
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			MensajeGrowl.msgError("Error Factura", "Al consultar factura por id pedido");
 		}
 
-		if (pedido.getFactura().getFolio() > 0) {
-			imprimirFactura();
-		} else {
-			PrimeFaces.current().executeScript("PF('dialogoFacturasForm').show()");
-		}
-
-	}
-
-	public void btnGuadarFactura() {
-		guardar();
-		MensajeGrowl.msgInformacion("Factura", "Generada");
 	}
 
 	public void imprimirFactura() {

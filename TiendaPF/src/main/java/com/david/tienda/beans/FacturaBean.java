@@ -1,11 +1,12 @@
 package com.david.tienda.beans;
 
 import java.io.Serializable;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
+import org.primefaces.PrimeFaces;
 
 import com.david.tienda.entidades.Factura;
 import com.david.tienda.servicios.ServicioFactura;
@@ -23,6 +24,7 @@ public class FacturaBean implements Serializable {
 	@PostConstruct
 	public void iniciar() {
 		servicioFactura = new ServicioFacturaImpl();
+		nuevo();
 	}
 
 	public void nuevo() {
@@ -39,14 +41,18 @@ public class FacturaBean implements Serializable {
 
 	}
 
+	public void btnguardar() {
+		guardar();
+		PrimeFaces.current().ajax().update(":formulario-facturas");
+	}
+
 	public void eliminar() {
 		servicioFactura.eliminar(factura);
 		MensajeGrowl.msgInformacion("Factura", "Eliminada");
 	}
 
-	public Factura buscar() {
-		Optional<Factura> f = servicioFactura.porId(factura);
-		return f.get();
+	public Factura buscar(Long id) {
+		return servicioFactura.porIdPedido(id);
 	}
 
 	public Factura getFactura() {

@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -70,15 +69,10 @@ public class Pedido {
 
 	private String metodoPago;
 
-	@JoinColumn(name = "folioFactura", referencedColumnName = "folio")
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Factura factura;
-
 	// constructores----------------
 	public Pedido() {
 		super();
 		this.cliente = new Usuario();
-		this.factura = new Factura();
 		listaItems = new ArrayList<>();
 	}
 
@@ -204,14 +198,6 @@ public class Pedido {
 		this.metodoPago = metodoPago;
 	}
 
-	public Factura getFactura() {
-		return factura;
-	}
-
-	public void setFactura(Factura factura) {
-		this.factura = factura;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(idPedido);
@@ -233,8 +219,7 @@ public class Pedido {
 	public String toString() {
 		return "Pedido [idPedido=" + idPedido + ", estatus=" + estatus + ", cliente=" + cliente + ", fechaPedido="
 				+ fechaPedido + ", fechaModificacion=" + fechaModificacion + ", cantidadProductos=" + cantidadProductos
-				+ ", descuento=" + descuento + ", iva=" + iva + ", subTotal=" + subTotal + ", total=" + total
-				+ "Factura=" + factura.getFolio() + "]";
+				+ ", descuento=" + descuento + ", iva=" + iva + ", subTotal=" + subTotal + ", total=" + total + "]";
 	}
 
 }

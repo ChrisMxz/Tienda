@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,6 +23,10 @@ public class Factura {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "folio")
 	private Long folio;
+
+	@JoinColumn(name = "pedidoId", referencedColumnName = "id_pedido")
+	@OneToOne
+	private Pedido pedido;
 
 	private String empresa;
 
@@ -42,12 +48,15 @@ public class Factura {
 	// constructores----------------
 	public Factura() {
 		super();
+		this.pedido = new Pedido();
 	}
 
-	public Factura(Long folio, String empresa, String usoCFDI, String tipoComprobante, String regimenFiscal,
-			String impuesto, String rfcEmisor, String codigoPostalEmisor, LocalDateTime fechaExpedicion) {
+	public Factura(Long folio, Pedido pedido, String empresa, String usoCFDI, String tipoComprobante,
+			String regimenFiscal, String impuesto, String rfcEmisor, String codigoPostalEmisor,
+			LocalDateTime fechaExpedicion) {
 		super();
 		this.folio = folio;
+		this.pedido = pedido;
 		this.empresa = empresa;
 		this.usoCFDI = usoCFDI;
 		this.tipoComprobante = tipoComprobante;
@@ -130,6 +139,14 @@ public class Factura {
 
 	public void setEmpresa(String empresa) {
 		this.empresa = empresa;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 
 	@Override

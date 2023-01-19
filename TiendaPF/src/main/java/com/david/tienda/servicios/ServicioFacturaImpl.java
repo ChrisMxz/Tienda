@@ -65,9 +65,14 @@ public class ServicioFacturaImpl extends ConexionBD implements ServicioFactura, 
 	}
 
 	@Override
-	public Optional<Factura> porIdPedido(Long id) {
-		String consulta = "SELECT f FROM Factura f where f.pedido.idPedido like:id";
-		return Optional.ofNullable(em.createQuery(consulta, Factura.class).setParameter("id", id).getSingleResult());
+	public Factura porIdPedido(Long id) {
+		String consulta = "SELECT f FROM Factura f where f.pedido.idPedido=: id";
+		Factura f = null;
+		try {
+			f = em.createQuery(consulta, Factura.class).setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+		}
+		return f;
 	}
 
 }
