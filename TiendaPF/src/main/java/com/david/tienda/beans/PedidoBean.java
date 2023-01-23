@@ -1,14 +1,13 @@
 package com.david.tienda.beans;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 
@@ -35,175 +34,119 @@ public class PedidoBean implements Serializable {
 	@ManagedProperty(value = "#{facturaBean}")
 	private FacturaBean facturaBean;
 
-	private Pedido pedido;
-	private List<Pedido> listaPedidos;
 	private ServicioPedido servicioPedido;
-	private boolean bandera;
-	private int filtro;
-	private int limite;
-	private boolean orden;
-	private LocalDateTime fecha;
-	private String estatus;
-	private String textoBuscar;
-	private boolean formularioActivo;
+
 	private boolean editable;
 
 	// metodos
 	@PostConstruct
 	public void inicia() {
 		servicioPedido = new ServicioPedidoImpl();
-		listaPedidos = new ArrayList<>();
-		bandera = false;
-		orden = false; // descendente
-		limite = 100;
-		filtro = 1;
-		fecha = null;
 		editable = true;
-		formularioActivo = false;
-		textoBuscar = null;
-		listar();
+		verificaEstatus();
 	}
 
-	public void nuevo() {
-		pedido = new Pedido();
-		pedido.setEstatus("pendiente");
-		pedido.setIva(0.16);
+	public void nuevo() throws IOException {
+		Pedido pedido = new Pedido();
+		sesionUsuario.setPedido(pedido);
+		sesionUsuario.getPedido().setEstatus("pendiente");
+		sesionUsuario.getPedido().setIva(0.16);
 		editable = true;
 		if (sesionUsuario.getUsuario().getNivel() == 1) {
-			pedido.setCliente(sesionUsuario.getUsuario());
+			sesionUsuario.getPedido().setCliente(sesionUsuario.getUsuario());
 			guardar();
-			cambiaVista();
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../carrito/formularioPedido.xhtml");
 		} else {
 			PrimeFaces.current().executeScript("PF('dialogoCrearPedidoForm').show()");
 		}
-	}
 
-	public void listar() {
-		// lista segun lo establecido
-		buscar();
-	}
-
-	public void cambiaVista() {
-		formularioActivo = !formularioActivo;
-		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":pedidos", ":detalles-pedidos");
-	}
-
-	public void listarTodo() {
-		listaPedidos = servicioPedido.listarTodo();
-	}
-
-	public void refrescar() {
-		listar();
-		MensajeGrowl.msgInformacion("Actualizado", "Actualizando vista");
-		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":pedidos", ":detalles-pedidos");
 	}
 
 	public void guardar() {
+		contarProductos();
+		calcularTotal();
+		servicioPedido.guardar(sesionUsuario.getPedido());
+	}
 
-		if (!bandera) {
-			String msg = "Guardado";
-			if (pedido.getIdPedido() != null)
-				msg = "Actualizado";
+	public void btnGuardarPedido() {
+		guardar();
 
-			contarProductos();
-			calcularTotal();
-			servicioPedido.guardar(pedido);
-			MensajeGrowl.msgInformacion("Pedido", msg);
-			PrimeFaces.current().executeScript("PF('dialogoPedidosForm').hide()");
-			listar();
-		} else {
-			MensajeGrowl.msgInformacion("Verificar", "Verifica tus datos");
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../carrito/formularioPedido.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 	}
 
 	public void eliminar() {
 		try {
-			for (Item i : pedido.getListaItems()) {
+			for (Item i : sesionUsuario.getPedido().getListaItems()) {
 				itemBean.setItem(i);
 				itemBean.eliminar();
 			}
 
-			servicioPedido.eliminar(pedido);
+			servicioPedido.eliminar(sesionUsuario.getPedido());
 			MensajeGrowl.msgInformacion("Pedido", "Eliminado");
-			listar();
+
 		} catch (Exception e) {
 			MensajeGrowl.msgError("Error Eliminar", "A ocurrido un error al eliminar el pedido");
 		}
 
 	}
 
-	public void buscar() {
-		if (sesionUsuario.getUsuario().getNivel() == 1) {
-			filtro = 2; // por id cliente
-			textoBuscar = sesionUsuario.getUsuario().getIdUsuario().toString();
-		}
-		listaPedidos.clear();
-		listaPedidos = servicioPedido.filtrarPor(filtro, estatus, fecha, textoBuscar, limite, orden);
-	}
-
-	public void estableceLimite() {
-		String msg = "Limite establecido " + limite + " registros ";
-		MensajeGrowl.msgInformacion("Limite", msg);
-		PrimeFaces.current().ajax().update(":opciones", ":pedidos");
-		buscar();
-	}
-
-	public void estableceOrden() {
-		String msg = "Orden ascendente ";
-		if (!orden)
-			msg = "Orden descendente ";
-
-		MensajeGrowl.msgInformacion("Mostrando lista", msg);
-		PrimeFaces.current().ajax().update(":opciones", ":pedidos");
-		buscar();
-	}
-
 	public void contarProductos() {
 		int cuenta = 0;
-		for (Item i : pedido.getListaItems()) {
+		for (Item i : sesionUsuario.getPedido().getListaItems()) {
 			cuenta = cuenta + i.getCantidad();
 		}
-		pedido.setCantidadProductos(cuenta);
+		sesionUsuario.getPedido().setCantidadProductos(cuenta);
 	}
 
 	public void calcularTotal() {
 		double cuenta = 0;
-		for (Item i : pedido.getListaItems()) {
+		for (Item i : sesionUsuario.getPedido().getListaItems()) {
 			cuenta = cuenta + i.getSubTotal();
 		}
-		pedido.setSubTotal(cuenta);
-		pedido.setTotal(cuenta + (cuenta * pedido.getIva()));
-	}
-
-	public void agregarItemaLista(Item x) {
-		this.pedido.getListaItems().add(x);
+		sesionUsuario.getPedido().setSubTotal(cuenta);
+		sesionUsuario.getPedido().setTotal(cuenta + (cuenta * sesionUsuario.getPedido().getIva()));
 	}
 
 	public void verificaEstatus() {
 
-		if (pedido.getEstatus().equalsIgnoreCase("hecho"))
-			editable = false;
-		else
+		if (sesionUsuario.getPedido().getIdPedido() != null) {
+			if (sesionUsuario.getPedido().getEstatus().equalsIgnoreCase("hecho"))
+				editable = false;
+			else
+				editable = true;
+		} else {
 			editable = true;
+		}
 	}
 
 	public void btnEliminar() {
 		eliminar();
-		cambiaVista();
+		Pedido p = new Pedido();
+		sesionUsuario.setPedido(p);
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../pedidos/pedidos.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public void contextItemVerPedido() {
+	public void contextItemVerPedido(Pedido x) {
 		verificaEstatus();
-		cambiaVista();
 	}
 
-	public void contextUsuarioNuevoPedido() {
+	public void contextUsuarioNuevoPedido() throws IOException {
 		nuevo();
-		System.out.println(pedido);
-		guardar();
 	}
 
-	public void btnEliminarItem() {
+	public void btnEliminarItem(Item x) {
+		itemBean.setItem(x);
 		itemBean.eliminar();
 		guardar();
 	}
@@ -214,30 +157,31 @@ public class PedidoBean implements Serializable {
 	}
 
 	public void pagar() {
-		pedido.setEstatus("hecho");
+		sesionUsuario.getPedido().setEstatus("hecho");
 		guardar();
 		verificaEstatus();
 		MensajeGrowl.msgInformacion("Pago", "Aplicado correctamente");
-		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":pedidos", ":detalles-pedidos");
+		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":detalles-pedidos");
+		PrimeFaces.current().executeScript("PF('dialogoPagoForm').hide()");
 	}
 
 	public void devCambiaEstatus() {
 		guardar();
 		verificaEstatus();
-		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":pedidos", ":detalles-pedidos");
-		MensajeGrowl.msgInformacion("Estatus", pedido.getEstatus());
+		PrimeFaces.current().ajax().update(":formulario-pedido", ":opciones", ":detalles-pedidos");
+		MensajeGrowl.msgInformacion("Estatus", sesionUsuario.getPedido().getEstatus());
 	}
 
 	public void opcionGenerarFactura() {
 
 		try {
-			Factura f = facturaBean.buscar(pedido.getIdPedido());
+			Factura f = facturaBean.buscar(sesionUsuario.getPedido().getIdPedido());
 			facturaBean.nuevo();
 
 			if (f != null) // verificamos si existe
 				facturaBean.setFactura(f);
 			else // no existe
-				facturaBean.getFactura().setPedido(pedido);
+				facturaBean.getFactura().setPedido(sesionUsuario.getPedido());
 
 			PrimeFaces.current().executeScript("PF('dialogoFacturasForm').show()");
 
@@ -250,86 +194,14 @@ public class PedidoBean implements Serializable {
 
 	public void exportarPedidoXML() {
 		try {
-			ToXML.convierte(pedido);
-			ToXML.descarga("pedido" + pedido.getIdPedido());
+			ToXML.convierte(sesionUsuario.getPedido());
+			ToXML.descarga("pedido" + sesionUsuario.getPedido().getIdPedido());
 		} catch (Exception e) {
 			MensajeGrowl.msgError("Error", "No se pudo descargar el archivo");
 		}
 	}
 
 	// Getters an setters
-
-	public List<Pedido> getListaPedidos() {
-		return listaPedidos;
-	}
-
-	public void setListaPedidos(List<Pedido> listaPedidos) {
-		this.listaPedidos = listaPedidos;
-	}
-
-	public boolean isBandera() {
-		return bandera;
-	}
-
-	public void setBandera(boolean bandera) {
-		this.bandera = bandera;
-	}
-
-	public int getFiltro() {
-		return filtro;
-	}
-
-	public void setFiltro(int filtro) {
-		this.filtro = filtro;
-	}
-
-	public int getLimite() {
-		return limite;
-	}
-
-	public void setLimite(int limite) {
-		this.limite = limite;
-	}
-
-	public String getTextoBuscar() {
-		return textoBuscar;
-	}
-
-	public void setTextoBuscar(String textoBuscar) {
-		this.textoBuscar = textoBuscar;
-	}
-
-	public boolean isOrden() {
-		return orden;
-	}
-
-	public void setOrden(boolean orden) {
-		this.orden = orden;
-	}
-
-	public LocalDateTime getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(LocalDateTime fecha) {
-		this.fecha = fecha;
-	}
-
-	public String getEstatus() {
-		return estatus;
-	}
-
-	public void setEstatus(String estatus) {
-		this.estatus = estatus;
-	}
-
-	public Pedido getpedido() {
-		return pedido;
-	}
-
-	public void setpedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
 
 	public SesionUsuario getSesionUsuario() {
 		return sesionUsuario;
@@ -339,28 +211,12 @@ public class PedidoBean implements Serializable {
 		this.sesionUsuario = sesionUsuario;
 	}
 
-	public boolean isFormularioActivo() {
-		return formularioActivo;
-	}
-
-	public void setFormularioActivo(boolean formularioActivo) {
-		this.formularioActivo = formularioActivo;
-	}
-
 	public boolean isEditable() {
 		return editable;
 	}
 
 	public void setEditable(boolean editable) {
 		this.editable = editable;
-	}
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
 	}
 
 	public ItemBean getItemBean() {

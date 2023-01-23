@@ -6,24 +6,32 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<div class="card">
-		<h:form>
+		<h:form id="barra-navegacion">
 			<p:menubar>
+				<p:autoUpdate></p:autoUpdate>
 
 				<p:menuitem value="Inicio" outcome="/resources/paginas/home.xhtml"
-					icon="pi pi-home" rendered="#{sesionUsuario.bandera}">
+					icon="pi pi-home" rendered="${bandera}">
 				</p:menuitem>
 				<p:menuitem value="Usuarios"
 					outcome="/resources/paginas/usuarios/usuarios.xhtml"
 					icon="pi pi-user"
-					rendered="#{sesionUsuario.usuario.nivel!=1 and sesionUsuario.bandera}">
+					rendered="#{sesionUsuario.usuario.nivel!=1 and bandera}">
 				</p:menuitem>
 				<p:menuitem value="#{msg['titulo.productos']}"
 					outcome="/resources/paginas/productos/productos.xhtml"
-					icon="pi pi-list" rendered="#{sesionUsuario.bandera}">
+					icon="pi pi-list" rendered="${bandera}">
 				</p:menuitem>
 				<p:menuitem value="Pedidos"
 					outcome="/resources/paginas/pedidos/pedidos.xhtml"
-					icon="pi pi-shopping-cart" rendered="#{sesionUsuario.bandera}">
+					icon="pi pi-shopping-bag" rendered="${bandera}">
+				</p:menuitem>
+
+				<p:menuitem
+					value="Carrito productos (#{sesionUsuario.pedido.cantidadProductos})"
+					icon="pi pi-shopping-cart"
+					outcome="/resources/paginas/carrito/formularioPedido.xhtml"
+					rendered="#{bandera and sesionUsuario.pedido.idPedido>0}">
 				</p:menuitem>
 
 				<f:facet name="options">
@@ -35,13 +43,23 @@
 
 					<p:contextMenu for="avatar" event="click">
 						<p:autoUpdate></p:autoUpdate>
-						<p:menuitem value="Perfil" rendered="#{sesionUsuario.bandera}"
-							icon="pi pi-user" />
+						<p:menuitem value="Perfil" rendered="${bandera}" icon="pi pi-user"
+							update=":formulario-usuarios"
+							oncomplete="PF('dialogoForm').show()">
+							<p:resetInput target=":formulario-usuarios" />
+							<f:setPropertyActionListener value="#{sesionUsuario.usuario}"
+								target="#{usuarioBean.usuario}" />
+						</p:menuitem>
 						<p:menuitem value="#{msg['texto.salir']}" icon="pi pi-sign-out"
-							rendered="#{sesionUsuario.bandera}" action="#{loginBean.logout}" />
+							rendered="${bandera}" action="#{loginBean.logout}" />
 					</p:contextMenu>
 				</f:facet>
 			</p:menubar>
 		</h:form>
+
+		<ui:include src="/resources/paginas/usuarios/formularioUsuario.xhtml" />
+		<!-- Modal   dialogoCrearPedidoForm -->
+		<ui:include src="/resources/paginas/pedidos/crearPedidoForm.xhtml" />
+
 	</div>
 </ui:composition>

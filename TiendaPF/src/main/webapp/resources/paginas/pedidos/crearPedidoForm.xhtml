@@ -7,7 +7,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:form id="formulario-crear-item">
-		<!-- Dialogo modal para mostrar los detalles del item -->
+		<!-- Dialogo modal para mostrar los detalles del pedido -->
 		<p:dialog header="Nuevo Pedido" widgetVar="dialogoCrearPedidoForm"
 			minHeight="200" minWidth="200" width="500" height="400"
 			responsive="true" showEffect="fade" modal="true" hideEffect="fade"
@@ -20,11 +20,10 @@
 						<p:outputLabel for="@next" value="Cliente"></p:outputLabel>
 						<p:message for="seleccion-cliente" display="text"
 							styleClass="text-xs pl-0 py-1 border-none" />
-						<p:selectOneMenu value="#{pedidoBean.pedido.cliente}"
+						<p:selectOneMenu value="#{sesionUsuario.pedido.cliente}"
 							id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
 							required="true" requiredMessage="Elige un cliente"
-							rendered="#{sesionUsuario.usuario.nivel!=1 }"
-							disabled="#{!pedidoBean.editable or sesionUsuario.usuario.nivel!=3}">
+							rendered="${nivel!=1}">
 							<f:selectItem itemLabel="Seleccionar Cliente " Value="#{null}" />
 							<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
 								itemLabel="#{cliente.appaterno} #{cliente.nombre} " />
@@ -37,16 +36,16 @@
 						<p:panelGrid columns="2" id="verUsuario">
 
 							<h:outputText value="ID:" styleClass="font-bold" />
-							<h:outputText value="#{pedidoBean.pedido.cliente.idUsuario}" />
+							<h:outputText value="#{sesionUsuario.pedido.cliente.idUsuario}" />
 
 							<h:outputText value="Nombre" />
-							<h:outputText value="#{pedidoBean.pedido.cliente.nombre}" />
+							<h:outputText value="#{sesionUsuario.pedido.cliente.nombre}" />
 
 							<h:outputText value="Apellido Paterno " />
-							<h:outputText value="#{pedidoBean.pedido.cliente.appaterno}" />
+							<h:outputText value="#{sesionUsuario.pedido.cliente.appaterno}" />
 
 							<h:outputText value="Apellido Materno" />
-							<h:outputText value="#{pedidoBean.pedido.cliente.apmaterno}" />
+							<h:outputText value="#{sesionUsuario.pedido.cliente.apmaterno}" />
 
 						</p:panelGrid>
 
@@ -61,10 +60,9 @@
 				<p:commandButton id="btn-guardar-pedido" icon="pi pi-save"
 					value="Crear" validateClient="true"
 					update=":formulario-crear-item:crearPedido"
-					actionListener="#{pedidoBean.guardar}"
+					actionListener="#{pedidoBean.btnGuardarPedido}"
 					oncomplete="PF('dialogoCrearPedidoForm').hide()"
-					styleClass="ui-button-primary rounded-button"
-					>
+					styleClass="ui-button-primary rounded-button">
 				</p:commandButton>
 			</f:facet>
 

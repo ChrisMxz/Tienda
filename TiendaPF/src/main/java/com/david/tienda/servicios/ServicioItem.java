@@ -10,4 +10,6 @@ public interface ServicioItem extends Servicio<Item> {
 	Optional<Item> porId(Long long1);
 
 	List<Item> listarPorPedido(Long idPedido, boolean orden);
+
+	Item porPedidoProducto(Long pedido, Long producto);
 }

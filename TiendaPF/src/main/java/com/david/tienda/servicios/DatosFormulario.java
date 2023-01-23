@@ -37,7 +37,7 @@ public class DatosFormulario implements Serializable {
 
 	@PostConstruct
 	public void inicia() {
-		//cargaTodo();
+		cargaTodo();
 	}
 
 	public void cargaTodo() {

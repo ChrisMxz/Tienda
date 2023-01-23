@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 
@@ -17,12 +16,15 @@ import com.david.tienda.servicios.ServicioItem;
 import com.david.tienda.servicios.ServicioItemImpl;
 import com.david.tienda.servicios.ServicioProducto;
 import com.david.tienda.servicios.ServicioProductoImpl;
+import com.david.tienda.util.MensajeGrowl;
 
 @ManagedBean
 @ViewScoped
 public class ItemBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@ManagedProperty(value = "#{sesionUsuario}")
+	private SesionUsuario sesionUsuario;
 	private Item item;
 	private ServicioItem servicioItem;
 	private int cantidad;
@@ -40,12 +42,14 @@ public class ItemBean implements Serializable {
 
 	public void nuevo() {
 		item = new Item();
+		item.setIdPedido(sesionUsuario.getPedido().getIdPedido());
 		cantidad = 0;
 		total = 0;
 	}
 
 	public void guardar() {
 		String msg = "";
+		int num;
 
 		if (item.getIdPedido() == null) {
 			msg = "Item sin pedido asociado";
@@ -53,23 +57,35 @@ public class ItemBean implements Serializable {
 		}
 
 		if (item.getIdItem() == null) {// no encontro el item
-			msg = "Item Guardado";
-			modificarCantidadProducto(cantidad);
+			msg = "Guardado";
+			verificaItemExistente();
+			num = cantidad;// el numero de prooductos que se quitaran del stock
 		} else {
-
 			Optional<Item> busqueda = servicioItem.porId(item.getIdItem());
-			int dif = cantidad - busqueda.get().getCantidad(); // calculando la diferencia
-			modificarCantidadProducto(dif);
-			msg = "Item Actualizado";
+			num = cantidad - busqueda.get().getCantidad(); // calculando la diferencia
+			item.setCantidad(cantidad);
+			item.setSubTotal(total);
+			msg = "Actualizado";
 		}
-		item.setCantidad(cantidad);
-		item.setSubTotal(total);
+		modificarCantidadProducto(num);
 		servicioItem.guardar(item);
 		cantidad = 0;
 		total = 0;
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages");
+		MensajeGrowl.msgInformacion(msg, "Item " + msg);
 		PrimeFaces.current().executeScript("PF('dialogoItemsForm').hide()");
+	}
+
+	public void verificaItemExistente() {
+		Item x = servicioItem.porPedidoProducto(item.getIdPedido(), item.getProducto().getIdProducto());
+		if (x != null) {
+			item = x;
+			item.setCantidad(item.getCantidad() + cantidad);
+			item.setSubTotal(item.getCantidad() * item.getProducto().getPrecio());
+		} else {
+			item.setCantidad(cantidad);
+			item.setSubTotal(cantidad * item.getProducto().getPrecio());
+		}
+
 	}
 
 	public void eliminar() {
@@ -103,6 +119,13 @@ public class ItemBean implements Serializable {
 		total = item.getSubTotal();
 	}
 
+	public void btnEditar(Item x) {
+		this.item = x;
+		cargaCantidad();
+		PrimeFaces.current().resetInputs(":formulario-items");
+		PrimeFaces.current().executeScript("PF('dialogoItemsForm').show()");
+	}
+
 	public Item getItem() {
 		return item;
 	}
@@ -126,5 +149,15 @@ public class ItemBean implements Serializable {
 	public void setTotal(double total) {
 		this.total = total;
 	}
+
+	public SesionUsuario getSesionUsuario() {
+		return sesionUsuario;
+	}
+
+	public void setSesionUsuario(SesionUsuario sesionUsuario) {
+		this.sesionUsuario = sesionUsuario;
+	}
+	
+	
 
 }

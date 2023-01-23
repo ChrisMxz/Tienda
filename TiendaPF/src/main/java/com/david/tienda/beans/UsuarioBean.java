@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.validation.Valid;
 
 import org.primefaces.PrimeFaces;
@@ -16,7 +14,8 @@ import org.primefaces.PrimeFaces;
 import com.david.tienda.entidades.Usuario;
 import com.david.tienda.servicios.ServicioUsuario;
 import com.david.tienda.servicios.ServicioUsuarioImpl;
-import com.david.tienda.util.UsuarioXml;
+import com.david.tienda.util.MensajeGrowl;
+import com.david.tienda.util.ToXML;
 
 @ManagedBean
 @ViewScoped
@@ -60,34 +59,45 @@ public class UsuarioBean implements Serializable {
 
 	public void refrescar() {
 		listar();
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Refrescado"));
+		MensajeGrowl.msgInformacion("Actualizado", "Lista actualizada");
 		// textoBuscar=null;
 		PrimeFaces.current().ajax().update(":usuarios");
 	}
 
 	public void guardar() {
-		if (!bandera) {
-			String msg = "Guardado";
-			if (usuario.getIdUsuario() != null)
-				msg = "Actualizado";
+		try {
+			if (!bandera) {
+				String msg = "Guardado";
+				if (usuario.getIdUsuario() != null)
+					msg = "Actualizado";
 
-			servicioUsuario.guardar(usuario);
+				servicioUsuario.guardar(usuario);
 
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-			PrimeFaces.current().ajax().update(":formulario-usuarios:msg");
-			PrimeFaces.current().executeScript("PF('dialogoForm').hide()");
-			listar();
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Verifica tus datos"));
-			PrimeFaces.current().ajax().update(":usuarios");
+				MensajeGrowl.msgInformacion(msg, "Usuario " + msg);
+				PrimeFaces.current().executeScript("PF('dialogoForm').hide()");
+				listar();
+			} else {
+				MensajeGrowl.msgAdvertencia("Verifica", "Verifica tus datos");
+				PrimeFaces.current().ajax().update(":usuarios");
+			}
+
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			MensajeGrowl.msgError("Error", "Error al guardar usuario");
 		}
+
 	}
 
 	public void eliminar() {
-		servicioUsuario.eliminar(usuario);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
-		PrimeFaces.current().ajax().update(":usuarios:messages");
-		listar();
+		try {
+			servicioUsuario.eliminar(usuario);
+			listar();
+			MensajeGrowl.msgInformacion("Eliminado", "Usuario Eliminado");
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			MensajeGrowl.msgError("Error", "Error al Eliminar usuario");
+		}
+
 	}
 
 	public void buscar() {
@@ -96,8 +106,8 @@ public class UsuarioBean implements Serializable {
 
 	public void estableceLimite() {
 		String msg = "Limite establecido " + limite + " registros ";
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":usuarios:messages", ":opciones:menu-opciones");
+		MensajeGrowl.msgInformacion(msg, "Hecho");
+		PrimeFaces.current().ajax().update(":opciones:menu-opciones");
 		buscar();
 	}
 
@@ -105,8 +115,8 @@ public class UsuarioBean implements Serializable {
 		String msg = "Orden ascendente ";
 		if (!orden)
 			msg = "Orden descendente ";
-		FacesContext.getCurrentInstance().addMessage("Mostrando lista", new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":usuarios:messages", ":opciones:menu-opciones");
+		MensajeGrowl.msgInformacion(msg, "Hecho");
+		PrimeFaces.current().ajax().update(":opciones:menu-opciones");
 		buscar();
 	}
 
@@ -139,13 +149,13 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public void exportar() {
-		String msg = "Exportado";
-		UsuarioXml xml = new UsuarioXml();
-		xml.setU(usuario);
-		xml.crearXML();
-
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":usuarios");
+		try {
+			ToXML.convierte(usuario);
+			ToXML.descarga("usuario" + usuario.getIdUsuario());
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			MensajeGrowl.msgError("Error", "Error al exportar en XML");
+		}
 	}
 
 	// getters and setters

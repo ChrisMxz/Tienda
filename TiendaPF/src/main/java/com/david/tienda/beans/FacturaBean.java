@@ -36,9 +36,9 @@ public class FacturaBean implements Serializable {
 		servicioFactura.guardar(factura);
 
 		if (factura.getFolio() > 0)
-			MensajeGrowl.msgInformacion("Factura", "Actualizado");
+			MensajeGrowl.msgInformacion("Actualizado", "Factura Actualizada");
 		else
-			MensajeGrowl.msgInformacion("Factura", "Guardada");
+			MensajeGrowl.msgInformacion("Guardada", " Factura Guardada");
 
 	}
 
@@ -49,7 +49,7 @@ public class FacturaBean implements Serializable {
 
 	public void eliminar() {
 		servicioFactura.eliminar(factura);
-		MensajeGrowl.msgInformacion("Factura", "Eliminada");
+		MensajeGrowl.msgInformacion("Eliminada", "Factura Eliminada");
 	}
 
 	public Factura buscar(Long id) {

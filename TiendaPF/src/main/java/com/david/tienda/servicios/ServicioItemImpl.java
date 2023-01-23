@@ -26,6 +26,21 @@ public class ServicioItemImpl extends ConexionBD implements ServicioItem, Serial
 	}
 
 	@Override
+	public Item porPedidoProducto(Long pedido, Long producto) {
+		String consulta = "SELECT i FROM Item i where i.idPedido like:idped and i.producto.idProducto like:idpro ";
+		Item x = null;
+		em = getEntityManager();
+
+		try {
+			x = em.createQuery(consulta, Item.class).setParameter("idped", pedido).setParameter("idpro", producto)
+					.getSingleResult();
+		} catch (Exception e) {
+
+		}
+		return x;
+	}
+
+	@Override
 	public Long contar() {
 		String consulta = "SELECT count(i) FROM Item i ";
 		em = getEntityManager();

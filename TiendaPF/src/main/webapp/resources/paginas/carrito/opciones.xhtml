@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="grid">
+		<!-- divider con titulo opciones -->
+		<div class="col-12">
+			<p:divider align="left">
+				<div class="inline-flex align-items-center">
+					<i class="pi pi-cog mr-2" /> <b> <p:outputLabel
+							value="Opciones" />
+					</b>
+				</div>
+			</p:divider>
+
+
+			<h:form id="opciones">
+				<p:slideMenu id="menu-opciones">
+
+					<p:menuitem id="opc-agregar-item" icon="pi pi-plus"
+						value="Nuevo Item" update=":formulario-items"
+						oncomplete="PF('dialogoItemsForm').show()"
+						actionListener="#{itemBean.nuevo}"
+						rendered="#{sesionUsuario.pedido.idPedido>0}"
+						disabled="#{!pedidoBean.editable}">
+						<p:resetInput target=":formulario-items" />
+					</p:menuitem>
+
+					<p:menuitem id="opc-factura" value="Factura" icon="pi pi-file"
+						update=":formulario-facturas"
+						actionListener="#{pedidoBean.opcionGenerarFactura}"
+						disabled="#{pedidoBean.editable}">
+						<p:resetInput target=":formulario-facturas" />
+					</p:menuitem>
+					<p:menuitem id="opc-exporta-Pedido" value="Exportar"
+						icon="pi pi-upload" disabled="#{pedidoBean.editable}"
+						actionListener="#{pedidoBean.exportarPedidoXML}" ajax="false">
+					</p:menuitem>
+					<p:menuitem id="opc-eliminar" value="Eliminar Carrito"
+						icon="pi pi-trash" actionListener="#{pedidoBean.btnEliminar}"
+						rendered="#{sesionUsuario.pedido.idPedido>0}"
+						disabled="#{!pedidoBean.editable and sesionUsuario.usuario.nivel!=3}">
+						<p:confirm header="Confirmacion"
+							message="¿Seguro que desea eliminar el pedido?"
+							icon="pi pi-info-circle" />
+					</p:menuitem>
+				</p:slideMenu>
+
+			</h:form>
+
+			<!-- Modal   dialogoItemsForm Formulario Item -->
+			<ui:include src="/resources/paginas/carrito/formularioItem.xhtml" />
+			<!-- Modal   dialogoFacturasForm Formulario Factura -->
+			<ui:include src="/resources/paginas/carrito/formularioFactura.xhtml" />
+
+
+		</div>
+	</div>
+</ui:composition>

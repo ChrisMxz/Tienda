@@ -22,95 +22,65 @@
 
 					<p:menuitem id="opc-agregar" icon="pi pi-plus" value="Nuevo Pedido"
 						update=":formulario-crear-item"
-						actionListener="#{pedidoBean.nuevo}"
-						rendered="#{!pedidoBean.formularioActivo}">
+						actionListener="#{pedidoBean.nuevo}">
 						<p:resetInput target=":formulario-crear-item" />
 					</p:menuitem>
-					<p:menuitem id="opc-agregar-item" icon="pi pi-plus"
-						value="Nuevo Item" update=":formulario-items"
-						oncomplete="PF('dialogoItemsForm').show()"
-						actionListener="#{itemBean.nuevo}"
-						rendered="#{pedidoBean.formularioActivo and pedidoBean.editable}">
-						<p:resetInput target=":formulario-items" />
-						<f:setPropertyActionListener value="#{pedidoBean.pedido.idPedido}"
-							target="#{itemBean.item.idPedido}" />
-					</p:menuitem>
+
 					<p:menuitem id="opc-refrescar" value="Recargar"
-						icon="pi pi-refresh" actionListener="#{pedidoBean.refrescar}"
-						rendered="#{!pedidoBean.formularioActivo}">
-					</p:menuitem>
-					<p:menuitem id="opc-factura" value="Factura" icon="pi pi-file"
-						update=":formulario-facturas"
-						actionListener="#{pedidoBean.opcionGenerarFactura}"
-						rendered="#{pedidoBean.formularioActivo}"
-						disabled="#{pedidoBean.editable}">
-						<p:resetInput target=":formulario-facturas" />
-					</p:menuitem>
-					<p:menuitem id="opc-exporta-Pedido" value="Exportar pedido"
-						icon="pi pi-upload"
-						actionListener="#{pedidoBean.exportarPedidoXML}"
-						rendered="#{pedidoBean.formularioActivo}" ajax="false">
-					</p:menuitem>
-					<p:menuitem id="opc-eliminar" value="Eliminar Pedido"
-						icon="pi pi-trash" actionListener="#{pedidoBean.btnEliminar}"
-						rendered="#{pedidoBean.formularioActivo}"
-						disabled="#{!pedidoBean.editable and sesionUsuario.usuario.nivel!=3}">
-						<p:confirm header="Confirmacion"
-							message="¿Seguro que desea eliminar el pedido?"
-							icon="pi pi-info-circle" />
+						icon="pi pi-refresh"
+						actionListener="#{listaPedidosBean.refrescar}">
 					</p:menuitem>
 
 					<p:submenu
-						label="Ver #{pedidoBean.limite} #{pedidoBean.orden? 'Asc': 'Desc'}"
-						icon="pi pi-eye" rendered="#{!pedidoBean.formularioActivo}">
+						label="Ver #{listaPedidosBean.limite} #{listaPedidosBean.orden? 'Asc': 'Desc'}"
+						icon="pi pi-eye">
 						<p:submenu immediate="true" label="Cantidad" icon="pi pi-hashtag">
 							<p:menuitem immediate="true" value="10 #{msg['texto.registros']}"
-								icon="pi pi-database" action="#{pedidoBean.estableceLimite}">
+								icon="pi pi-database"
+								action="#{listaPedidosBean.estableceLimite}">
 								<f:setPropertyActionListener value="10"
-									target="#{pedidoBean.limite}" />
+									target="#{listaPedidosBean.limite}" />
 							</p:menuitem>
 							<p:menuitem value="50 #{msg['texto.registros']}"
-								icon="pi pi-database" action="#{pedidoBean.estableceLimite}">
+								icon="pi pi-database"
+								action="#{listaPedidosBean.estableceLimite}">
 								<f:setPropertyActionListener value="50"
-									target="#{pedidoBean.limite}" />
+									target="#{listaPedidosBean.limite}" />
 							</p:menuitem>
 							<p:menuitem value="100 #{msg['texto.registros']}"
-								icon="pi pi-database" action="#{pedidoBean.estableceLimite}">
+								icon="pi pi-database"
+								action="#{listaPedidosBean.estableceLimite}">
 								<f:setPropertyActionListener value="100"
-									target="#{pedidoBean.limite}" />
+									target="#{listaPedidosBean.limite}" />
 							</p:menuitem>
 							<p:menuitem value="500 #{msg['texto.registros']}"
-								icon="pi pi-database" action="#{pedidoBean.estableceLimite}">
+								icon="pi pi-database"
+								action="#{listaPedidosBean.estableceLimite}">
 								<f:setPropertyActionListener value="500"
-									target="#{pedidoBean.limite}" />
+									target="#{listaPedidosBean.limite}" />
 							</p:menuitem>
 						</p:submenu>
 
 						<p:submenu label="Orden" icon="pi pi-sort-alt">
 							<p:menuitem value="Ascendente" icon="pi pi-sort-numeric-up"
-								action="#{pedidoBean.estableceOrden}">
+								action="#{listaPedidosBean.estableceOrden}">
 								<f:setPropertyActionListener value="true"
-									target="#{pedidoBean.orden}" />
+									target="#{listaPedidosBean.orden}" />
 							</p:menuitem>
 							<p:menuitem value="Descendente"
 								icon="pi pi-sort-numeric-down-alt"
-								action="#{pedidoBean.estableceOrden}">
+								action="#{listaPedidosBean.estableceOrden}">
 								<f:setPropertyActionListener value="false"
-									target="#{pedidoBean.orden}" />
+									target="#{listaPedidosBean.orden}" />
 							</p:menuitem>
 						</p:submenu>
 					</p:submenu>
-
-					<p:menuitem id="opc-regresar" value="Volver"
-						icon="pi pi-arrow-left" actionListener="#{pedidoBean.cambiaVista}"
-						rendered="#{pedidoBean.formularioActivo}">
-					</p:menuitem>
 				</p:slideMenu>
 
 
 
 				<p:outputPanel styleClass="card ui-fluid formgrid grid"
-					rendered="#{sesionUsuario.usuario.nivel!=1 and !pedidoBean.formularioActivo}">
+					rendered="#{sesionUsuario.usuario.nivel!=1}">
 
 					<!-- divider con titulo Filtros -->
 					<p:divider align="left">
@@ -125,10 +95,10 @@
 						<p:outputLabel for="@next" value="Busqueda" />
 						<!-- Tipo de busqueda para pedidos -->
 						<p:selectOneMenu id="tipo-buscar-productos"
-							value="#{pedidoBean.filtro}">
+							value="#{listaPedidosBean.filtro}">
 							<f:selectItem itemLabel="ID" itemValue="1" />
 							<f:selectItem itemLabel="Cliente ID" itemValue="2" />
-							<p:ajax event="itemSelect" listener="#{pedidoBean.buscar}" />
+							<p:ajax event="itemSelect" listener="#{listaPedidosBean.buscar}" />
 						</p:selectOneMenu>
 
 					</div>
@@ -138,14 +108,6 @@
 
 
 			</h:form>
-
-			<!-- Modal   dialogoCrearPedidoForm -->
-			<ui:include src="/resources/paginas/pedidos/crearPedidoForm.xhtml" />
-			<!-- Modal   dialogoItemsForm Formulario Item -->
-			<ui:include src="/resources/paginas/pedidos/formularioItem.xhtml" />
-			<!-- Modal   dialogoFacturasForm Formulario Factura -->
-			<ui:include src="/resources/paginas/pedidos/formularioFactura.xhtml" />
-
 
 		</div>
 	</div>

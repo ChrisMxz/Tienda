@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/plantilla.xhtml">
+
+
+	<!-- Barra lateral derecha con opciones -->
+	<ui:define name="barraizquierda">
+		<ui:include src="/resources/paginas/carrito/opciones.xhtml" />
+	</ui:define>
+
+	<ui:define name="barraderecha">
+		<ui:include src="/resources/paginas/carrito/vistaTotalPedido.xhtml" />
+	</ui:define>
+	<!-- contenido principal de la pagina -->
+	<ui:define name="contenido">
+
+		<div class="card">
+			<h:form id="formulario-pedido">
+				<p:divider align="left">
+					<div class="inline-flex align-items-center">
+						<i class="pi pi-shopping-cart mr-2" /> <b> <p:outputLabel
+								value="Carrito" />
+						</b>
+					</div>
+				</p:divider>
+
+				<p:outputPanel class="formgrid grid" id="detalles">
+
+					<div class="field col-6">
+						<p:staticMessage severity="info" summary="Fecha de Registro:"
+							styleClass="text-xs p-1"
+							detail="#{sesionUsuario.pedido.fechaPedido}"
+							rendered="#{sesionUsuario.pedido.fechaPedido!=null}" />
+						<p:staticMessage severity="info" summary="Estatus"
+							styleClass="text-xs p-1" detail="#{sesionUsuario.pedido.estatus}"
+							rendered="#{sesionUsuario.pedido.estatus!=null}" />
+					</div>
+					<div class="field col-12">
+						<p:message for="seleccion-cliente" display="text"
+							styleClass="text-xs pl-0 py-1 border-none" />
+						<p:selectOneMenu value="#{sesionUsuario.pedido.estatus}"
+							id="seleccion-estatus"
+							rendered="#{nivel==3 and sesionUsuario.pedido.idPedido>0}">
+							<f:selectItem itemLabel="pendiente" itemValue="pendiente" />
+							<f:selectItem itemLabel="hecho" itemValue="hecho" />
+							<p:ajax event="itemSelect"
+								listener="#{pedidoBean.devCambiaEstatus}" />
+						</p:selectOneMenu>
+					</div>
+					<!-- Input Cliente -->
+					<div class="field col-12">
+						<p:message for="seleccion-cliente" display="text"
+							styleClass="text-xs pl-0 py-1 border-none" />
+						<p:selectOneMenu value="#{sesionUsuario.pedido.cliente}"
+							id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
+							required="true" requiredMessage="Elige un cliente"
+							rendered="#{nivel!=1 and sesionUsuario.pedido.idPedido>0}"
+							disabled="#{!pedidoBean.editable or sesionUsuario.usuario.nivel!=3}">
+							<f:selectItem itemLabel="Seleccionar Cliente " Value="#{null}" />
+							<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
+								itemLabel="#{cliente.appaterno} #{cliente.nombre} " />
+							<f:converter binding="#{clienteConverter}" />
+						</p:selectOneMenu>
+					</div>
+
+					<!-- Lista de items del pedido -->
+					<div class="col-12">
+						<ui:include src="/resources/paginas/carrito/listaItems.xhtml" />
+					</div>
+
+
+				</p:outputPanel>
+			</h:form>
+		</div>
+
+
+	</ui:define>
+
+
+
+
+</ui:composition>

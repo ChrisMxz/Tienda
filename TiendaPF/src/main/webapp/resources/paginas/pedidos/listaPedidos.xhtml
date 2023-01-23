@@ -9,8 +9,7 @@
 	<div class="card">
 
 		<h:form id="pedidos">
-			<p:outputPanel id="pedidosPanel"
-				rendered="#{!pedidoBean.formularioActivo}">
+			<p:outputPanel id="pedidosPanel">
 				<!-- divider con titulo de la tabla -->
 				<p:divider align="left">
 					<div class="inline-flex align-items-center">
@@ -23,10 +22,10 @@
 					<!-- Buscador -->
 					<span class="filter-container ui-input-icon-left"> <i
 						class="pi pi-search"></i> <p:inputText id="textoBuscar"
-							value="#{pedidoBean.textoBuscar}" placeholder="Buscar"
+							value="#{listaPedidosBean.textoBuscar}" placeholder="Buscar"
 							rendered="#{sesionUsuario.usuario.nivel!=1}">
 							<p:ajax event="keyup" update="dt-pedidos"
-								listener="#{pedidoBean.buscar}" />
+								listener="#{listaPedidosBean.buscar}" />
 						</p:inputText>
 					</span>
 
@@ -34,10 +33,11 @@
 
 				<!-- Tabla de pedidos  -->
 				<p:dataTable id="dt-pedidos" var="pedido"
-					value="#{pedidoBean.listaPedidos}" rowKey="#{pedido.idPedido}"
-					selection="#{pedidoBean.pedido}" selectionMode="single"
-					paginator="true" reflow="true" rows="10" paginatorPosition="bottom"
-					rowsPerPageTemplate="5,10,15,20"
+					value="#{listaPedidosBean.listaPedidos}"
+					rowKey="#{pedido.idPedido}"
+					selection="#{listaPedidosBean.pedidoSeleccionado}"
+					selectionMode="single" paginator="true" reflow="true" rows="10"
+					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15,20"
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
 					<p:autoUpdate />
 
@@ -64,11 +64,17 @@
 					</p:column>
 					<p:column headerText="Accciones">
 						<p:commandButton id="btn-ver-pedido" icon="pi pi-eye"
+							actionListener="#{listaPedidosBean.btnVerPedido(pedido)}"
 							styleClass="rounded-button ui-button-flat">
-							<p:resetInput target=":formulario-pedido" />
-							<f:setPropertyActionListener value="#{pedido}"
-								target="#{pedidoBean.pedido}" />
-							<f:actionListener binding="#{pedidoBean.contextItemVerPedido()}" />
+						</p:commandButton>
+						<p:commandButton id="btn-eliminar-pedido" icon="pi pi-trash"
+							styleClass="rounded-button ui-button-danger ui-button-flat"
+							disabled="${pedido.estatus=='hecho' and nivel!=3}"
+							actionListener="#{listaPedidosBean.btnEliminarPedido(pedido)}">
+							<p:confirm header="Confirmacion"
+								message="¿Seguro que desea eliminar el item?"
+								icon="pi pi-info-circle">
+							</p:confirm>
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>

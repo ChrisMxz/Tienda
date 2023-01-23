@@ -12,11 +12,10 @@
 
 			<!-- Tabla de items  -->
 			<p:dataTable id="dt-items" var="item"
-				value="#{pedidoBean.pedido.listaItems}" rowKey="#{item.idItem}"
+				value="#{sesionUsuario.pedido.listaItems}" rowKey="#{item.idItem}"
 				selection="#{itemBean.item}" selectionMode="single" paginator="true"
 				reflow="true" rows="10" paginatorPosition="bottom"
 				rowsPerPageTemplate="5,10" scrollable="true"
-				rendered="#{pedidoBean.pedido.idPedido>0}"
 				paginatorTemplate="{RowsPerPageDropdown} {PreviousPageLink} {CurrentPageReport} {NextPageLink}">
 				<p:autoUpdate />
 
@@ -47,26 +46,19 @@
 				<p:column headerText="Accciones">
 					<p:commandButton id="btn-editar-item" icon="pi pi-pencil"
 						update=":formulario-items"
-						oncomplete="PF('dialogoItemsForm').show()"
+						actionListener="#{itemBean.btnEditar(item)}"
 						disabled="#{!pedidoBean.editable}"
 						styleClass="rounded-button ui-button-flat">
-						<p:resetInput target=":formulario-items" />
-						<f:setPropertyActionListener value="#{item}"
-							target="#{itemBean.item}" />
-						<f:actionListener binding="#{itemBean.cargaCantidad()}" />
-
 					</p:commandButton>
+
 					<p:commandButton id="btn-eliminar-item" icon="pi pi-trash"
 						styleClass="rounded-button ui-button-danger ui-button-flat"
+						actionListener="#{pedidoBean.btnEliminarItem(item)}"
 						disabled="#{!pedidoBean.editable}">
 						<p:confirm header="Confirmacion"
 							message="¿Seguro que desea eliminar el item?"
 							icon="pi pi-info-circle">
 						</p:confirm>
-						<f:setPropertyActionListener value="#{item}"
-							target="#{itemBean.item}" />
-						<f:actionListener binding="#{pedidoBean.btnEliminarItem}" />
-
 					</p:commandButton>
 
 				</p:column>

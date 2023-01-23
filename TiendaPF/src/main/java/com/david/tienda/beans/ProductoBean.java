@@ -15,6 +15,8 @@ import org.primefaces.PrimeFaces;
 import com.david.tienda.entidades.Producto;
 import com.david.tienda.servicios.ServicioProducto;
 import com.david.tienda.servicios.ServicioProductoImpl;
+import com.david.tienda.util.MensajeGrowl;
+import com.david.tienda.util.ToXML;
 
 @ManagedBean
 @ViewScoped
@@ -38,9 +40,9 @@ public class ProductoBean implements Serializable {
 	public void inicia() {
 		servicioProducto = new ServicioProductoImpl();
 		bandera = false;
-		orden = true; // ascendente
+		orden = false; // ascendente
 		limite = 100;
-		filtro = 1;
+		filtro = 2;
 		categoria = null;
 		listar();
 	}
@@ -109,6 +111,16 @@ public class ProductoBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage("Mostrando lista", new FacesMessage(msg));
 		PrimeFaces.current().ajax().update(":messages", ":opciones");
 		buscar();
+	}
+
+	public void exportar() {
+		try {
+			ToXML.convierte(producto);
+			ToXML.descarga("producto" + producto.getIdProducto());
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			MensajeGrowl.msgError("Error", "Error al exportar en XML");
+		}
 	}
 
 	// getters and setters

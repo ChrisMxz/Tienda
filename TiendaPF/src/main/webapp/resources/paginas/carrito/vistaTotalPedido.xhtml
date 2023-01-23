@@ -9,8 +9,7 @@
 	<div class="card">
 		<!-- divider con titulo opciones -->
 		<h:form id="detalles-pedidos">
-			<p:outputPanel styleClass="card col-12" id="panel-pedidos-detalles"
-				rendered="#{pedidoBean.formularioActivo}">
+			<p:outputPanel styleClass="card col-12" id="panel-pedidos-detalles">
 				<p:autoUpdate />
 				<p:divider align="left">
 					<div class="inline-flex align-items-center">
@@ -22,24 +21,24 @@
 				<p:panelGrid columns="1" id="total">
 
 					<h:outputText
-						value="Productos: #{pedidoBean.pedido.cantidadProductos}" />
+						value="Productos: #{sesionUsuario.pedido.cantidadProductos}" />
 
-					<h:outputText value="Subtotal : $ #{pedidoBean.pedido.subTotal}" />
+					<h:outputText value="Subtotal : $ #{sesionUsuario.pedido.subTotal}" />
 
-					<h:outputText
-						value="Total(IVA): $ #{pedidoBean.pedido.total}" />
+					<h:outputText value="Total(IVA): $ #{sesionUsuario.pedido.total}" />
 
 					<p:commandButton id="btn-pagar-pedido" icon="pi pi-money-bill"
 						value="Pagar" validateClient="true"
 						styleClass="ui-button-primary rounded-button"
 						oncomplete="PF('dialogoPagoForm').show()"
-						disabled="#{!pedidoBean.editable and pedidoBean.pedido.cantidadProductos>0}">
+						rendered="#{sesionUsuario.pedido.cantidadProductos>0}"
+						disabled="#{!pedidoBean.editable}">
 					</p:commandButton>
 				</p:panelGrid>
 
 			</p:outputPanel>
 		</h:form>
 
-		<ui:include src="/resources/paginas/pedidos/formularioPago.xhtml" />
+		<ui:include src="/resources/paginas/carrito/formularioPago.xhtml" />
 	</div>
 </ui:composition>

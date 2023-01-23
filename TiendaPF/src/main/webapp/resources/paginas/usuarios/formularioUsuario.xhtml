@@ -7,35 +7,59 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<div class="card ui-fluid">
+	<h:form id="formulario-usuarios">
+		<!-- Dialogo modal para mostrar los detalles del Alumno -->
+		<p:dialog header="Usuario" widgetVar="dialogoForm" minHeight="230"
+			minWidth="250" width="700" height="600" responsive="true"
+			showEffect="fade" modal="true" hideEffect="fade" closeOnEscape="true">
 
-		<p:growl id="msg" showDetail="false" />
-		<p:outputPanel class="formgrid grid" id="detalles"
-			rendered="#{usuarioBean.usuario.fechaRegistro!=null}">
-			<div class="col-6">
-				<p:staticMessage severity="info" summary="Fecha de Registro:"
-					styleClass="text-xs p-1"
-					detail="#{usuarioBean.usuario.fechaRegistro}" />
+			<div class="card ui-fluid">
+				<p:outputPanel class="formgrid grid" id="detalles"
+					rendered="#{usuarioBean.usuario.fechaRegistro!=null}">
+					<div class="col-6">
+						<p:staticMessage severity="info" summary="Fecha de Registro:"
+							styleClass="text-xs p-1"
+							detail="#{usuarioBean.usuario.fechaRegistro}" />
+					</div>
+				</p:outputPanel>
+
+				<p:tabView id="tab">
+					<p:tab title="Datos Personales">
+						<ui:include
+							src="/resources/paginas/usuarios/datosPersonalesForm.xhtml" />
+					</p:tab>
+					<p:tab title="Direccion">
+						<ui:include
+							src="/resources/paginas/usuarios/direccionesForm.xhtml" />
+					</p:tab>
+					<p:tab title="Contacto">
+						<ui:include src="/resources/paginas/usuarios/contactosForm.xhtml" />
+					</p:tab>
+					<p:tab title="Credenciales">
+						<ui:include
+							src="/resources/paginas/usuarios/credencialesForm.xhtml" />
+					</p:tab>
+
+				</p:tabView>
+
+
 			</div>
-		</p:outputPanel>
 
-		<p:tabView id="tab">
-			<p:tab title="Datos Personales">
-				<ui:include
-					src="/resources/paginas/usuarios/datosPersonalesForm.xhtml" />
-			</p:tab>
-			<p:tab title="Direccion">
-				<ui:include src="/resources/paginas/usuarios/direccionesForm.xhtml" />
-			</p:tab>
-			<p:tab title="Contacto">
-				<ui:include src="/resources/paginas/usuarios/contactosForm.xhtml" />
-			</p:tab>
-			<p:tab title="Credenciales">
-				<ui:include src="/resources/paginas/usuarios/credencialesForm.xhtml" />
-			</p:tab>
+			<f:facet name="footer">
+				<p:staticMessage severity="info" summary="Ultima Modificacion:"
+					styleClass="text-xs p-1"
+					detail="#{usuarioBean.usuario.fechaModificacion}"
+					rendered="#{usuarioBean.usuario.fechaModificacion!=null}" />
+				<p:commandButton id="btn-agregar" icon="pi pi-save" value="Guardar"
+					validateClient="true" update=":formulario-usuarios:tab"
+					actionListener="#{usuarioBean.guardar}"
+					styleClass="ui-button-primary rounded-button">
+				</p:commandButton>
 
-		</p:tabView>
+			</f:facet>
 
 
-	</div>
+		</p:dialog>
+
+	</h:form>
 </ui:component>

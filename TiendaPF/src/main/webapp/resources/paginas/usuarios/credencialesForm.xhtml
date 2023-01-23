@@ -32,7 +32,8 @@
 		<div class="field col-6">
 			<p:outputLabel for="@next" value="Nivel" indicateRequired="true" />
 			<p:selectOneMenu value="#{usuarioBean.usuario.nivel}" id="nivel"
-				rendered="true" required="true" requiredMessage="Elige un nivel">
+				disabled="#{sesionUsuario.usuario.nivel!=3}" rendered="true"
+				required="true" requiredMessage="Elige un nivel">
 				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
 				<f:selectItem itemLabel="Cliente " itemValue="1" />
 				<f:selectItem itemLabel="Empleado " itemValue="2" />

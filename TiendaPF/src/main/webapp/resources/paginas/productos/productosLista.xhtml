@@ -76,15 +76,25 @@
 						rendered="#{sesionUsuario.usuario.nivel!=1}">
 						<h:outputText value="#{producto.fechaRegistro}" />
 					</p:column>
+					<p:column headerText="Acciones"
+						rendered="#{sesionUsuario.pedido.idPedido>0 and sesionUsuario.pedido.estatus!='hecho'}">
+						<p:commandButton id="btn-agregar-carrito"
+							icon="pi pi-shopping-cart" rendered="#{producto.cantidad>0}"
+							update=":formulario-items"
+							oncomplete="PF('dialogoItemsForm').show()"
+							actionListener="#{itemBean.nuevo}"
+							styleClass="rounded-button ui-button-flat">
+							<p:resetInput target=":formulario-items" />
+							<f:setPropertyActionListener value="#{producto}"
+								target="#{itemBean.item.producto}" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
 
 				<!-- opciones al hacer click derecho -->
 				<p:contextMenu for="dt-productos">
 					<p:menuitem id="opc-ver-producto" value="Ver" icon="pi pi-eye"
 						rendered="false">
-					</p:menuitem>
-					<p:menuitem id="opc-carrito-producto" value="Agregar a Pedido DEV"
-						icon="pi pi-eye" actionListener="#{itemBean.guardar}">
 					</p:menuitem>
 					<p:menuitem id="opc-editar-producto" value="Editar"
 						icon="pi pi-pencil" update=":formulario-productos"
@@ -94,7 +104,8 @@
 
 					</p:menuitem>
 					<p:menuitem id="opc-exportar-producto" value="Exportar XML"
-						icon="pi pi-upload" rendered="false">
+						icon="pi pi-upload" actionListener="#{productoBean.exportar}"
+						ajax="false" rendered="#{sesionUsuario.usuario.nivel==3}">
 					</p:menuitem>
 					<p:menuitem value="Eliminar" update="dt-productos"
 						icon="pi pi-trash" actionListener="#{productoBean.eliminar}"
@@ -115,5 +126,8 @@
 				</p:confirmDialog>
 			</p:outputPanel>
 		</h:form>
+
+		<!-- Modal   dialogoItemsForm Formulario Item -->
+		<ui:include src="/resources/paginas/carrito/formularioItem.xhtml" />
 	</div>
 </ui:composition>

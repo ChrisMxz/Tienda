@@ -120,35 +120,6 @@
 				</div>
 
 			</h:form>
-
-			<h:form id="formulario-usuarios">
-				<!-- Dialogo modal para mostrar los detalles del Alumno -->
-				<p:dialog header="Usuario" widgetVar="dialogoForm" minHeight="230"
-					minWidth="250" width="700" height="600" responsive="true"
-					showEffect="fade" modal="true" hideEffect="fade"
-					closeOnEscape="true">
-
-					<ui:include
-						src="/resources/paginas/usuarios/formularioUsuario.xhtml" />
-
-					<f:facet name="footer">
-						<p:staticMessage severity="info" summary="Ultima Modificacion:"
-							styleClass="text-xs p-1"
-							detail="#{usuarioBean.usuario.fechaModificacion}"
-							rendered="#{usuarioBean.usuario.fechaModificacion!=null}" />
-						<p:commandButton id="btn-agregar" icon="pi pi-save"
-							value="Guardar" validateClient="true"
-							update=":formulario-usuarios:tab"
-							actionListener="#{usuarioBean.guardar}"
-							styleClass="ui-button-primary rounded-button">
-						</p:commandButton>
-
-					</f:facet>
-
-
-				</p:dialog>
-
-			</h:form>
 		</div>
 	</div>
 </ui:composition>

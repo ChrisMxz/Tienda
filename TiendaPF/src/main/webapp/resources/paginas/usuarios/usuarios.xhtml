@@ -22,9 +22,7 @@
 				</div>
 			</p:divider>
 
-			<p:growl id="messages" showDetail="true" />
 			<h:form id="usuarios">
-
 
 				<div class="flex justify-content-between align-items-center pb-3">
 					<!-- Buscador -->
@@ -71,11 +69,25 @@
 						rendered="#{usuarioBean.usuario.nivel==3}">
 						<h:outputText value="#{usuario.nivel}" />
 					</p:column>
+
+					<p:column headerText="Acciones"
+						rendered="#{usuarioBean.usuario.nivel!=1}">
+						<p:commandButton icon="pi pi-shopping-cart" value="Nuevo Pedido"
+							update=":formulario-crear-item"
+							actionListener="#{pedidoBean.nuevo}"
+							styleClass="ui-confirmdialog-no ui-button-flat">
+							<p:resetInput target=":formulario-crear-item" />
+							<f:setPropertyActionListener value="#{usuario}"
+								target="#{sesionUsuario.pedido.cliente}" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
+
+
 
 				<!-- opciones al hacer click derecho -->
 				<p:contextMenu for="dt-usuarios">
-					<p:menuitem id="opc-editar-usuario" value="Ver" icon="pi pi-pencil"
+					<p:menuitem id="opc-editar-usuario" value="Ver" icon="pi pi-eye"
 						update=":formulario-usuarios"
 						oncomplete="PF('dialogoForm').show()"
 						rendered="#{sesionUsuario.usuario.nivel==3}">
@@ -83,15 +95,8 @@
 					</p:menuitem>
 					<p:menuitem id="opc-exportar-usuario" value="Exportar XML"
 						icon="pi pi-upload" actionListener="#{usuarioBean.exportar}"
-						rendered="#{sesionUsuario.usuario.nivel==3}">
+						ajax="false" rendered="#{sesionUsuario.usuario.nivel==3}">
 
-					</p:menuitem>
-					<p:menuitem id="opc-nuevoPedido-usuario" value="Nuevo Pedido"
-						icon="pi pi-shopping-cart" update=":formulario-crear-item"
-						actionListener="#{pedidoBean.nuevo}">
-						<p:resetInput target=":formulario-crear-item" />
-						<f:setPropertyActionListener value="#{usuarioBean.usuario}"
-							target="#{pedidoBean.pedido.cliente}" />
 					</p:menuitem>
 					<p:menuitem value="Eliminar" update="dt-usuarios"
 						icon="pi pi-trash" actionListener="#{usuarioBean.eliminar}"
@@ -111,9 +116,6 @@
 						styleClass="ui-confirmdialog-yes" />
 				</p:confirmDialog>
 			</h:form>
-
-			<!-- Modal   dialogoCrearPedidoForm -->
-			<ui:include src="/resources/paginas/pedidos/crearPedidoForm.xhtml" />
 		</div>
 	</ui:define>
 </ui:composition>
