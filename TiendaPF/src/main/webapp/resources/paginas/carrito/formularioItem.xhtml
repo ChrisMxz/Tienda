@@ -89,10 +89,10 @@
 
 			<f:facet name="footer">
 				<p:commandButton id="btn-eliminar-item" icon="pi pi-trash"
-					value="Eliminar" actionListener="#{pedidoBean.btnEliminarItem}"
-					update=":formulario-pedido:dt-items"
+					value="Eliminar"
+					actionListener="#{pedidoBean.btnEliminarItem(itemBean.item)}"
 					oncomplete="PF('dialogoItemsForm').hide()"
-					styleClass="ui-button-danger rounded-button"
+					styleClass="rounded-button ui-button-danger ui-button-flat"
 					rendered="#{itemBean.item.idItem>0}">
 					<p:confirm header="Confirmacion"
 						message="¿Seguro que desea eliminar el item?"
