@@ -34,7 +34,7 @@ public class CategoriaBean implements Serializable {
 		servicioCategoria = new ServicioCategoriaImpl();
 		filtro = 1;
 		limite = 100;
-		orden = true; // ascendente
+		orden = false; // ascendente
 		listar();
 	}
 
