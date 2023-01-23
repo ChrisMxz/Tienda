@@ -30,6 +30,13 @@ public class FacturaBean implements Serializable {
 
 	public void nuevo() {
 		factura = new Factura();
+		factura.setEmpresa("Tienda PF");
+		factura.setImpuesto("2 - IVA");
+		factura.setRegimenFiscal("612 - Personas Físicas con Actividades Empresariales y Profesionales");
+		factura.setUsoCFDI("G03 - Gastos en general.");
+		factura.setTipoComprobante("I - Ingreso");
+		factura.setRfcEmisor("MITP19012022");
+		factura.setCodigoPostalEmisor("500000");
 	}
 
 	public void guardar() {

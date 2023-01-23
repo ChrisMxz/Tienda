@@ -162,7 +162,8 @@ public class DatosFormulario implements Serializable {
 		} catch (Exception e) {
 
 			try {
-				dato = String.valueOf(fila.getCell(col).getNumericCellValue());
+				Long x = (long) fila.getCell(col).getNumericCellValue();
+				dato = String.valueOf(x);
 
 			} catch (Exception ex) {
 
@@ -175,43 +176,43 @@ public class DatosFormulario implements Serializable {
 
 	public List<String> completaEstados(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.entidadesFederativas.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+		return this.entidadesFederativas.stream().filter(t -> t.toLowerCase().contains(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 
 	public List<String> completaMunicipios(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.municipios.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+		return this.municipios.stream().filter(t -> t.toLowerCase().contains(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 
 	public List<String> completaColonias(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.colonias.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+		return this.colonias.stream().filter(t -> t.toLowerCase().contains(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 
 	public List<String> completaCodigosPostales(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.codigosPostales.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+		return this.codigosPostales.stream().filter(t -> t.toLowerCase().contains(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 
 	public List<String> completaFormaPago(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.formasdePago.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+		return this.formasdePago.stream().filter(t -> t.toLowerCase().contains(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 
 	public List<String> completaTipoComprobante(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.tiposdeComprobante.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+		return this.tiposdeComprobante.stream().filter(t -> t.toLowerCase().contains(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 
 	public List<String> completaMetodosPago(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.metodosdePago.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+		return this.metodosdePago.stream().filter(t -> t.toLowerCase().contains(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 
@@ -223,19 +224,18 @@ public class DatosFormulario implements Serializable {
 
 	public List<String> completaUsoCFDI(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.usoCFDI.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
-				.collect(Collectors.toList());
+		return this.usoCFDI.stream().filter(t -> t.toLowerCase().contains(textoLowerCase)).collect(Collectors.toList());
 	}
 
 	public List<String> completaClavesProducto(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.clavesdeProducto.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+		return this.clavesdeProducto.stream().filter(t -> t.toLowerCase().contains(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 
 	public List<String> completaClavesUnidad(String texto) {
 		String textoLowerCase = texto.toLowerCase();
-		return this.clavesdeUnidad.stream().filter(t -> t.toLowerCase().startsWith(textoLowerCase))
+		return this.clavesdeUnidad.stream().filter(t -> t.toLowerCase().contains(textoLowerCase))
 				.collect(Collectors.toList());
 	}
 

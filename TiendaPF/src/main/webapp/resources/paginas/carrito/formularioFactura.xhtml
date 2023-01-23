@@ -53,7 +53,8 @@
 								<p:message for="@next" display="text"
 									styleClass="text-xs pl-0 py-1 border-none" />
 								<p:selectOneMenu value="#{facturaBean.factura.usoCFDI}"
-									id="usocfdi" required="true" requiredMessage="Elige una opcion"
+									id="usocfdi" required="true" filter="true"
+									filterMatchMode="contains" requiredMessage="Elige una opcion"
 									disabled="#{nivel!=3 and facturaBean.factura.folio>0}">
 									<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
 									<f:selectItems value="#{datosFormulario.usoCFDI}" var="dato"
@@ -90,8 +91,9 @@
 								<p:message for="@next" display="text"
 									styleClass="text-xs pl-0 py-1 border-none" />
 								<p:selectOneMenu value="#{facturaBean.factura.regimenFiscal}"
-									id="regimenfiscal" required="true"
-									requiredMessage="Elige una opcion" disabled="#{nivel==1}">
+									id="regimenfiscal" required="true" filter="true"
+									filterMatchMode="contains" requiredMessage="Elige una opcion"
+									disabled="#{nivel==1}">
 									<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
 									<f:selectItems value="#{datosFormulario.regimenFiscal}"
 										var="dato" itemValue="#{dato}" itemLabel="#{dato}" />
@@ -105,8 +107,9 @@
 								<p:message for="@next" display="text"
 									styleClass="text-xs pl-0 py-1 border-none" />
 								<p:selectOneMenu value="#{facturaBean.factura.tipoComprobante}"
-									id="tipocomprobante" required="true"
-									requiredMessage="Elige una opcion" disabled="#{nivel==1}">
+									id="tipocomprobante" required="true" filter="true"
+									filterMatchMode="contains" requiredMessage="Elige una opcion"
+									disabled="#{nivel==1}">
 									<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
 									<f:selectItems value="#{datosFormulario.tiposdeComprobante}"
 										var="dato" itemValue="#{dato}" itemLabel="#{dato}" />
@@ -122,8 +125,9 @@
 								<p:message for="@next" display="text"
 									styleClass="text-xs pl-0 py-1 border-none" />
 								<p:selectOneMenu value="#{facturaBean.factura.impuesto}"
-									id="impueesto" required="true"
-									requiredMessage="Elige una opcion" disabled="#{nivel==1}">
+									id="impueesto" required="true" filter="true"
+									filterMatchMode="contains" requiredMessage="Elige una opcion"
+									disabled="#{nivel==1}">
 									<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
 									<f:selectItems value="#{datosFormulario.impuesto}" var="dato"
 										itemValue="#{dato}" itemLabel="#{dato}" />
