@@ -18,6 +18,7 @@ import com.david.tienda.entidades.Pedido;
 import com.david.tienda.servicios.ServicioPedido;
 import com.david.tienda.servicios.ServicioPedidoImpl;
 import com.david.tienda.util.MensajeGrowl;
+import com.david.tienda.util.ToXML;
 
 @ManagedBean
 @ViewScoped
@@ -116,15 +117,19 @@ public class PedidoBean implements Serializable {
 	}
 
 	public void eliminar() {
+		try {
+			for (Item i : pedido.getListaItems()) {
+				itemBean.setItem(i);
+				itemBean.eliminar();
+			}
 
-		for (Item i : pedido.getListaItems()) {
-			itemBean.setItem(i);
-			itemBean.eliminar();
+			servicioPedido.eliminar(pedido);
+			MensajeGrowl.msgInformacion("Pedido", "Eliminado");
+			listar();
+		} catch (Exception e) {
+			MensajeGrowl.msgError("Error Eliminar", "A ocurrido un error al eliminar el pedido");
 		}
 
-		servicioPedido.eliminar(pedido);
-		MensajeGrowl.msgInformacion("Pedido", "Eliminado");
-		listar();
 	}
 
 	public void buscar() {
@@ -243,8 +248,13 @@ public class PedidoBean implements Serializable {
 
 	}
 
-	public void imprimirFactura() {
-		MensajeGrowl.msgInformacion("descarga", "DEV");
+	public void exportarPedidoXML() {
+		try {
+			ToXML.convierte(pedido);
+			ToXML.descarga("pedido" + pedido.getIdPedido());
+		} catch (Exception e) {
+			MensajeGrowl.msgError("Error", "No se pudo descargar el archivo");
+		}
 	}
 
 	// Getters an setters

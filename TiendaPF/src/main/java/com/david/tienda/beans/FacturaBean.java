@@ -12,6 +12,7 @@ import com.david.tienda.entidades.Factura;
 import com.david.tienda.servicios.ServicioFactura;
 import com.david.tienda.servicios.ServicioFacturaImpl;
 import com.david.tienda.util.MensajeGrowl;
+import com.david.tienda.util.ToXML;
 
 @ManagedBean
 @ViewScoped
@@ -53,6 +54,15 @@ public class FacturaBean implements Serializable {
 
 	public Factura buscar(Long id) {
 		return servicioFactura.porIdPedido(id);
+	}
+
+	public void exportarFacturaXML() {
+		try {
+			ToXML.convierte(factura);
+			ToXML.descarga("factura(" + factura.getFolio() + ")");
+		} catch (Exception e) {
+			MensajeGrowl.msgError("Error", "No se pudo descargar el archivo");
+		}
 	}
 
 	public Factura getFactura() {

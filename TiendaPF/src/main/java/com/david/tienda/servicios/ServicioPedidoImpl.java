@@ -27,7 +27,7 @@ public class ServicioPedidoImpl extends ConexionBD implements ServicioPedido, Se
 	}
 
 	@Override
-	public Optional<Pedido> porId(int t) {
+	public Optional<Pedido> porId(Long t) {
 		em = getEntityManager();
 		return Optional.ofNullable(em.find(Pedido.class, t));
 	}

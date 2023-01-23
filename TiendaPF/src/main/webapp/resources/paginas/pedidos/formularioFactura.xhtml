@@ -138,7 +138,8 @@
 
 			<f:facet name="footer">
 				<p:commandButton id="btn-imprimir-factura" icon="pi pi-file"
-					value="Exportar XML" actionListener="#{pedidoBean.imprimirFactura}"
+					value="Exportar XML"
+					actionListener="#{facturaBean.exportarFacturaXML}" ajax="false"
 					styleClass="ui-button-primary rounded-button"
 					rendered="#{facturaBean.factura.folio>0}">
 				</p:commandButton>

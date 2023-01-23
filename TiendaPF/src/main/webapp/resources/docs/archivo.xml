@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pedido>
+    <cantidadProductos>16</cantidadProductos>
+    <cliente>
+        <apmaterno>Martinez</apmaterno>
+        <appaterno>David</appaterno>
+        <contacto>
+            <email>david@gmail.com</email>
+            <email2></email2>
+            <idContacto>1</idContacto>
+            <telefonoLocal>(56) 6788-7781</telefonoLocal>
+            <telefonoMovil>(55) 9817-3827</telefonoMovil>
+        </contacto>
+        <direccion>
+            <calle>4</calle>
+            <codigoPostal>56350</codigoPostal>
+            <colonia>Arturo Montiel</colonia>
+            <descripcion>Avenida</descripcion>
+            <entidadFederativa>Estado de México</entidadFederativa>
+            <id_direccion>1</id_direccion>
+            <municipio>Chimalhuacán</municipio>
+            <numExterior>234</numExterior>
+            <numInterior>98</numInterior>
+            <pais>México</pais>
+        </direccion>
+        <edad>23</edad>
+        <fechaModificacion/>
+        <fechaRegistro/>
+        <idUsuario>1</idUsuario>
+        <nivel>3</nivel>
+        <nombre>Admin</nombre>
+        <password>123</password>
+        <rfc></rfc>
+        <sexo>m</sexo>
+        <username>admin</username>
+    </cliente>
+    <descuento>0.0</descuento>
+    <estatus>pendiente</estatus>
+    <fechaModificacion/>
+    <fechaPedido/>
+    <formaPago>1.0 - Efectivo</formaPago>
+    <idPedido>1</idPedido>
+    <iva>0.16</iva>
+    <listaItems>
+        <cantidad>6</cantidad>
+        <idItem>2</idItem>
+        <idPedido>1</idPedido>
+        <producto>
+            <cantidad>11</cantidad>
+            <categoria>
+                <descripcion>Artículos de tecnología para el hogar</descripcion>
+                <idCategoria>3</idCategoria>
+                <nombre>Tecnología</nombre>
+            </categoria>
+            <concepto>01010101</concepto>
+            <descripcion>Memoria usb 3.0 16Gb de capacidad</descripcion>
+            <fechaModificacion/>
+            <fechaRegistro/>
+            <idProducto>35</idProducto>
+            <nombre>USB 16GB</nombre>
+            <precio>120.0</precio>
+            <sku>138801100009</sku>
+        </producto>
+        <subTotal>720.0</subTotal>
+    </listaItems>
+    <listaItems>
+        <cantidad>3</cantidad>
+        <idItem>7</idItem>
+        <idPedido>1</idPedido>
+        <producto>
+            <cantidad>41</cantidad>
+            <categoria>
+                <descripcion>Productos de papelería</descripcion>
+                <idCategoria>2</idCategoria>
+                <nombre>Papelería</nombre>
+            </categoria>
+            <claveUnidad>h87</claveUnidad>
+            <concepto>0101</concepto>
+            <descripcion>Papel Bond Tamaño Carta Blanco de 37 kg con 500 Hojas Ecológico Scribe</descripcion>
+            <fechaModificacion/>
+            <fechaRegistro/>
+            <idProducto>40</idProducto>
+            <nombre>Papel Bond Tamaño Carta Blanco</nombre>
+            <precio>114.5</precio>
+            <sku>128972392487</sku>
+        </producto>
+        <subTotal>114.5</subTotal>
+    </listaItems>
+    <listaItems>
+        <cantidad>3</cantidad>
+        <idItem>10</idItem>
+        <idPedido>1</idPedido>
+        <producto>
+            <cantidad>6</cantidad>
+            <categoria>
+                <descripcion>Artículos de tecnología para el hogar</descripcion>
+                <idCategoria>3</idCategoria>
+                <nombre>Tecnología</nombre>
+            </categoria>
+            <concepto>01010101</concepto>
+            <descripcion>Cable HDMI 4K para Audio y Video de 1.8 mts Acteck AC-929325</descripcion>
+            <fechaModificacion/>
+            <fechaRegistro/>
+            <idProducto>44</idProducto>
+            <nombre>Cable HDMI</nombre>
+            <precio>102.0</precio>
+            <sku>AC-929325</sku>
+        </producto>
+        <subTotal>204.0</subTotal>
+    </listaItems>
+    <listaItems>
+        <cantidad>2</cantidad>
+        <idItem>16</idItem>
+        <idPedido>1</idPedido>
+        <producto>
+            <cantidad>11</cantidad>
+            <categoria>
+                <descripcion>Pruebas</descripcion>
+                <idCategoria>14</idCategoria>
+                <nombre>Pruebas</nombre>
+            </categoria>
+            <claveUnidad>H87 - Pieza</claveUnidad>
+            <concepto>4.3202222E7 - Cables de computador</concepto>
+            <descripcion>adaptador usb c a usb b</descripcion>
+            <fechaModificacion/>
+            <fechaRegistro/>
+            <idProducto>33</idProducto>
+            <nombre>Adaptador</nombre>
+            <precio>45.0</precio>
+            <sku>213123123783</sku>
+        </producto>
+        <subTotal>90.0</subTotal>
+    </listaItems>
+    <listaItems>
+        <cantidad>2</cantidad>
+        <idItem>50</idItem>
+        <idPedido>1</idPedido>
+        <producto>
+            <cantidad>38</cantidad>
+            <categoria>
+                <descripcion>Pruebas</descripcion>
+                <idCategoria>14</idCategoria>
+                <nombre>Pruebas</nombre>
+            </categoria>
+            <claveUnidad>H87 - Pieza</claveUnidad>
+            <concepto>01010101</concepto>
+            <descripcion>Prueba de sql</descripcion>
+            <fechaModificacion/>
+            <fechaRegistro/>
+            <idProducto>1</idProducto>
+            <nombre>Prueba 1</nombre>
+            <precio>1.0</precio>
+            <sku>12</sku>
+        </producto>
+        <subTotal>2.0</subTotal>
+    </listaItems>
+    <metodoPago>PUE - Pago en una sola exhibición</metodoPago>
+    <subTotal>1130.5</subTotal>
+    <total>1311.38</total>
+</pedido>

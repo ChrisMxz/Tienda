@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -29,6 +30,7 @@ import com.david.tienda.servicios.ServicioItemImpl;
 
 @Entity
 @Table(name = "pedidos")
+@XmlRootElement
 public class Pedido {
 
 	// atributos---------------------

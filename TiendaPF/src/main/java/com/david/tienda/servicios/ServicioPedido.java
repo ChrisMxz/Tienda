@@ -11,7 +11,7 @@ public interface ServicioPedido extends Servicio<Pedido> {
 	List<Pedido> filtrarPor(int filtro, String estatus, LocalDateTime fecha, String texto, int limite, boolean orden);
 	
 
-	default Optional<Pedido> porId(int t) {
+	default Optional<Pedido> porId(Long t) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}

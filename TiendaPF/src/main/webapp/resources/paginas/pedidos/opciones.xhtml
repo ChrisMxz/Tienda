@@ -39,12 +39,17 @@
 						icon="pi pi-refresh" actionListener="#{pedidoBean.refrescar}"
 						rendered="#{!pedidoBean.formularioActivo}">
 					</p:menuitem>
-					<p:menuitem id="opc-factura" value="Generar Factura"
-						icon="pi pi-file" update=":formulario-facturas"
+					<p:menuitem id="opc-factura" value="Factura" icon="pi pi-file"
+						update=":formulario-facturas"
 						actionListener="#{pedidoBean.opcionGenerarFactura}"
 						rendered="#{pedidoBean.formularioActivo}"
 						disabled="#{pedidoBean.editable}">
 						<p:resetInput target=":formulario-facturas" />
+					</p:menuitem>
+					<p:menuitem id="opc-exporta-Pedido" value="Exportar pedido"
+						icon="pi pi-upload"
+						actionListener="#{pedidoBean.exportarPedidoXML}"
+						rendered="#{pedidoBean.formularioActivo}" ajax="false">
 					</p:menuitem>
 					<p:menuitem id="opc-eliminar" value="Eliminar Pedido"
 						icon="pi pi-trash" actionListener="#{pedidoBean.btnEliminar}"

@@ -1,4 +1,4 @@
-package com.david.tienda.util;
+	package com.david.tienda.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -6,8 +6,6 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.tomcat.util.bcel.classfile.Constant;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
@@ -163,7 +161,6 @@ public class UsuarioXml {
 
 		response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 		response.setContentType(contentType);
-		
 
 		try {
 			ServletOutputStream out = response.getOutputStream();
