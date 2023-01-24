@@ -23,8 +23,7 @@
 					<p:menuitem id="opc-agregar" value="Agregar" icon="pi pi-plus"
 						actionListener="#{usuarioBean.nuevo}"
 						update=":formulario-usuarios"
-						oncomplete="PF('dialogoForm').show()"
-						rendered="#{sesionUsuario.usuario.nivel==3}">
+						oncomplete="PF('dialogoForm').show()">
 						<p:resetInput target=":formulario-usuarios" />
 					</p:menuitem>
 
@@ -78,7 +77,7 @@
 					</p:submenu>
 
 					<p:submenu label="#{msg['producto.exportar']}" icon="pi pi-upload"
-						rendered="#{sesionUsuario.usuario.nivel==3}">
+						rendered="#{nivel==3}">
 						<p:menuitem value="#{msg['texto.pdf']}"
 							icon="pi pi-fw pi-file-pdf">
 							<p:dataExporter type="pdf" target=":usuarios:dt-usuarios"
@@ -110,7 +109,7 @@
 							<f:selectItem itemLabel="Id" itemValue="1" />
 							<f:selectItem itemLabel="Nombre" itemValue="2" />
 							<f:selectItem itemLabel="Apellido Paterno" itemValue="3" />
-							<f:selectItem itemLabel="Apellido Paterno" itemValue="4" />
+							<f:selectItem itemLabel="Apellido Materno" itemValue="4" />
 							<f:selectItem itemLabel="Correo" itemValue="5" />
 							<p:ajax event="itemSelect" listener="#{usuarioBean.buscar}"
 								update=":usuarios:dt-usuarios" />

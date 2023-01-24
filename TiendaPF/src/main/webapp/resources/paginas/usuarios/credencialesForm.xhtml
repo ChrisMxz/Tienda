@@ -34,8 +34,7 @@
 			<p:selectOneMenu value="#{usuarioBean.usuario.nivel}" id="nivel"
 				disabled="#{sesionUsuario.usuario.nivel!=3}" rendered="true"
 				required="true" requiredMessage="Elige un nivel">
-				<f:selectItem itemLabel="Seleccionar " Value="#{null}" />
-				<f:selectItem itemLabel="Cliente " itemValue="1" />
+				<f:selectItem itemLabel="Cliente " Value="1" />
 				<f:selectItem itemLabel="Empleado " itemValue="2" />
 				<f:selectItem itemLabel="Administrador " itemValue="3" />
 			</p:selectOneMenu>
@@ -49,10 +48,10 @@
 			<p:password id="pwd1" value="#{usuarioBean.usuario.password}"
 				label="Password 1" match="pwd2"
 				validatorMessage="La contraseña no concuerda" feedback="true"
-				toggleMask="true" redisplay="true"
-				promptLabel="Ingrese una contraseña" goodLabel="Bien"
-				strongLabel="Fuerte" weakLabel="Debil" maxlength="20"
-				required="true" requiredMessage="Escriba la contraseña" />
+				redisplay="true" promptLabel="Ingrese una contraseña"
+				goodLabel="Bien" strongLabel="Fuerte" weakLabel="Debil"
+				maxlength="20" required="true"
+				requiredMessage="Escriba la contraseña" />
 		</div>
 
 		<!-- Input Contraseña confirmacion -->

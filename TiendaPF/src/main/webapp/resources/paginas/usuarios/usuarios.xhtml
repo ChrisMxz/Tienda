@@ -45,7 +45,8 @@
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
 					<p:autoUpdate />
 
-					<p:column headerText="ID" sortBy="#{usuario.idUsuario}">
+					<p:column headerText="ID" sortBy="#{usuario.idUsuario}"
+						resizable="true">
 						<h:outputText value="#{usuario.idUsuario}" />
 					</p:column>
 					<p:column headerText="Nombre" sortBy="#{usuario.nombre}">
@@ -66,46 +67,44 @@
 						<h:outputText value="#{usuario.contacto.email}" />
 					</p:column>
 					<p:column headerText="Nivel" sortBy="#{usuario.nivel}"
-						rendered="#{usuarioBean.usuario.nivel==3}">
+						rendered="#{nivel==3}">
 						<h:outputText value="#{usuario.nivel}" />
 					</p:column>
 
-					<p:column headerText="Acciones"
-						rendered="#{usuarioBean.usuario.nivel!=1}">
-						<p:commandButton icon="pi pi-shopping-cart" value="Nuevo Pedido"
-							update=":formulario-crear-item"
+					<p:column headerText="Acciones" rendered="#{nivel!=1}">
+						<p:commandButton id="btn-editar-usuario" icon="pi pi-pencil"
+							update=":formulario-usuarios"
+							oncomplete="PF('dialogoForm').show()"
+							actionListener="#{usuarioBean.btnEditar(usuario)}"
+							styleClass="rounded-button ui-button-flat">
+							<p:resetInput target=":formulario-usuarios" />
+						</p:commandButton>
+						<p:commandButton id="btn-eliminar-usuario" icon="pi pi-trash"
+							styleClass="rounded-button ui-button-danger ui-button-flat"
+							actionListener="#{usuarioBean.btnEliminar(usuario)}"
+							rendered="${nivel==3}">
+							<p:confirm header="Confirmacion"
+								message="¿Seguro que desea eliminar al Alumno?"
+								icon="pi pi-info-circle" />
+						</p:commandButton>
+						<p:commandButton id="btn-exportar-usuario" icon="pi pi-upload"
+							actionListener="#{usuarioBean.btnExportar(usuario)}" ajax="false"
+							rendered="#{nivel==3}"
+							styleClass="rounded-button ui-button-success ui-button-flat">
+							<p:resetInput target=":formulario-usuarios" />
+							<f:setPropertyActionListener value="#{usuario}"
+								target="#{sesionUsuario.pedido.cliente}" />
+						</p:commandButton>
+						<p:commandButton id="btn-NuevoPedido-usuario"
+							icon="pi pi-shopping-cart" update=":formulario-crear-item"
 							actionListener="#{pedidoBean.nuevo}"
-							styleClass="ui-confirmdialog-no ui-button-flat">
+							styleClass="rounded-button ui-button-help ui-button-flat">
 							<p:resetInput target=":formulario-crear-item" />
 							<f:setPropertyActionListener value="#{usuario}"
 								target="#{sesionUsuario.pedido.cliente}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-
-
-
-				<!-- opciones al hacer click derecho -->
-				<p:contextMenu for="dt-usuarios">
-					<p:menuitem id="opc-editar-usuario" value="Ver" icon="pi pi-eye"
-						update=":formulario-usuarios"
-						oncomplete="PF('dialogoForm').show()"
-						rendered="#{sesionUsuario.usuario.nivel==3}">
-						<p:resetInput target=":formulario-usuarios" />
-					</p:menuitem>
-					<p:menuitem id="opc-exportar-usuario" value="Exportar XML"
-						icon="pi pi-upload" actionListener="#{usuarioBean.exportar}"
-						ajax="false" rendered="#{sesionUsuario.usuario.nivel==3}">
-
-					</p:menuitem>
-					<p:menuitem value="Eliminar" update="dt-usuarios"
-						icon="pi pi-trash" actionListener="#{usuarioBean.eliminar}"
-						rendered="#{sesionUsuario.usuario.nivel==3}">
-						<p:confirm header="Confirmacion"
-							message="¿Seguro que desea eliminar al Alumno?"
-							icon="pi pi-info-circle" />
-					</p:menuitem>
-				</p:contextMenu>
 
 				<!-- Dialogo de confirmacion para eliminar -->
 				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"

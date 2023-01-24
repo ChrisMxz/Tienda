@@ -46,6 +46,8 @@ public class UsuarioBean implements Serializable {
 
 	public void nuevo() {
 		usuario = new Usuario();
+		usuario.setNivel(1);
+		usuario.setPassword("clientepass123");
 	}
 
 	public void listar() {
@@ -156,6 +158,20 @@ public class UsuarioBean implements Serializable {
 			System.err.println(e.getMessage());
 			MensajeGrowl.msgError("Error", "Error al exportar en XML");
 		}
+	}
+
+	public void btnEditar(Usuario x) {
+		this.usuario = x;
+	}
+
+	public void btnEliminar(Usuario x) {
+		this.usuario = x;
+		eliminar();
+	}
+
+	public void btnExportar(Usuario x) {
+		this.usuario = x;
+		exportar();
 	}
 
 	// getters and setters

@@ -1,1 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<usuario>
+    <apmaterno>1</apmaterno>
+    <appaterno>Pedro</appaterno>
+    <contacto>
+        <email>121212121221</email>
+        <email2></email2>
+        <idContacto>10</idContacto>
+        <telefonoLocal></telefonoLocal>
+        <telefonoMovil>(22) 2222-2222</telefonoMovil>
+    </contacto>
+    <direccion>
+        <calle>qq</calle>
+        <codigoPostal>qqq</codigoPostal>
+        <colonia>qqq</colonia>
+        <descripcion></descripcion>
+        <entidadFederativa>Baja California</entidadFederativa>
+        <id_direccion>8</id_direccion>
+        <municipio>qqq</municipio>
+        <numExterior>qqq</numExterior>
+        <numInterior>qqq</numInterior>
+    </direccion>
+    <edad>1</edad>
+    <fechaModificacion/>
+    <fechaRegistro/>
+    <idUsuario>12</idUsuario>
+    <nivel>2</nivel>
+    <nombre>Empleado</nombre>
+    <password>123</password>
+    <rfc>34</rfc>
+    <sexo></sexo>
+    <username>empleado</username>
+</usuario>
