@@ -91,9 +91,6 @@
 							actionListener="#{usuarioBean.btnExportar(usuario)}" ajax="false"
 							rendered="#{nivel==3}"
 							styleClass="rounded-button ui-button-success ui-button-flat">
-							<p:resetInput target=":formulario-usuarios" />
-							<f:setPropertyActionListener value="#{usuario}"
-								target="#{sesionUsuario.pedido.cliente}" />
 						</p:commandButton>
 						<p:commandButton id="btn-NuevoPedido-usuario"
 							icon="pi pi-shopping-cart" update=":formulario-crear-item"

@@ -49,10 +49,7 @@
 						sortBy="#{producto.nombre}">
 						<h:outputText value="#{producto.nombre}" />
 					</p:column>
-					<p:column headerText="#{msg['producto.descripcion']}"
-						sortBy="#{producto.descripcion}">
-						<h:outputText value="#{producto.descripcion}" />
-					</p:column>
+
 					<p:column headerText="#{msg['producto.categoria']}"
 						sortBy="#{producto.categoria.nombre}">
 						<h:outputText value="#{producto.categoria.nombre}" />
@@ -76,45 +73,53 @@
 						rendered="#{sesionUsuario.usuario.nivel!=1}">
 						<h:outputText value="#{producto.fechaRegistro}" />
 					</p:column>
-					<p:column headerText="Acciones"
-						rendered="#{sesionUsuario.pedido.idPedido>0 and sesionUsuario.pedido.estatus!='hecho'}">
+					<p:column headerText="Acciones">
+
+						<p:commandButton id="btn-ver-producto" icon="pi pi-eye"
+							update=":formulario-productos"
+							oncomplete="PF('dialogoProductosForm').show()"
+							actionListener="#{productoBean.btnEditar(producto)}"
+							rendered="#{nivel==1}" styleClass="rounded-button ui-button-flat">
+							<p:resetInput target=":formulario-productos" />
+						</p:commandButton>
+
+						<p:commandButton id="btn-editar-producto" icon="pi pi-pencil"
+							update=":formulario-productos"
+							oncomplete="PF('dialogoProductosForm').show()"
+							actionListener="#{productoBean.btnEditar(producto)}"
+							rendered="#{nivel!=1}" styleClass="rounded-button ui-button-flat">
+							<p:resetInput target=":formulario-productos" />
+						</p:commandButton>
+
+						<p:commandButton id="btn-eliminar-producto" icon="pi pi-trash"
+							styleClass="rounded-button ui-button-danger ui-button-flat"
+							actionListener="#{productoBean.btnEliminar(producto)}"
+							rendered="${nivel==3}">
+							<p:confirm header="Confirmacion"
+								message="¿Seguro que desea eliminar el producto?"
+								icon="pi pi-info-circle" />
+						</p:commandButton>
+
+						<p:commandButton id="btn-exportar-producto" icon="pi pi-upload"
+							actionListener="#{productoBean.btnExportar(producto)}"
+							ajax="false" rendered="#{nivel!=1}"
+							styleClass="rounded-button ui-button-success ui-button-flat">
+
+						</p:commandButton>
+
 						<p:commandButton id="btn-agregar-carrito"
-							icon="pi pi-shopping-cart" rendered="#{producto.cantidad>0}"
+							icon="pi pi-shopping-cart"
+							rendered="#{producto.cantidad>0 and sesionUsuario.pedido.idPedido>0 and sesionUsuario.pedido.estatus!='hecho'}"
 							update=":formulario-items"
 							oncomplete="PF('dialogoItemsForm').show()"
 							actionListener="#{itemBean.nuevo}"
-							styleClass="rounded-button ui-button-flat">
+							styleClass="rounded-button ui-button-help ui-button-flat">
 							<p:resetInput target=":formulario-items" />
 							<f:setPropertyActionListener value="#{producto}"
 								target="#{itemBean.item.producto}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-
-				<!-- opciones al hacer click derecho -->
-				<p:contextMenu for="dt-productos">
-					<p:menuitem id="opc-ver-producto" value="Ver" icon="pi pi-eye"
-						rendered="false">
-					</p:menuitem>
-					<p:menuitem id="opc-editar-producto" value="Editar"
-						icon="pi pi-pencil" update=":formulario-productos"
-						oncomplete="PF('dialogoProductosForm').show()"
-						rendered="#{sesionUsuario.usuario.nivel!=1}">
-						<p:resetInput target=":formulario-productos" />
-
-					</p:menuitem>
-					<p:menuitem id="opc-exportar-producto" value="Exportar XML"
-						icon="pi pi-upload" actionListener="#{productoBean.exportar}"
-						ajax="false" rendered="#{sesionUsuario.usuario.nivel==3}">
-					</p:menuitem>
-					<p:menuitem value="Eliminar" update="dt-productos"
-						icon="pi pi-trash" actionListener="#{productoBean.eliminar}"
-						rendered="#{sesionUsuario.usuario.nivel==3}">
-						<p:confirm header="Confirmacion"
-							message="¿Seguro que desea eliminar el producto?"
-							icon="pi pi-info-circle" />
-					</p:menuitem>
-				</p:contextMenu>
 
 				<!-- Dialogo de confirmacion para eliminar -->
 				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"

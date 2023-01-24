@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.validation.Valid;
 
 import org.primefaces.PrimeFaces;
@@ -63,9 +61,8 @@ public class ProductoBean implements Serializable {
 
 	public void refrescar() {
 		listar();
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Refrescado"));
-		// textoBuscar=null;
-		PrimeFaces.current().ajax().update(":messages", ":opciones", ":productos");
+		MensajeGrowl.msgInformacion("Refrescando", "Listado");
+		PrimeFaces.current().ajax().update(":opciones", ":productos");
 	}
 
 	public void guardar() {
@@ -76,31 +73,40 @@ public class ProductoBean implements Serializable {
 
 			servicioProducto.guardar(producto);
 
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-			PrimeFaces.current().ajax().update(":messages");
+			MensajeGrowl.msgInformacion(msg, "Producto " + msg);
 			PrimeFaces.current().executeScript("PF('dialogoProductosForm').hide()");
 			listar();
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Verifica tus datos"));
-			PrimeFaces.current().ajax().update(":messages");
+			MensajeGrowl.msgAdvertencia("Verifica tus datos", "Revisa el formulario");
 		}
 	}
 
 	public void eliminar() {
-		servicioProducto.eliminar(producto);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eliminado"));
-		PrimeFaces.current().ajax().update(":messages");
-		listar();
+		try {
+			servicioProducto.eliminar(producto);
+			listar();
+			MensajeGrowl.msgInformacion("Eliminado", "Producto Eliminado");
+		} catch (Exception e) {
+			System.err.println("ERROR producto: "+e.getMessage());
+			MensajeGrowl.msgError("Error", "Error al eliminar el producto");
+		}
+
 	}
 
 	public void buscar() {
-		listaProductos = servicioProducto.filtrarPor(filtro, categoria, textoBuscar, limite, orden);
+		try {
+			listaProductos = servicioProducto.filtrarPor(filtro, categoria, textoBuscar, limite, orden);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			MensajeGrowl.msgError("Error", "Error al listar Productos");
+		}
+
 	}
 
 	public void estableceLimite() {
 		String msg = "Limite establecido " + limite + " registros ";
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages", ":opciones");
+		MensajeGrowl.msgInformacion(msg, "Registros " + limite);
+		PrimeFaces.current().ajax().update(":opciones");
 		buscar();
 	}
 
@@ -108,8 +114,8 @@ public class ProductoBean implements Serializable {
 		String msg = "Orden ascendente ";
 		if (!orden)
 			msg = "Orden descendente ";
-		FacesContext.getCurrentInstance().addMessage("Mostrando lista", new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages", ":opciones");
+		MensajeGrowl.msgInformacion(msg, "Mostrando lista " + msg);
+		PrimeFaces.current().ajax().update(":opciones");
 		buscar();
 	}
 
@@ -121,6 +127,20 @@ public class ProductoBean implements Serializable {
 			System.err.println(e.getMessage());
 			MensajeGrowl.msgError("Error", "Error al exportar en XML");
 		}
+	}
+
+	public void btnEditar(Producto x) {
+		this.producto = x;
+	}
+
+	public void btnEliminar(Producto x) {
+		this.producto = x;
+		eliminar();
+	}
+
+	public void btnExportar(Producto x) {
+		this.producto = x;
+		exportar();
 	}
 
 	// getters and setters

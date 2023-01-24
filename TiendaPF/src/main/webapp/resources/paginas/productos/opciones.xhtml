@@ -23,7 +23,7 @@
 
 					<p:menuitem id="opc-agregar" value="Agregar" icon="pi pi-plus"
 						actionListener="#{opcionesMenu.nuevo}"
-						rendered="#{sesionUsuario.usuario.nivel!=1}">
+						rendered="#{nivel!=1}">
 					</p:menuitem>
 
 					<p:menuitem id="opc-refrescar" value="Recargar"
@@ -31,7 +31,7 @@
 					</p:menuitem>
 					<p:menuitem id="opc-categoria" value="#{opcionesMenu.msgOpc}"
 						icon="pi pi-th-large" actionListener="#{opcionesMenu.tabCambia}"
-						rendered="#{sesionUsuario.usuario.nivel!=1}">
+						rendered="#{nivel!=1}">
 					</p:menuitem>
 
 
@@ -171,12 +171,13 @@
 						<p:staticMessage severity="info" summary="Ultima Modificacion:"
 							styleClass="text-xs p-1"
 							detail="#{productoBean.producto.fechaModificacion}"
-							rendered="#{productoBean.producto.fechaModificacion!=null}" />
+							rendered="#{nivel!=1 and productoBean.producto.fechaModificacion!=null}" />
 						<p:commandButton id="btn-agregar" icon="pi pi-save"
 							value="Guardar" validateClient="true"
 							update=":formulario-productos:detalles"
 							actionListener="#{productoBean.guardar}"
-							styleClass="ui-button-primary rounded-button">
+							styleClass="ui-button-primary rounded-button"
+							rendered="${nivel!=1}">
 						</p:commandButton>
 
 					</f:facet>

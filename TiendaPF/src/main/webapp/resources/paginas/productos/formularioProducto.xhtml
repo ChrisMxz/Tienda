@@ -14,7 +14,7 @@
 				<p:staticMessage severity="info" summary="Fecha de Registro:"
 					styleClass="text-xs p-1"
 					detail="#{productoBean.producto.fechaRegistro}"
-					rendered="#{productoBean.producto.fechaRegistro!=null}" />
+					rendered="#{nivel!=1 and productoBean.producto.fechaRegistro!=null}" />
 			</div>
 
 			<!-- Input Nombre -->
@@ -25,7 +25,8 @@
 					styleClass="text-xs pl-0 py-1 border-none" />
 				<p:inputText id="nombre" value="#{productoBean.producto.nombre}"
 					label="Nombre" required="true"
-					requiredMessage="#{msg['input.nombre']}" maxlength="30" />
+					requiredMessage="#{msg['input.nombre']}" maxlength="30"
+					disabled="${nivel==1}" />
 			</div>
 
 			<!-- Input Categoria -->
@@ -33,7 +34,8 @@
 				<p:outputLabel for="@next" value="#{msg['producto.categoria']}" />
 				<p:selectOneMenu id="categoria"
 					value="#{productoBean.producto.categoria}" filter="true"
-					filterMatchMode="startsWith" class="form-select">
+					filterMatchMode="startsWith" class="form-select"
+					disabled="${nivel==1}">
 					<f:selectItems value="#{categoriaBean.listaCategorias}" var="cat"
 						itemLabel="#{cat.nombre}" />
 					<f:converter binding="#{categoriaConverter}" />
@@ -51,7 +53,7 @@
 					value="#{productoBean.producto.concepto}"
 					completeMethod="#{datosFormulario.completaClavesProducto}"
 					scrollHeight="250" required="true"
-					requiredMessage="Ingrese el dato">
+					requiredMessage="Ingrese el dato" disabled="${nivel==1}">
 				</p:autoComplete>
 			</div>
 
@@ -66,7 +68,8 @@
 				<p:inputTextarea rows="5" cols="30" autoResize="false"
 					value="#{productoBean.producto.descripcion}" maxlength="200"
 					title="Ingresa descripcion" required="true"
-					requiredMessage="#{msg['input.descripcion']}" />
+					requiredMessage="#{msg['input.descripcion']}"
+					disabled="${nivel==1}" />
 			</div>
 
 			<!-- Precio -->
@@ -75,7 +78,8 @@
 					indicateRequired="false" />
 				<p:inputNumber id="precio" value="#{productoBean.producto.precio}"
 					label="Precio" symbol="$" maxValue="100000" decimalPlaces="2"
-					minValue="0" symbolPosition="p" emptyValue="always" required="true" />
+					minValue="0" symbolPosition="p" emptyValue="always" required="true"
+					disabled="${nivel==1}" />
 
 			</div>
 
@@ -87,7 +91,7 @@
 					styleClass="text-xs pl-0 py-1 border-none" />
 				<p:inputText id="sku" value="#{productoBean.producto.sku}"
 					maxlength="12" label="Sku" required="true"
-					requiredMessage="#{msg['input.sku']}" />
+					requiredMessage="#{msg['input.sku']}" disabled="${nivel==1}" />
 			</div>
 
 			<!-- Input Cantidad -->
@@ -97,7 +101,7 @@
 				<p:inputNumber id="cantidad"
 					value="#{productoBean.producto.cantidad}" maxlength="5"
 					minValue="0" decimalPlaces="0" label="Cantidad" required="true"
-					requiredMessage="Ingresa un valor valido" />
+					requiredMessage="Ingresa un valor valido" disabled="${nivel==1}" />
 			</div>
 
 			<!-- Clave Unidad -->
@@ -110,7 +114,7 @@
 					value="#{productoBean.producto.claveUnidad}"
 					completeMethod="#{datosFormulario.completaClavesUnidad}"
 					scrollHeight="250" required="true"
-					requiredMessage="Ingrese el dato">
+					requiredMessage="Ingrese el dato" disabled="${nivel==1}">
 				</p:autoComplete>
 			</div>
 		</p:outputPanel>

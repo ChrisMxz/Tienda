@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 
 import com.david.tienda.entidades.Categoria;
 import com.david.tienda.servicios.ServicioCategoriaImpl;
+import com.david.tienda.util.MensajeGrowl;
 
 @ManagedBean
 @ViewScoped
@@ -53,7 +52,7 @@ public class CategoriaBean implements Serializable {
 
 	public void refrescar() {
 		listar();
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Refrescado"));
+		MensajeGrowl.msgInformacion("Refrescando", "Listado");
 		PrimeFaces.current().ajax().update(":messages", ":opciones", ":categorias");
 	}
 
@@ -65,36 +64,38 @@ public class CategoriaBean implements Serializable {
 
 		servicioCategoria.guardar(categoria);
 
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages");
+		MensajeGrowl.msgInformacion(msg, categoria.getNombre());
 		PrimeFaces.current().executeScript("PF('dialogoCategoriasForm').hide()");
 		listar();
 	}
 
 	public void eliminar() {
 		String msg;
-		if (listaCategorias.size() > 0) {
-			msg = "Hay Productos en esta categoria";
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN, "¡No se puede eliminar!", msg));
-		} else {
+		try {
 			msg = "Categoria " + categoria.getNombre();
 			servicioCategoria.eliminar(categoria);
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Eliminado", msg));
+			MensajeGrowl.msgInformacion("Eliminado", msg);
 			listar();
+		} catch (Exception e) {
+			System.err.println("ERROR categoria: "+e.getMessage());
+			MensajeGrowl.msgError("Error", "Error al eliminar el categoria");
 		}
-		PrimeFaces.current().ajax().update(":messages");
+
 	}
 
 	public void buscar() {
-		listaCategorias = servicioCategoria.listarPor(filtro, textoBuscar, limite, orden);
+		try {
+			listaCategorias = servicioCategoria.listarPor(filtro, textoBuscar, limite, orden);
+		} catch (Exception e) {
+			MensajeGrowl.msgError("Error", "Error al listar categorias");
+		}
+
 	}
 
 	public void estableceLimite() {
 		String msg = "Limite establecido " + limite + " registros ";
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages", ":opciones");
+		MensajeGrowl.msgInformacion(msg, "Registros " + limite);
+		PrimeFaces.current().ajax().update(":opciones");
 		buscar();
 	}
 
@@ -102,14 +103,18 @@ public class CategoriaBean implements Serializable {
 		String msg = "Orden ascendente ";
 		if (!orden)
 			msg = "Orden descendente ";
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		PrimeFaces.current().ajax().update(":messages", ":opciones");
+		MensajeGrowl.msgInformacion(msg, "Mostrando lista " + msg);
+		PrimeFaces.current().ajax().update(":opciones");
 		buscar();
 	}
 
-	public void ver() {
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(categoria.toString()));
-		PrimeFaces.current().ajax().update(":messages");
+	public void btnEditar(Categoria x) {
+		this.categoria = x;
+	}
+
+	public void btnEliminar(Categoria x) {
+		this.categoria = x;
+		eliminar();
 	}
 
 	// getters and setters

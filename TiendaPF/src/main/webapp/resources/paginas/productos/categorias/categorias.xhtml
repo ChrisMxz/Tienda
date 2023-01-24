@@ -53,29 +53,27 @@
 						sortBy="#{categoria.descripcion}">
 						<h:outputText value="#{categoria.descripcion}" />
 					</p:column>
+					<p:column headerText="Acciones">
+
+						<p:commandButton id="btn-editar-categoria" icon="pi pi-pencil"
+							update=":formulario-categorias"
+							oncomplete="PF('dialogoCategoriasForm').show()"
+							actionListener="#{categoriaBean.btnEditar(categoria)}"
+							rendered="#{nivel!=1}" styleClass="rounded-button ui-button-flat">
+							<p:resetInput target=":formulario-categorias" />
+						</p:commandButton>
+
+						<p:commandButton id="btn-eliminar-categoria" icon="pi pi-trash"
+							styleClass="rounded-button ui-button-danger ui-button-flat"
+							actionListener="#{categoriaBean.btnEliminar(categoria)}"
+							rendered="${nivel==3}">
+							<p:confirm header="Confirmacion"
+								message="¿Seguro que desea eliminar el producto?"
+								icon="pi pi-info-circle" />
+						</p:commandButton>
+
+					</p:column>
 				</p:dataTable>
-
-				<!-- opciones al hacer click derecho -->
-				<p:contextMenu for="dt-categorias">
-					<p:menuitem id="opc-ver-categoria" value="Ver" icon="pi pi-eye"
-						rendered="false">
-					</p:menuitem>
-					<p:menuitem id="opc-editar-categoria" value="Editar"
-						icon="pi pi-pencil" update=":formulario-categorias"
-						oncomplete="PF('dialogoCategoriasForm').show()">
-						<p:resetInput target=":formulario-categorias" />
-
-					</p:menuitem>
-					<p:menuitem id="opc-exportar-categoria" value="Exportar XML"
-						icon="pi pi-upload" rendered="false">
-					</p:menuitem>
-					<p:menuitem value="Eliminar" update="dt-categorias"
-						icon="pi pi-trash" actionListener="#{categoriaBean.eliminar}">
-						<p:confirm header="Confirmacion"
-							message="¿Seguro que desea eliminar la categoria?"
-							icon="pi pi-info-circle" />
-					</p:menuitem>
-				</p:contextMenu>
 
 				<!-- Dialogo de confirmacion para eliminar -->
 				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
