@@ -46,6 +46,7 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 			em.persist(t);
 			em.getTransaction().commit();
 		} catch (Exception ex) {
+em.getTransaction().rollback();
 			ex.printStackTrace(System.out);
 		}
 
@@ -59,6 +60,7 @@ public class ServicioProductoImpl extends ConexionBD implements ServicioProducto
 			em.remove(em.merge(t));
 			em.getTransaction().commit();
 		} catch (Exception ex) {
+em.getTransaction().rollback();
 			ex.printStackTrace(System.out);
 		}
 
