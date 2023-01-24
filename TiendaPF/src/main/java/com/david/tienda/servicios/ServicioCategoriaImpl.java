@@ -92,6 +92,7 @@ public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Catego
 			em.persist(t);
 			em.getTransaction().commit();
 		} catch (Exception ex) {
+     em.getTransaction().rollback();
 			ex.printStackTrace(System.out);
 		}
 	}
@@ -104,6 +105,7 @@ public class ServicioCategoriaImpl extends ConexionBD implements Servicio<Catego
 			em.remove(em.merge(t));
 			em.getTransaction().commit();
 		} catch (Exception ex) {
+em.getTransaction().rollback()
 			ex.printStackTrace(System.out);
 		}
 
