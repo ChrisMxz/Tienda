@@ -47,6 +47,7 @@ public class ServicioPedidoImpl extends ConexionBD implements ServicioPedido, Se
 			em.persist(t);
 			em.getTransaction().commit();
 		} catch (Exception ex) {
+			em.getTransaction().rollback();
 			ex.printStackTrace(System.out);
 		}
 
@@ -60,6 +61,7 @@ public class ServicioPedidoImpl extends ConexionBD implements ServicioPedido, Se
 			em.remove(em.merge(t));
 			em.getTransaction().commit();
 		} catch (Exception ex) {
+			em.getTransaction().rollback();
 			ex.printStackTrace(System.out);
 		}
 

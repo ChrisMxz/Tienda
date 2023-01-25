@@ -95,6 +95,7 @@ public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario, 
 			em.persist(t);
 			em.getTransaction().commit();
 		} catch (Exception ex) {
+			em.getTransaction().rollback();
 			ex.printStackTrace(System.out);
 		}
 
@@ -108,6 +109,7 @@ public class ServicioUsuarioImpl extends ConexionBD implements ServicioUsuario, 
 			em.remove(em.merge(t));
 			em.getTransaction().commit();
 		} catch (Exception ex) {
+			em.getTransaction().rollback();
 			ex.printStackTrace(System.out);
 		}
 
