@@ -24,14 +24,14 @@
 				</p:menuitem>
 				<p:menuitem value="Pedidos"
 					outcome="/resources/paginas/pedidos/pedidos.xhtml"
-					icon="pi pi-shopping-bag" rendered="${bandera}">
+					icon="pi pi-file" rendered="${bandera}">
 				</p:menuitem>
 
 				<p:menuitem
-					value="Carrito productos (#{sesionUsuario.pedido.cantidadProductos})"
+					value="Carrito #{sesionUsuario.pedido.cantidadProductos}"
 					icon="pi pi-shopping-cart"
 					outcome="/resources/paginas/carrito/formularioPedido.xhtml"
-					rendered="#{bandera and sesionUsuario.pedido.idPedido>0}">
+					rendered="#{bandera and sesionUsuario.pedido.idPedido>0 and sesionUsuario.pedido.estatus=='pendiente'}">
 				</p:menuitem>
 
 				<f:facet name="options">

@@ -84,7 +84,7 @@
 							actionListener="#{usuarioBean.btnEliminar(usuario)}"
 							rendered="${nivel==3}">
 							<p:confirm header="Confirmacion"
-								message="¿Seguro que desea eliminar al Alumno?"
+								message="¿Seguro que desea eliminar al usuario: #{usuario.nombre} ?"
 								icon="pi pi-info-circle" />
 						</p:commandButton>
 						<p:commandButton id="btn-exportar-usuario" icon="pi pi-upload"

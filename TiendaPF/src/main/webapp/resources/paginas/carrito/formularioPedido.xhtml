@@ -32,16 +32,21 @@
 				<p:outputPanel class="formgrid grid" id="detalles">
 
 					<div class="field col-6">
+
 						<p:staticMessage severity="info" summary="Fecha de Registro:"
 							styleClass="text-xs p-1"
 							detail="#{sesionUsuario.pedido.fechaPedido}"
 							rendered="#{sesionUsuario.pedido.fechaPedido!=null}" />
-						<p:staticMessage severity="info" summary="Estatus"
-							styleClass="text-xs p-1" detail="#{sesionUsuario.pedido.estatus}"
-							rendered="#{sesionUsuario.pedido.estatus!=null}" />
+
+						<p:tag styleClass="mr-2" value="Estatus: Pendiente" rounded="true"
+							rendered="#{sesionUsuario.pedido.estatus=='pendiente'}"></p:tag>
+						<p:tag styleClass="mr-2" severity="success" value="Estatus: Hecho"
+							rounded="true"
+							rendered="#{sesionUsuario.pedido.estatus=='hecho'}"></p:tag>
 					</div>
-					<div class="field col-12">
-						<p:message for="seleccion-cliente" display="text"
+
+					<div class="field col-6">
+						<p:message for="@next" display="text"
 							styleClass="text-xs pl-0 py-1 border-none" />
 						<p:selectOneMenu value="#{sesionUsuario.pedido.estatus}"
 							id="seleccion-estatus"
@@ -52,20 +57,19 @@
 								listener="#{pedidoBean.devCambiaEstatus}" />
 						</p:selectOneMenu>
 					</div>
-					<!-- Input Cliente -->
+
+					<!-- Cliente -->
 					<div class="field col-12">
-						<p:message for="seleccion-cliente" display="text"
-							styleClass="text-xs pl-0 py-1 border-none" />
-						<p:selectOneMenu value="#{sesionUsuario.pedido.cliente}"
-							id="seleccion-cliente" filter="true" filterMatchMode="startsWith"
-							required="true" requiredMessage="Elige un cliente"
-							rendered="#{nivel!=1 and sesionUsuario.pedido.idPedido>0}"
-							disabled="#{!pedidoBean.editable or sesionUsuario.usuario.nivel!=3}">
-							<f:selectItem itemLabel="Seleccionar Cliente " Value="#{null}" />
-							<f:selectItems value="#{usuarioBean.listaUsuarios}" var="cliente"
-								itemLabel="#{cliente.appaterno} #{cliente.nombre} " />
-							<f:converter binding="#{clienteConverter}" />
-						</p:selectOneMenu>
+						<p:chip id="cliente" styleClass="mr-3">
+
+							<h:outputLabel value="#{sesionUsuario.pedido.cliente.nombre}"
+								styleClass="mr-2"></h:outputLabel>
+							<h:outputLabel value="#{sesionUsuario.pedido.cliente.appaterno}"
+								styleClass="mr-2"></h:outputLabel>
+							<h:outputLabel value="#{sesionUsuario.pedido.cliente.apmaterno}"
+								styleClass="mr-2"></h:outputLabel>
+						</p:chip>
+
 					</div>
 
 					<!-- Lista de items del pedido -->

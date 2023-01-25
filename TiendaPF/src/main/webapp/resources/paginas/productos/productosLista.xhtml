@@ -96,7 +96,7 @@
 							actionListener="#{productoBean.btnEliminar(producto)}"
 							rendered="${nivel==3}">
 							<p:confirm header="Confirmacion"
-								message="¿Seguro que desea eliminar el producto?"
+								message="¿Seguro que desea eliminar el producto: #{producto.nombre}?"
 								icon="pi pi-info-circle" />
 						</p:commandButton>
 
